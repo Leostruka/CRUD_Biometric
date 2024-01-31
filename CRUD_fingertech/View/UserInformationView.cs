@@ -15,6 +15,11 @@ namespace CRUD_User.View
         public UserInformationView()
         {
             InitializeComponent();
+
+            // Clear tb_name
+            tb_name.Clear();
         }
+
+
     }
 }

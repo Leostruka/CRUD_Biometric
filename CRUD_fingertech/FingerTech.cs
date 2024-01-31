@@ -1,5 +1,6 @@
 
 
+using CRUD_fingertech.Model;
 using NITGEN.SDK.NBioBSP;
 
 
@@ -131,9 +132,7 @@ namespace CRUD_fingertech
 
 
                 UserModel.User user = new UserModel.User();
-                user.id = userID;
-                user.name = ;
-                user.fp_id = 
+                user.id = (int)userID;
 
                 // Register in to database
 

@@ -39,6 +39,7 @@
             tb_name.Name = "tb_name";
             tb_name.Size = new Size(237, 27);
             tb_name.TabIndex = 0;
+            tb_name.TextAlign = HorizontalAlignment.Center;
             // 
             // tx_name
             // 
