@@ -28,12 +28,44 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "UserInformationView";
+            tb_name = new TextBox();
+            tx_name = new Label();
+            SuspendLayout();
+            // 
+            // tb_name
+            // 
+            tb_name.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            tb_name.Location = new Point(55, 75);
+            tb_name.Name = "tb_name";
+            tb_name.Size = new Size(237, 27);
+            tb_name.TabIndex = 0;
+            // 
+            // tx_name
+            // 
+            tx_name.AutoSize = true;
+            tx_name.Font = new Font("Nirmala UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            tx_name.Location = new Point(64, 60);
+            tx_name.Name = "tx_name";
+            tx_name.Size = new Size(62, 25);
+            tx_name.TabIndex = 1;
+            tx_name.Text = "Name";
+            // 
+            // UserInformationView
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(357, 159);
+            Controls.Add(tx_name);
+            Controls.Add(tb_name);
+            Name = "UserInformationView";
+            Text = "User Information";
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
+
+        private TextBox tb_name;
+        private Label tx_name;
     }
 }
