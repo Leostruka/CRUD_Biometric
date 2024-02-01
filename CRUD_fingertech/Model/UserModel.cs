@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CRUD_fingertech.Model
+namespace CRUD_User.Model
 {
     internal class UserModel
     {
@@ -16,7 +16,7 @@ namespace CRUD_fingertech.Model
             [Required]
             public string name { get; set; }
             [Required]
-            public string fp_id { get; set; }
+            public int fp_id { get; set; }
         }
     }
 }

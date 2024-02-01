@@ -30,6 +30,7 @@
         {
             tb_name = new TextBox();
             tx_name = new Label();
+            bt_confirmName = new Button();
             SuspendLayout();
             // 
             // tb_name
@@ -44,20 +45,35 @@
             // tx_name
             // 
             tx_name.AutoSize = true;
+            tx_name.BackColor = Color.Transparent;
             tx_name.Font = new Font("Nirmala UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            tx_name.Location = new Point(64, 60);
+            tx_name.ForeColor = SystemColors.ControlText;
+            tx_name.Location = new Point(65, 47);
             tx_name.Name = "tx_name";
             tx_name.Size = new Size(62, 25);
             tx_name.TabIndex = 1;
             tx_name.Text = "Name";
             // 
+            // bt_confirmName
+            // 
+            bt_confirmName.Location = new Point(145, 108);
+            bt_confirmName.Name = "bt_confirmName";
+            bt_confirmName.Size = new Size(75, 23);
+            bt_confirmName.TabIndex = 2;
+            bt_confirmName.Text = "Confirm";
+            bt_confirmName.UseVisualStyleBackColor = true;
+            bt_confirmName.Click += bt_confirmName_Click;
+            // 
             // UserInformationView
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.Control;
             ClientSize = new Size(357, 159);
+            Controls.Add(bt_confirmName);
             Controls.Add(tx_name);
             Controls.Add(tb_name);
+            FormBorderStyle = FormBorderStyle.None;
             Name = "UserInformationView";
             Text = "User Information";
             ResumeLayout(false);
@@ -68,5 +84,6 @@
 
         private TextBox tb_name;
         private Label tx_name;
+        private Button bt_confirmName;
     }
 }

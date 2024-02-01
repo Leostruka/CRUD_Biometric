@@ -1,6 +1,5 @@
-
-
-using CRUD_fingertech.Model;
+using CRUD_User.ViewModel;
+using CRUD_User.View;
 using NITGEN.SDK.NBioBSP;
 
 
@@ -129,16 +128,17 @@ namespace CRUD_fingertech
             if (result)
             {
                 // Set User
+                UserViewModel user = new UserViewModel();
+                user.setId((int)userID);
 
-
-                UserModel.User user = new UserModel.User();
-                user.id = (int)userID;
+                // Open UserInformationView
+                Application.Run(new UserInformationView());
 
                 // Register in to database
 
 
                 // Register FIR to IndexSearchDB
-                
+
                 MessageBox.Show("User ID: " + userID.ToString() + " registered!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else

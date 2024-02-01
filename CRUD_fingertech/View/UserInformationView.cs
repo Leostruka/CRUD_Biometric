@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CRUD_fingertech;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,6 +21,19 @@ namespace CRUD_User.View
             tb_name.Clear();
         }
 
+        private void bt_confirmName_Click(object sender, EventArgs e)
+        {
+            if (tb_name.Text != "")
+            {
+                // Create new user
 
+                // Close form
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("Please enter a name.", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }
