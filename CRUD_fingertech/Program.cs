@@ -1,4 +1,3 @@
-using CRUD_User.View;
 
 namespace CRUD_fingertech
 {

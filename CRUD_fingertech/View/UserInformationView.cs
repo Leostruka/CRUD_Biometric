@@ -25,7 +25,8 @@ namespace CRUD_User.View
         {
             if (tb_name.Text != "")
             {
-                // Create new user
+                // Set user.name to tb_name
+                
 
                 // Close form
                 this.Close();

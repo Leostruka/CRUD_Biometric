@@ -1,4 +1,4 @@
-using CRUD_User.ViewModel;
+using CRUD_User.Model;
 using CRUD_User.View;
 using NITGEN.SDK.NBioBSP;
 
@@ -127,12 +127,14 @@ namespace CRUD_fingertech
 
             if (result)
             {
-                // Set User
-                UserViewModel user = new UserViewModel();
-                user.setId((int)userID);
+                // Set UserID
+                UserModel.User user = new UserModel.User();
+                user.id = (int)userID;
 
                 // Open UserInformationView
-                Application.Run(new UserInformationView());
+                UserInformationView userInformationView = new UserInformationView();
+                userInformationView.ShowDialog();
+                MessageBox.Show("Name:" + user);
 
                 // Register in to database
 
