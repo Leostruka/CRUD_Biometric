@@ -12,6 +12,7 @@ namespace CRUD_fingertech
 
         NBioAPI.Type.HFIR hActivatedFIR;
         UserModel.User user;
+        FIRModel.FIR fir;
 
         public FingerTech()
         {
@@ -21,6 +22,7 @@ namespace CRUD_fingertech
             m_NBioAPI = new NBioAPI();
             m_IndexSearch = new NBioAPI.IndexSearch(m_NBioAPI);
             user = new UserModel.User();
+            fir = new FIRModel.FIR();
 
             // Start IndexSearch
             uint ret = m_IndexSearch.InitEngine();
@@ -133,6 +135,7 @@ namespace CRUD_fingertech
             {
                 // Set UserID
                 user.id = (int)userID;
+                fir.id = (int)userID;
 
                 // Open UserInformationView
                 UserInformationView userInformationView = new UserInformationView();

@@ -23,14 +23,31 @@ namespace CRUD_User.DataAccess
             con.CloseConnection();
         }
 
-        // Method to insert data into the database
-        public DataTable InsertData(UserModel.User user, FIRModel.FIR fir)
+        // Method to insert data into the fir database
+        public DataTable InsertDataFir(FIRModel.FIR fir)
         {
             Connection con = new Connection();
             con.OpenConnection();
-            sql = new MySqlCommand("INSERT INTO fir (id, hash, sample) values(@name, @hash, @sample)", con.con);
-            sql.Parameters.AddWithValue("@name", fir.id);
+            sql = new MySqlCommand("INSERT INTO fir (id, hash, sample) values(@id, @hash, @sample)", con.con);
+            sql.Parameters.AddWithValue("@id", fir.id);
             sql.Parameters.AddWithValue("@hash", fir.hash);
+            sql.Parameters.AddWithValue("@sample", fir.sample);
+
+            MySqlDataAdapter da = new MySqlDataAdapter(sql);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            con.CloseConnection();
+            return dt;
+        }
+
+        // Method to insert data into the user database
+        public DataTable InsertDataUser(UserModel.User user)
+        {
+            Connection con = new Connection();
+            con.OpenConnection();
+            sql = new MySqlCommand("INSERT INTO user (id, name) values(@id, @name)", con.con);
+            sql.Parameters.AddWithValue("@id", user.id);
+            sql.Parameters.AddWithValue("@name", user.name);
 
             MySqlDataAdapter da = new MySqlDataAdapter(sql);
             DataTable dt = new DataTable();
