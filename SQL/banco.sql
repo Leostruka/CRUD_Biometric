@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `fir` (
   `id` int NOT NULL,
   `hash` text NOT NULL,
   `sample` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`,`sample`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Exportação de dados foi desmarcado.

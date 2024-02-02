@@ -15,8 +15,6 @@ namespace CRUD_User.Model
             public int id { get; set; }
             [Required]
             public string name { get; set; }
-            [Required]
-            public int fp_id { get; set; }
         }
     }
 }
