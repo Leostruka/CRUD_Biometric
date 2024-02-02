@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace CRUD_User.Model
 {
-    internal class FIRModel
+    public class FIRModel
     {
+        public class FIR
+        {
+            public int id { get; set; }
+            public string hask { get; set; }
+            public int sample { get; set; }
+        }
     }
 }

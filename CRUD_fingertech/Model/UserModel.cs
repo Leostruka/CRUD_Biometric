@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CRUD_User.Model
 {
-    internal class UserModel
+    public class UserModel
     {
         public class User
         {
