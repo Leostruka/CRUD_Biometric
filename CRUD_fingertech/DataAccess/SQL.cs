@@ -57,7 +57,7 @@ namespace CRUD_User.DataAccess
         }
 
         // Method to return fir's
-        public DataTable SelectDataFir()
+        public DataTable GetDataFir()
         {
             Connection con = new Connection();
             con.OpenConnection();

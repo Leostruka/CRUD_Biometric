@@ -2,6 +2,7 @@ using CRUD_User.Model;
 using CRUD_User.View;
 using CRUD_User.DataAccess;
 using NITGEN.SDK.NBioBSP;
+using System.Data;
 
 
 namespace CRUD_fingertech
@@ -9,6 +10,7 @@ namespace CRUD_fingertech
     public partial class FingerTech : Form
     {
         NBioAPI m_NBioAPI;
+        NBioAPI.IndexSearch m_IndexSearch;
 
         NBioAPI.Type.HFIR hActivatedFIR;
         UserModel.User user;
@@ -19,9 +21,11 @@ namespace CRUD_fingertech
         public FingerTech()
         {
             InitializeComponent();
+                       
 
             // Initialize NBioAPI
             m_NBioAPI = new NBioAPI();
+            m_IndexSearch = new NBioAPI.IndexSearch(m_NBioAPI);
             user = new UserModel.User();
             fir = new FIRModel.FIR();
 
@@ -34,6 +38,20 @@ namespace CRUD_fingertech
 
             // Set SQL
             sql = new SQL();
+            DataTable dt_fir = sql.GetDataFir();
+
+            // Set IndexSearchDB to empty
+            m_IndexSearch.ClearDB();
+
+            // Add FIR to IndexSearchDB if exists
+            if (dt_fir.Rows.Count > 0)
+            {
+                NBioAPI.IndexSearch.FP_INFO[] fpinfo;
+                for (int i = 0; i < dt_fir.Rows.Count; i++)
+                {
+                    m_IndexSearch.AddFIR((NBioAPI.Type.HFIR)dt_fir.Rows[i]["hash"], (uint)dt_fir.Rows[i]["id"], out fpinfo);
+                }
+            }
         }
 
 
@@ -154,8 +172,11 @@ namespace CRUD_fingertech
                 sql.InsertDataFir(fir); // Register FIR2
 
                 // Register UserFIR to IndexSearchDB
+                NBioAPI.IndexSearch.FP_INFO[] fpinfo;
+                m_IndexSearch.AddFIR(hActivatedFIR, userID, out fpinfo);
+                m_IndexSearch.AddFIR(hCapturedFIR, userID, out fpinfo);
 
-                MessageBox.Show("User ID: " + userID.ToString() + " registered!" + "\nName: " + user.name, "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("User ID: " + userID.ToString() + "\nName: " + user.name + "\nregistered!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 tb_userID.Text = (userID + 1).ToString();
             }
             else
