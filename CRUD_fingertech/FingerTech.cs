@@ -47,9 +47,16 @@ namespace CRUD_fingertech
             if (dt_fir.Rows.Count > 0)
             {
                 NBioAPI.IndexSearch.FP_INFO[] fpinfo;
+                uint ret;
+
                 for (int i = 0; i < dt_fir.Rows.Count; i++)
                 {
-                    m_IndexSearch.AddFIR((NBioAPI.Type.HFIR)dt_fir.Rows[i]["hash"], (uint)dt_fir.Rows[i]["id"], out fpinfo);
+                    ret = m_IndexSearch.AddFIR((NBioAPI.Type.HFIR)dt_fir.Rows[i]["hash"], (uint)dt_fir.Rows[i]["id"], out fpinfo);
+                    if (ret != NBioAPI.Error.NONE)
+                    {
+                        ErrorMsg(ret);
+                        this.Close();
+                    }
                 }
             }
         }
@@ -173,8 +180,18 @@ namespace CRUD_fingertech
 
                 // Register UserFIR to IndexSearchDB
                 NBioAPI.IndexSearch.FP_INFO[] fpinfo;
-                m_IndexSearch.AddFIR(hActivatedFIR, userID, out fpinfo);
-                m_IndexSearch.AddFIR(hCapturedFIR, userID, out fpinfo);
+                ret = m_IndexSearch.AddFIR(hActivatedFIR, userID, out fpinfo);
+                if(ret != NBioAPI.Error.NONE)
+                {
+                    ErrorMsg(ret);
+                    return;
+                }
+                ret = m_IndexSearch.AddFIR(hCapturedFIR, userID, out fpinfo);
+                if(ret != NBioAPI.Error.NONE)
+                {
+                    ErrorMsg(ret);
+                    return;
+                }
 
                 MessageBox.Show("User ID: " + userID.ToString() + "\nName: " + user.name + "\nregistered!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 tb_userID.Text = (userID + 1).ToString();
