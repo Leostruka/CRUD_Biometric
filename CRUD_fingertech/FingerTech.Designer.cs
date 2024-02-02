@@ -41,6 +41,7 @@ namespace CRUD_fingertech
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FingerTech));
             tx_actual = new Label();
             bt_capture = new Button();
             tb_ActivatedCapture = new TextBox();
@@ -53,79 +54,53 @@ namespace CRUD_fingertech
             // 
             // tx_actual
             // 
-            tx_actual.AutoSize = true;
+            resources.ApplyResources(tx_actual, "tx_actual");
             tx_actual.BackColor = Color.Transparent;
-            tx_actual.Font = new Font("Nirmala UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            tx_actual.Location = new Point(32, 18);
             tx_actual.Name = "tx_actual";
-            tx_actual.Size = new Size(82, 17);
-            tx_actual.TabIndex = 0;
-            tx_actual.Text = "ActivatedFir";
             // 
             // bt_capture
             // 
-            bt_capture.Location = new Point(32, 184);
-            bt_capture.Margin = new Padding(23, 3, 3, 3);
+            resources.ApplyResources(bt_capture, "bt_capture");
             bt_capture.Name = "bt_capture";
-            bt_capture.Size = new Size(75, 23);
-            bt_capture.TabIndex = 1;
-            bt_capture.Text = "Capture";
             bt_capture.UseVisualStyleBackColor = true;
             bt_capture.Click += bt_capture_Click;
             // 
             // tb_ActivatedCapture
             // 
+            resources.ApplyResources(tb_ActivatedCapture, "tb_ActivatedCapture");
             tb_ActivatedCapture.BackColor = SystemColors.HighlightText;
-            tb_ActivatedCapture.Location = new Point(21, 27);
-            tb_ActivatedCapture.Multiline = true;
             tb_ActivatedCapture.Name = "tb_ActivatedCapture";
             tb_ActivatedCapture.ReadOnly = true;
-            tb_ActivatedCapture.Size = new Size(352, 151);
-            tb_ActivatedCapture.TabIndex = 4;
             // 
             // bt_register
             // 
-            bt_register.Location = new Point(278, 184);
+            resources.ApplyResources(bt_register, "bt_register");
             bt_register.Name = "bt_register";
-            bt_register.Size = new Size(75, 23);
-            bt_register.TabIndex = 5;
-            bt_register.Text = "Register";
             bt_register.UseVisualStyleBackColor = true;
             bt_register.Click += bt_register_Click;
             // 
             // tb_userID
             // 
-            tb_userID.Location = new Point(190, 184);
+            resources.ApplyResources(tb_userID, "tb_userID");
             tb_userID.Name = "tb_userID";
-            tb_userID.Size = new Size(82, 23);
-            tb_userID.TabIndex = 6;
-            tb_userID.TextAlign = HorizontalAlignment.Right;
             // 
             // tx_ID
             // 
-            tx_ID.AutoSize = true;
+            resources.ApplyResources(tx_ID, "tx_ID");
             tx_ID.BackColor = Color.Transparent;
             tx_ID.BorderStyle = BorderStyle.FixedSingle;
-            tx_ID.Font = new Font("Nirmala UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            tx_ID.Location = new Point(190, 184);
             tx_ID.Name = "tx_ID";
-            tx_ID.Size = new Size(55, 22);
-            tx_ID.TabIndex = 7;
-            tx_ID.Text = "UserID";
             // 
             // dg_users
             // 
+            resources.ApplyResources(dg_users, "dg_users");
             dg_users.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dg_users.Location = new Point(475, 18);
             dg_users.Name = "dg_users";
-            dg_users.Size = new Size(313, 407);
-            dg_users.TabIndex = 11;
             // 
             // FingerTech
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            resources.ApplyResources(this, "$this");
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
             Controls.Add(dg_users);
             Controls.Add(tx_ID);
             Controls.Add(tb_userID);
@@ -133,8 +108,10 @@ namespace CRUD_fingertech
             Controls.Add(tx_actual);
             Controls.Add(tb_ActivatedCapture);
             Controls.Add(bt_capture);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             Name = "FingerTech";
-            Text = "FingerTech";
+            ShowIcon = false;
             ((System.ComponentModel.ISupportInitialize)dg_users).EndInit();
             ResumeLayout(false);
             PerformLayout();

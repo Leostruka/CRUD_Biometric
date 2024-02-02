@@ -74,7 +74,10 @@
             Controls.Add(tx_name);
             Controls.Add(tb_name);
             FormBorderStyle = FormBorderStyle.None;
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "UserInformationView";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "User Information";
             ResumeLayout(false);
             PerformLayout();
