@@ -40,9 +40,6 @@ namespace CRUD_fingertech
             sql = new SQL();
             DataTable dt_fir = sql.GetDataFir();
 
-            // Set IndexSearchDB to empty
-            m_IndexSearch.ClearDB();
-
             // Add FIR to IndexSearchDB if exists
             if (dt_fir.Rows.Count > 0)
             {
