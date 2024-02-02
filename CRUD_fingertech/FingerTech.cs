@@ -1,5 +1,6 @@
 using CRUD_User.Model;
 using CRUD_User.View;
+using CRUD_User.DataAccess;
 using NITGEN.SDK.NBioBSP;
 
 
@@ -13,6 +14,8 @@ namespace CRUD_fingertech
         NBioAPI.Type.HFIR hActivatedFIR;
         UserModel.User user;
         FIRModel.FIR fir;
+
+        SQL sql;
 
         public FingerTech()
         {
@@ -38,6 +41,9 @@ namespace CRUD_fingertech
             // Clear displays
             tb_ActivatedCapture.Text = string.Empty;
             dg_users.Rows.Clear();
+
+            // Set SQL
+            sql = new SQL();
         }
 
 
@@ -133,9 +139,8 @@ namespace CRUD_fingertech
 
             if (result)
             {
-                // Set UserID
+                // Set UserID and FIRID
                 user.id = (int)userID;
-                fir.id = (int)userID;
 
                 // Open UserInformationView
                 UserInformationView userInformationView = new UserInformationView();
@@ -143,10 +148,19 @@ namespace CRUD_fingertech
 
                 // Get user information
                 user.name = userInformationView.GetName();
-                MessageBox.Show("Name:" + user.name);
 
-                // Register in to database
+                // Register user in to database
+                sql.InsertDataUser(user);
 
+                // Set Fir hash and sample
+                fir.id = (int)userID;
+                fir.hash = textFIR.TextFIR;
+                fir.sample = 1;
+
+                // Register sample in to database
+                sql.InsertDataFir(fir); // Register FIR 
+                fir.sample = 2;
+                sql.InsertDataFir(fir); // Register FIR2
 
                 // Register FIR to IndexSearchDB
 
