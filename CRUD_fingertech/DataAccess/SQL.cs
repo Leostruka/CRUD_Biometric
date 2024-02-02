@@ -56,6 +56,17 @@ namespace CRUD_User.DataAccess
             return dt;
         }
 
-        // Method to execute SQL commands and return a value
+        // Method to return fir's
+        public DataTable SelectDataFir()
+        {
+            Connection con = new Connection();
+            con.OpenConnection();
+            sql = new MySqlCommand("SELECT * FROM fir", con.con);
+            MySqlDataAdapter da = new MySqlDataAdapter(sql);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            con.CloseConnection();
+            return dt;
+        }
     }
 }
