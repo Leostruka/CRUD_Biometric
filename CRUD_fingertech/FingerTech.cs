@@ -9,7 +9,6 @@ namespace CRUD_fingertech
     public partial class FingerTech : Form
     {
         NBioAPI m_NBioAPI;
-        NBioAPI.IndexSearch m_IndexSearch;
 
         NBioAPI.Type.HFIR hActivatedFIR;
         UserModel.User user;
@@ -23,17 +22,8 @@ namespace CRUD_fingertech
 
             // Initialize NBioAPI
             m_NBioAPI = new NBioAPI();
-            m_IndexSearch = new NBioAPI.IndexSearch(m_NBioAPI);
             user = new UserModel.User();
             fir = new FIRModel.FIR();
-
-            // Start IndexSearch
-            uint ret = m_IndexSearch.InitEngine();
-            if (ret != NBioAPI.Error.NONE)
-            {
-                ErrorMsg(ret);
-                return;
-            }
 
             // Set default first user ID
             tb_userID.Text = "1";
@@ -163,9 +153,9 @@ namespace CRUD_fingertech
                 fir.sample = 2;
                 sql.InsertDataFir(fir); // Register FIR2
 
-                // Register FIR to IndexSearchDB
+                // Register UserFIR to IndexSearchDB
 
-                MessageBox.Show("User ID: " + userID.ToString() + " registered!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("User ID: " + userID.ToString() + " registered!" + "\nName: " + user.name, "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 tb_userID.Text = (userID + 1).ToString();
             }
             else
