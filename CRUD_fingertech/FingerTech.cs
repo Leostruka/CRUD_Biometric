@@ -135,6 +135,9 @@ namespace CRUD_fingertech
                 // Open UserInformationView
                 UserInformationView userInformationView = new UserInformationView();
                 userInformationView.ShowDialog();
+
+                // Get user information
+                user.name = userInformationView.GetName();
                 MessageBox.Show("Name:" + user);
 
                 // Register in to database

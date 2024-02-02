@@ -21,12 +21,17 @@ namespace CRUD_User.View
             tb_name.Clear();
         }
 
-        private void bt_confirmName_Click(object sender, EventArgs e, FingerTech user)
+        public string GetName()
+        {
+            return tb_name.Text;
+        }
+
+        private void bt_confirmName_Click(object sender, EventArgs e)
         {
             if (tb_name.Text != "")
             {
                 // Set user.name to tb_name
-                
+
 
                 // Close form
                 this.Close();
