@@ -11,7 +11,7 @@ namespace CRUD_User.Model
         public class FIR
         {
             public int id { get; set; }
-            public string hask { get; set; }
+            public string hash { get; set; }
             public int sample { get; set; }
         }
     }

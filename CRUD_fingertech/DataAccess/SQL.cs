@@ -24,18 +24,19 @@ namespace CRUD_User.DataAccess
         }
 
         // Method to insert data into the database
-        public DataTable InsertData(UserModel.User user)
+        public DataTable InsertData(UserModel.User user, FIRModel.FIR fir)
         {
-                Connection con = new Connection();
-                con.OpenConnection();
-                sql = new MySqlCommand("INSERT INTO employee (name) values(@name)", con.con);
-                sql.Parameters.AddWithValue("@name", user.name);
+            Connection con = new Connection();
+            con.OpenConnection();
+            sql = new MySqlCommand("INSERT INTO fir (id, hash, sample) values(@name, @hash, @sample)", con.con);
+            sql.Parameters.AddWithValue("@name", fir.id);
+            sql.Parameters.AddWithValue("@hash", fir.hash);
 
-                MySqlDataAdapter da = new MySqlDataAdapter(sql);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-                con.CloseConnection();
-                return dt;
+            MySqlDataAdapter da = new MySqlDataAdapter(sql);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            con.CloseConnection();
+            return dt;
         }
 
         // Method to execute SQL commands and return a value
