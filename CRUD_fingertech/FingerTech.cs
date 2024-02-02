@@ -159,6 +159,7 @@ namespace CRUD_fingertech
 
                 // Register sample in to database
                 sql.InsertDataFir(fir); // Register FIR 
+                fir.hash = textFIR2.TextFIR;
                 fir.sample = 2;
                 sql.InsertDataFir(fir); // Register FIR2
 
