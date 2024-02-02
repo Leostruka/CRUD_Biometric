@@ -47,7 +47,8 @@ namespace CRUD_fingertech
             bt_register = new Button();
             tb_userID = new TextBox();
             tx_ID = new Label();
-            lv_users = new ListView();
+            dg_users = new DataGridView();
+            ((System.ComponentModel.ISupportInitialize)dg_users).BeginInit();
             SuspendLayout();
             // 
             // tx_actual
@@ -112,20 +113,20 @@ namespace CRUD_fingertech
             tx_ID.TabIndex = 7;
             tx_ID.Text = "UserID";
             // 
-            // lv_users
+            // dg_users
             // 
-            lv_users.Location = new Point(475, 18);
-            lv_users.Name = "lv_users";
-            lv_users.Size = new Size(313, 407);
-            lv_users.TabIndex = 8;
-            lv_users.UseCompatibleStateImageBehavior = false;
+            dg_users.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dg_users.Location = new Point(475, 18);
+            dg_users.Name = "dg_users";
+            dg_users.Size = new Size(313, 407);
+            dg_users.TabIndex = 11;
             // 
             // FingerTech
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(lv_users);
+            Controls.Add(dg_users);
             Controls.Add(tx_ID);
             Controls.Add(tb_userID);
             Controls.Add(bt_register);
@@ -134,6 +135,7 @@ namespace CRUD_fingertech
             Controls.Add(bt_capture);
             Name = "FingerTech";
             Text = "FingerTech";
+            ((System.ComponentModel.ISupportInitialize)dg_users).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -145,6 +147,6 @@ namespace CRUD_fingertech
         private Button bt_register;
         private TextBox tb_userID;
         private Label tx_ID;
-        private ListView lv_users;
+        private DataGridView dg_users;
     }
 }

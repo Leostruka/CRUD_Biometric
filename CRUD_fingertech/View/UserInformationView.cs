@@ -13,6 +13,8 @@ namespace CRUD_User.View
 {
     public partial class UserInformationView : Form
     {
+        string name = "";
+
         public UserInformationView()
         {
             InitializeComponent();
@@ -30,9 +32,6 @@ namespace CRUD_User.View
         {
             if (tb_name.Text != "")
             {
-                // Set user.name to tb_name
-
-
                 // Close form
                 this.Close();
             }

@@ -35,8 +35,10 @@ namespace CRUD_fingertech
 
             // Clear displays
             tb_ActivatedCapture.Text = string.Empty;
-            lv_users.Items.Clear();
+            dg_users.Rows.Clear();
         }
+
+
 
         // Error message
         private void ErrorMsg(uint ret)
@@ -138,7 +140,7 @@ namespace CRUD_fingertech
 
                 // Get user information
                 user.name = userInformationView.GetName();
-                MessageBox.Show("Name:" + user);
+                MessageBox.Show("Name:" + user.name);
 
                 // Register in to database
 
@@ -146,6 +148,7 @@ namespace CRUD_fingertech
                 // Register FIR to IndexSearchDB
 
                 MessageBox.Show("User ID: " + userID.ToString() + " registered!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                tb_userID.Text = (userID + 1).ToString();
             }
             else
             {
