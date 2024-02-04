@@ -31,6 +31,7 @@
             tb_name = new TextBox();
             tx_name = new Label();
             bt_confirmName = new Button();
+            X = new Button();
             SuspendLayout();
             // 
             // tb_name
@@ -56,13 +57,27 @@
             // 
             // bt_confirmName
             // 
-            bt_confirmName.Location = new Point(145, 108);
+            bt_confirmName.BackColor = SystemColors.ActiveCaption;
+            bt_confirmName.Cursor = Cursors.Hand;
+            bt_confirmName.Location = new Point(270, 124);
             bt_confirmName.Name = "bt_confirmName";
             bt_confirmName.Size = new Size(75, 23);
             bt_confirmName.TabIndex = 2;
             bt_confirmName.Text = "Confirm";
-            bt_confirmName.UseVisualStyleBackColor = true;
+            bt_confirmName.UseVisualStyleBackColor = false;
             bt_confirmName.Click += bt_confirmName_Click;
+            // 
+            // X
+            // 
+            X.BackColor = SystemColors.Control;
+            X.Cursor = Cursors.Hand;
+            X.Location = new Point(189, 124);
+            X.Name = "X";
+            X.Size = new Size(75, 23);
+            X.TabIndex = 3;
+            X.Text = "Cancelar";
+            X.UseVisualStyleBackColor = false;
+            X.Click += X_Click;
             // 
             // UserInformationView
             // 
@@ -70,6 +85,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
             ClientSize = new Size(357, 159);
+            Controls.Add(X);
             Controls.Add(bt_confirmName);
             Controls.Add(tx_name);
             Controls.Add(tb_name);
@@ -88,5 +104,6 @@
         private TextBox tb_name;
         private Label tx_name;
         private Button bt_confirmName;
+        private Button X;
     }
 }

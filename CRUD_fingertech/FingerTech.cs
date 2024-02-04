@@ -183,7 +183,11 @@ namespace CRUD_fingertech
                 {
                     userInformationView.SetName("");
                     userInformationView.ShowDialog();
-                    if (!IsValidName(userInformationView.GetName()))
+                    if (userInformationView.GetName() == "Cancel")
+                    {
+                        return;
+                    }
+                    else if (!IsValidName(userInformationView.GetName()))
                     {
                         MessageBox.Show("Please enter a valid name.", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }

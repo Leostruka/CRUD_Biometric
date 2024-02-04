@@ -21,6 +21,10 @@ namespace CRUD_User.View
 
             // Clear tb_name
             tb_name.Clear();
+            tb_name.Focus();
+
+            // Attach event handler to handle Enter key press on tb_name
+            tb_name.KeyDown += Tb_name_KeyDown;
         }
 
         public string GetName()
@@ -43,7 +47,22 @@ namespace CRUD_User.View
             else
             {
                 MessageBox.Show("Please enter a name.", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                tb_name.Focus();
             }
+        }
+
+        private void Tb_name_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                bt_confirmName_Click(sender, e);
+            }
+        }
+
+        private void X_Click(object sender, EventArgs e)
+        {
+            tb_name.Text = "Cancel";
+            this.Close();
         }
     }
 }
