@@ -26,6 +26,15 @@ namespace CRUD_fingertech
             // Initialize NBioAPI
             m_NBioAPI = new NBioAPI();
             m_IndexSearch = new NBioAPI.IndexSearch(m_NBioAPI);
+            uint ret = m_IndexSearch.InitEngine();
+            if (ret != NBioAPI.Error.NONE)
+            {
+                ErrorMsg(ret);
+                this.Close();
+            }
+            NBioAPI.Type.VERSION version = new NBioAPI.Type.VERSION();
+            m_NBioAPI.GetVersion(out version);
+
             user = new UserModel.User();
             fir = new FIRModel.FIR();
 
@@ -41,11 +50,12 @@ namespace CRUD_fingertech
             if (dt_fir.Rows.Count > 0)
             {
                 NBioAPI.IndexSearch.FP_INFO[] fpinfo;
-                uint ret;
-
                 for (int i = 0; i < dt_fir.Rows.Count; i++)
                 {
-                    ret = m_IndexSearch.AddFIR((NBioAPI.Type.HFIR)dt_fir.Rows[i]["hash"], (uint)dt_fir.Rows[i]["id"], out fpinfo);
+                    NBioAPI.Type.FIR_TEXTENCODE textFIR = new NBioAPI.Type.FIR_TEXTENCODE();
+                    textFIR.TextFIR = dt_fir.Rows[i]["hash"].ToString();
+                    uint Uid = (Convert.ToUInt32(dt_fir.Rows[i]["id"]) * 10 ) + Convert.ToUInt32(dt_fir.Rows[i]["sample"]);
+                    ret = m_IndexSearch.AddFIR(textFIR, Uid, out fpinfo);
                     if (ret != NBioAPI.Error.NONE)
                     {
                         ErrorMsg(ret);
