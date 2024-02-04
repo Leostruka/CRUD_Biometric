@@ -66,6 +66,29 @@ namespace CRUD_fingertech
             MessageBox.Show("Error: " + ret.ToString() + "\n" + NBioAPI.Error.GetErrorDescription(ret), "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
+        private bool IsValidName(string name)
+        {
+            // Check if the name is empty
+            if (string.IsNullOrEmpty(name))
+            {
+                return false;
+            }
+
+            // Check if the name contains any numbers
+            if (name.Any(char.IsDigit))
+            {
+                return false;
+            }
+
+            // Check if the name contains any special characters
+            if (name.Any(c => !char.IsLetter(c) && !char.IsWhiteSpace(c)))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         // Update ActivateCapture
         private void AttActivateCapture(NBioAPI.Type.HFIR hFIR)
         {
@@ -156,7 +179,15 @@ namespace CRUD_fingertech
 
                 // Open UserInformationView
                 UserInformationView userInformationView = new UserInformationView();
-                userInformationView.ShowDialog();
+                while (!IsValidName(userInformationView.GetName()))
+                {
+                    userInformationView.SetName("");
+                    userInformationView.ShowDialog();
+                    if (!IsValidName(userInformationView.GetName()))
+                    {
+                        MessageBox.Show("Please enter a valid name.", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
 
                 // Get user information
                 user.name = userInformationView.GetName();

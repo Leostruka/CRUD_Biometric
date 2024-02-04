@@ -28,6 +28,11 @@ namespace CRUD_User.View
             return tb_name.Text;
         }
 
+        public void SetName(string name)
+        {
+            tb_name.Text = name;
+        }
+
         private void bt_confirmName_Click(object sender, EventArgs e)
         {
             if (tb_name.Text != "")
