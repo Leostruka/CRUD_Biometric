@@ -117,207 +117,207 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="dg_users.Location" type="System.Drawing.Point, System.Drawing">
-    <value>475, 18</value>
+  <data name="&gt;&gt;bt_register.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="tx_ID.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;tb_ActivatedCapture.ZOrder" xml:space="preserve">
+  <data name="bt_register.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="bt_register.Text" xml:space="preserve">
-    <value>Register</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>800, 450</value>
   </data>
-  <data name="tx_ID.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Nirmala UI, 11.25pt</value>
+  <data name="tb_userID.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;dg_users.Name" xml:space="preserve">
+    <value>dg_users</value>
+  </data>
+  <data name="&gt;&gt;tb_userID.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>FingerTech</value>
   </data>
-  <data name="&gt;&gt;dg_users.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="&gt;&gt;tb_ActivatedCapture.Name" xml:space="preserve">
+    <value>tb_ActivatedCapture</value>
   </data>
-  <data name="&gt;&gt;bt_register.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;tx_ID.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="bt_capture.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="tb_userID.Location" type="System.Drawing.Point, System.Drawing">
-    <value>190, 184</value>
+  <data name="&gt;&gt;bt_capture.Name" xml:space="preserve">
+    <value>bt_capture</value>
   </data>
   <data name="tb_ActivatedCapture.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;dg_users.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="tx_actual.Location" type="System.Drawing.Point, System.Drawing">
+    <value>32, 18</value>
   </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="dg_users.Location" type="System.Drawing.Point, System.Drawing">
+    <value>475, 18</value>
+  </data>
+  <data name="bt_capture.Text" xml:space="preserve">
+    <value>Capture</value>
+  </data>
+  <data name="&gt;&gt;tx_ID.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;bt_capture.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterScreen</value>
   </data>
-  <data name="tx_actual.Text" xml:space="preserve">
-    <value>ActivatedFir</value>
+  <data name="tx_ID.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="tx_actual.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 17</value>
-  </data>
-  <data name="&gt;&gt;tb_userID.Name" xml:space="preserve">
-    <value>tb_userID</value>
-  </data>
-  <data name="&gt;&gt;tb_userID.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="tb_userID.Size" type="System.Drawing.Size, System.Drawing">
+    <value>82, 23</value>
   </data>
   <data name="tx_ID.Location" type="System.Drawing.Point, System.Drawing">
     <value>190, 184</value>
   </data>
-  <data name="bt_register.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
+  <data name="dg_users.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
   </data>
   <data name="&gt;&gt;tb_ActivatedCapture.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>800, 450</value>
+  <data name="&gt;&gt;dg_users.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <data name="&gt;&gt;tx_ID.Parent" xml:space="preserve">
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="tb_ActivatedCapture.Location" type="System.Drawing.Point, System.Drawing">
+    <value>21, 27</value>
+  </data>
+  <data name="bt_capture.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;tx_ID.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="tx_actual.Text" xml:space="preserve">
+    <value>ActivatedFir</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>FingerTech</value>
+  </data>
+  <data name="&gt;&gt;tx_actual.Parent" xml:space="preserve">
     <value>$this</value>
+  </data>
+  <data name="tb_userID.Location" type="System.Drawing.Point, System.Drawing">
+    <value>190, 184</value>
+  </data>
+  <data name="&gt;&gt;tb_userID.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>7, 15</value>
+  </data>
+  <data name="tb_ActivatedCapture.Size" type="System.Drawing.Size, System.Drawing">
+    <value>352, 151</value>
+  </data>
+  <data name="&gt;&gt;tb_ActivatedCapture.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="dg_users.Size" type="System.Drawing.Size, System.Drawing">
     <value>313, 407</value>
   </data>
+  <data name="bt_register.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="tx_actual.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Nirmala UI, 9.75pt, style=Bold</value>
+  </data>
+  <data name="&gt;&gt;dg_users.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="bt_register.Location" type="System.Drawing.Point, System.Drawing">
     <value>278, 184</value>
   </data>
-  <data name="tx_actual.Location" type="System.Drawing.Point, System.Drawing">
-    <value>32, 18</value>
+  <data name="&gt;&gt;tx_ID.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
-  <data name="&gt;&gt;tx_ID.Name" xml:space="preserve">
-    <value>tx_ID</value>
+  <data name="tb_ActivatedCapture.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
   </data>
-  <data name="&gt;&gt;tx_actual.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="bt_register.Text" xml:space="preserve">
+    <value>Register</value>
   </data>
-  <data name="tx_ID.Text" xml:space="preserve">
-    <value>UserID</value>
-  </data>
-  <data name="tx_actual.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;bt_capture.ZOrder" xml:space="preserve">
-    <value>6</value>
+  <data name="&gt;&gt;tx_actual.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="bt_capture.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>23, 3, 3, 3</value>
   </data>
-  <data name="tb_userID.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 23</value>
+  <data name="&gt;&gt;tx_ID.Name" xml:space="preserve">
+    <value>tx_ID</value>
   </data>
-  <data name="&gt;&gt;tb_ActivatedCapture.Name" xml:space="preserve">
-    <value>tb_ActivatedCapture</value>
+  <data name="tx_actual.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="tx_actual.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Nirmala UI, 9.75pt, style=Bold</value>
+  <data name="&gt;&gt;tb_userID.Name" xml:space="preserve">
+    <value>tb_userID</value>
   </data>
-  <data name="tb_userID.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
-    <value>Right</value>
-  </data>
-  <data name="&gt;&gt;tx_ID.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="tx_ID.Size" type="System.Drawing.Size, System.Drawing">
-    <value>55, 22</value>
-  </data>
-  <data name="bt_capture.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="bt_capture.Location" type="System.Drawing.Point, System.Drawing">
-    <value>32, 184</value>
-  </data>
-  <data name="&gt;&gt;bt_register.Name" xml:space="preserve">
-    <value>bt_register</value>
-  </data>
-  <data name="&gt;&gt;tx_actual.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>7, 15</value>
-  </data>
-  <data name="&gt;&gt;bt_capture.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;tb_userID.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>FingerTech</value>
-  </data>
-  <data name="&gt;&gt;bt_capture.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tx_actual.Name" xml:space="preserve">
-    <value>tx_actual</value>
-  </data>
-  <data name="bt_capture.Text" xml:space="preserve">
-    <value>Capture</value>
-  </data>
-  <data name="dg_users.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="&gt;&gt;tb_ActivatedCapture.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="tb_userID.TabIndex" type="System.Int32, mscorlib">
+  <data name="&gt;&gt;bt_capture.ZOrder" xml:space="preserve">
     <value>6</value>
-  </data>
-  <data name="tb_ActivatedCapture.Location" type="System.Drawing.Point, System.Drawing">
-    <value>21, 27</value>
-  </data>
-  <data name="bt_register.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;dg_users.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="tb_ActivatedCapture.Size" type="System.Drawing.Size, System.Drawing">
-    <value>352, 151</value>
-  </data>
-  <data name="tb_ActivatedCapture.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;tb_userID.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;bt_register.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;bt_capture.Name" xml:space="preserve">
-    <value>bt_capture</value>
-  </data>
-  <data name="&gt;&gt;bt_register.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="tx_actual.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
+  <data name="bt_capture.Location" type="System.Drawing.Point, System.Drawing">
+    <value>32, 184</value>
+  </data>
+  <data name="bt_capture.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="&gt;&gt;bt_register.Name" xml:space="preserve">
+    <value>bt_register</value>
+  </data>
+  <data name="&gt;&gt;dg_users.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="tx_ID.Size" type="System.Drawing.Size, System.Drawing">
+    <value>55, 22</value>
+  </data>
+  <data name="&gt;&gt;bt_capture.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="tx_ID.Text" xml:space="preserve">
+    <value>UserID</value>
+  </data>
   <data name="tx_ID.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="&gt;&gt;dg_users.Name" xml:space="preserve">
-    <value>dg_users</value>
+  <data name="tx_ID.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Nirmala UI, 11.25pt</value>
   </data>
-  <data name="&gt;&gt;tx_actual.Parent" xml:space="preserve">
+  <data name="&gt;&gt;tb_ActivatedCapture.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;tb_userID.Parent" xml:space="preserve">
     <value>$this</value>
+  </data>
+  <data name="tb_userID.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;tx_actual.Name" xml:space="preserve">
+    <value>tx_actual</value>
+  </data>
+  <data name="&gt;&gt;bt_register.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;bt_register.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tx_actual.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="tx_actual.Size" type="System.Drawing.Size, System.Drawing">
+    <value>82, 17</value>
   </data>
   <metadata name="$this.Language" type="System.Globalization.CultureInfo, System.Private.CoreLib, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">
     <value>en-US-POSIX</value>

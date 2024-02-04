@@ -29,9 +29,6 @@ namespace CRUD_fingertech
             user = new UserModel.User();
             fir = new FIRModel.FIR();
 
-            // Set default first user ID
-            tb_userID.Text = "1";
-
             // Clear displays
             tb_ActivatedCapture.Text = string.Empty;
             dg_users.Rows.Clear();
@@ -56,6 +53,20 @@ namespace CRUD_fingertech
                     }
                 }
             }
+
+            // Set UserID
+            int maxId = 0;
+            foreach (DataRow row in dt_fir.Rows)
+            {
+                int id = Convert.ToInt32(row["id"]);
+                if (id > maxId)
+                {
+                    maxId = id;
+                }
+            }
+            int newId = maxId + 1;
+            tb_userID.Text = newId.ToString();
+
         }
 
 
