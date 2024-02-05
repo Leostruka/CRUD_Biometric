@@ -16,6 +16,8 @@ namespace CRUD_fingertech
         UserModel.User user;
         FIRModel.FIR fir;
 
+        uint Uid = 1;
+
         SQL sql;
 
         public FingerTech()
@@ -54,13 +56,13 @@ namespace CRUD_fingertech
                 {
                     NBioAPI.Type.FIR_TEXTENCODE textFIR = new NBioAPI.Type.FIR_TEXTENCODE();
                     textFIR.TextFIR = dt_fir.Rows[i]["hash"].ToString();
-                    uint Uid = (Convert.ToUInt32(dt_fir.Rows[i]["id"]) * 10 ) + Convert.ToUInt32(dt_fir.Rows[i]["sample"]);
                     ret = m_IndexSearch.AddFIR(textFIR, Uid, out fpinfo);
                     if (ret != NBioAPI.Error.NONE)
                     {
                         ErrorMsg(ret);
                         this.Close();
                     }
+                    Uid += 1;
                 }
             }
 
@@ -226,25 +228,25 @@ namespace CRUD_fingertech
                 fir.sample = 1;
                 sql.InsertDataFir(fir); // Register FIR
                 NBioAPI.IndexSearch.FP_INFO[] fpinfo;
-                uint Uid = (uint)((userID * 10) + Convert.ToInt32(fir.sample));
                 ret = m_IndexSearch.AddFIR(hActivatedFIR, Uid, out fpinfo); // Register FIR1 in IndexSearchDB
                 if(ret != NBioAPI.Error.NONE)
                 {
                     ErrorMsg(ret);
                     return;
                 }
+                Uid += 1;
 
                 // Set Fir hash and sample 2
                 fir.hash = textFIR2.TextFIR;
                 fir.sample += 1;
                 sql.InsertDataFir(fir); // Register FIR2
-                Uid += 1;
                 ret = m_IndexSearch.AddFIR(hCapturedFIR, Uid, out fpinfo); // Register FIR2 in IndexSearchDB
                 if(ret != NBioAPI.Error.NONE)
                 {
                     ErrorMsg(ret);
                     return;
                 }
+                Uid += 1;
 
                 MessageBox.Show("User ID: " + userID.ToString() + "\nName: " + user.name + "\nregistered!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 tb_userID.Text = (userID + 1).ToString();
