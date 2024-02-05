@@ -224,22 +224,22 @@ namespace CRUD_fingertech
                 fir.id = (int)userID;
                 fir.hash = textFIR.TextFIR;
                 fir.sample = 1;
-
-                // Register sample in to database
-                sql.InsertDataFir(fir); // Register FIR 
-                fir.hash = textFIR2.TextFIR;
-                fir.sample = 2;
-                sql.InsertDataFir(fir); // Register FIR2
-
-                // Register UserFIR to IndexSearchDB
+                sql.InsertDataFir(fir); // Register FIR
                 NBioAPI.IndexSearch.FP_INFO[] fpinfo;
-                ret = m_IndexSearch.AddFIR(hActivatedFIR, userID, out fpinfo);
+                uint Uid = (uint)((userID * 10) + Convert.ToInt32(fir.sample));
+                ret = m_IndexSearch.AddFIR(hActivatedFIR, Uid, out fpinfo); // Register FIR1 in IndexSearchDB
                 if(ret != NBioAPI.Error.NONE)
                 {
                     ErrorMsg(ret);
                     return;
                 }
-                ret = m_IndexSearch.AddFIR(hCapturedFIR, userID, out fpinfo);
+
+                // Set Fir hash and sample 2
+                fir.hash = textFIR2.TextFIR;
+                fir.sample += 1;
+                sql.InsertDataFir(fir); // Register FIR2
+                Uid += 1;
+                ret = m_IndexSearch.AddFIR(hCapturedFIR, Uid, out fpinfo); // Register FIR2 in IndexSearchDB
                 if(ret != NBioAPI.Error.NONE)
                 {
                     ErrorMsg(ret);
