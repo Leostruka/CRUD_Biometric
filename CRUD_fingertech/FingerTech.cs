@@ -16,7 +16,7 @@ namespace CRUD_fingertech
         UserModel.User user;
         FIRModel.FIR fir;
 
-        uint Uid = 1;
+        uint UFIRid = 1;
 
         SQL sql;
 
@@ -42,52 +42,15 @@ namespace CRUD_fingertech
 
             // Clear displays
             tb_ActivatedCapture.Text = string.Empty;
-            dg_users.Rows.Clear();
 
-            // Set SQL
-            sql = new SQL();
-            DataTable dt_fir = sql.GetDataFir();
-
-            // Add FIR to IndexSearchDB if exists
-            if (dt_fir.Rows.Count > 0)
-            {
-                NBioAPI.IndexSearch.FP_INFO[] fpinfo;
-                for (int i = 0; i < dt_fir.Rows.Count; i++)
-                {
-                    NBioAPI.Type.FIR_TEXTENCODE textFIR = new NBioAPI.Type.FIR_TEXTENCODE();
-                    textFIR.TextFIR = dt_fir.Rows[i]["hash"].ToString();
-                    ret = m_IndexSearch.AddFIR(textFIR, Uid, out fpinfo);
-                    if (ret != NBioAPI.Error.NONE)
-                    {
-                        ErrorMsg(ret);
-                        this.Close();
-                    }
-                    Uid += 1;
-                }
-            }
-
-            // Set UserID
-            int maxId = 0;
-            foreach (DataRow row in dt_fir.Rows)
-            {
-                int id = Convert.ToInt32(row["id"]);
-                if (id > maxId)
-                {
-                    maxId = id;
-                }
-            }
-            int newId = maxId + 1;
-            tb_userID.Text = newId.ToString();
-
+            // Update dg_users
+            UpdateIndexSearch(ret);
         }
 
 
 
         // Error message
-        private void ErrorMsg(uint ret)
-        {
-            MessageBox.Show("Error: " + ret.ToString() + "\n" + NBioAPI.Error.GetErrorDescription(ret), "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
+        private void ErrorMsg(uint ret) => MessageBox.Show("Error: " + ret.ToString() + "\n" + NBioAPI.Error.GetErrorDescription(ret), "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
         private bool IsValidName(string name)
         {
@@ -110,6 +73,51 @@ namespace CRUD_fingertech
             }
 
             return true;
+        }
+
+        // Update IndexSearchDB
+        private void UpdateIndexSearch(uint ret)
+        {
+            // Set SQL
+            sql = new SQL();
+            DataTable dt_fir = sql.GetDataFir();
+
+            // Add FIR to IndexSearchDB if exists in database
+            if (dt_fir.Rows.Count > 0)
+            {
+                NBioAPI.IndexSearch.FP_INFO[] fpinfo;
+                for (int i = 0; i < dt_fir.Rows.Count; i++)
+                {
+                    NBioAPI.Type.FIR_TEXTENCODE textFIR = new NBioAPI.Type.FIR_TEXTENCODE();
+                    textFIR.TextFIR = dt_fir.Rows[i]["hash"].ToString();
+                    ret = m_IndexSearch.AddFIR(textFIR, UFIRid, out fpinfo);
+                    if (ret != NBioAPI.Error.NONE)
+                    {
+                        ErrorMsg(ret);
+                        this.Close();
+                    }
+                    UFIRid += 1;
+                }
+            }
+
+            // Set UserID
+            int maxId = 0;
+            foreach (DataRow row in dt_fir.Rows)
+            {
+                int id = Convert.ToInt32(row["id"]);
+                if (id > maxId)
+                {
+                    maxId = id;
+                }
+            }
+            int newId = maxId + 1;
+            tb_userID.Text = newId.ToString();
+        }
+
+        // Update dg_users based in database
+        private void UpdateDGUsers()
+        {
+
         }
 
         // Update ActivateCapture
@@ -228,25 +236,25 @@ namespace CRUD_fingertech
                 fir.sample = 1;
                 sql.InsertDataFir(fir); // Register FIR
                 NBioAPI.IndexSearch.FP_INFO[] fpinfo;
-                ret = m_IndexSearch.AddFIR(hActivatedFIR, Uid, out fpinfo); // Register FIR1 in IndexSearchDB
+                ret = m_IndexSearch.AddFIR(hActivatedFIR, UFIRid, out fpinfo); // Register FIR1 in IndexSearchDB
                 if(ret != NBioAPI.Error.NONE)
                 {
                     ErrorMsg(ret);
                     return;
                 }
-                Uid += 1;
+                UFIRid += 1;
 
                 // Set Fir hash and sample 2
                 fir.hash = textFIR2.TextFIR;
                 fir.sample += 1;
                 sql.InsertDataFir(fir); // Register FIR2
-                ret = m_IndexSearch.AddFIR(hCapturedFIR, Uid, out fpinfo); // Register FIR2 in IndexSearchDB
+                ret = m_IndexSearch.AddFIR(hCapturedFIR, UFIRid, out fpinfo); // Register FIR2 in IndexSearchDB
                 if(ret != NBioAPI.Error.NONE)
                 {
                     ErrorMsg(ret);
                     return;
                 }
-                Uid += 1;
+                UFIRid += 1;
 
                 MessageBox.Show("User ID: " + userID.ToString() + "\nName: " + user.name + "\nregistered!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 tb_userID.Text = (userID + 1).ToString();

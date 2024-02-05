@@ -56,6 +56,20 @@ namespace CRUD_User.DataAccess
             return dt;
         }
 
+        // Method to return user's and fir's data from the database
+        public DataTable GetDataUserFir()
+        {
+            Connection con = new Connection();
+            con.OpenConnection();
+            sql = new MySqlCommand("SELECT user.id, user.name, fir.id, fir.hash, fir.sample FROM user " +
+                                   "INNER JOIN fir ON user.id = fir.id", con.con);
+            MySqlDataAdapter da = new MySqlDataAdapter(sql);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            con.CloseConnection();
+            return dt;
+        }
+
         // Method to return fir's
         public DataTable GetDataFir()
         {
