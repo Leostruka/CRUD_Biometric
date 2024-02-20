@@ -5,9 +5,9 @@ using NITGEN.SDK.NBioBSP;
 using System.Data;
 
 
-namespace CRUD_fingertech
+namespace CRUD_User
 {
-    public partial class FingerTech : Form
+    public partial class CRUD : Form
     {
         NBioAPI m_NBioAPI;
         NBioAPI.IndexSearch m_IndexSearch;
@@ -20,7 +20,7 @@ namespace CRUD_fingertech
 
         SQL sql;
 
-        public FingerTech()
+        public CRUD()
         {
             InitializeComponent();
                        

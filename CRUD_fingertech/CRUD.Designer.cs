@@ -1,7 +1,7 @@
 ﻿
-namespace CRUD_fingertech
+namespace CRUD_User
 {
-    partial class FingerTech
+    partial class CRUD
     {
         /// <summary>
         ///  Required designer variable.
@@ -41,7 +41,7 @@ namespace CRUD_fingertech
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FingerTech));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CRUD));
             tx_actual = new Label();
             bt_capture = new Button();
             tb_ActivatedCapture = new TextBox();
@@ -97,7 +97,7 @@ namespace CRUD_fingertech
             dg_users.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dg_users.Name = "dg_users";
             // 
-            // FingerTech
+            // CRUD
             // 
             resources.ApplyResources(this, "$this");
             AutoScaleMode = AutoScaleMode.Font;
@@ -110,7 +110,7 @@ namespace CRUD_fingertech
             Controls.Add(bt_capture);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
-            Name = "FingerTech";
+            Name = "CRUD";
             ShowIcon = false;
             ((System.ComponentModel.ISupportInitialize)dg_users).EndInit();
             ResumeLayout(false);
