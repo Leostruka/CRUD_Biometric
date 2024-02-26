@@ -43,8 +43,10 @@ namespace CRUD_User
             // Clear displays
             tb_ActivatedCapture.Text = string.Empty;
 
-            // Update dg_users
+            // Update IndexSearchDB
             UpdateIndexSearch(ret);
+            // Update dg_users
+            UpdateDGUsers();
         }
 
 
@@ -114,10 +116,49 @@ namespace CRUD_User
             tb_userID.Text = newId.ToString();
         }
 
-        // Update dg_users based in database
+        // Update dg_users based on database
         private void UpdateDGUsers()
         {
+            // Set SQL and get data
+            sql = new SQL();
+            DataTable dt_user_fir = sql.GetDataUserFir();
 
+            // Clear existing data in dg_users
+            dg_users.Rows.Clear();
+            dg_users.Columns.Clear(); // Clear existing columns
+
+            // Add columns to dg_users
+            dg_users.Columns.Add("ID", "ID");
+            dg_users.Columns.Add("Name", "Name");
+            dg_users.Columns.Add("Samples", "Sample amount");
+
+            // Populate dg_users with user information
+            var userSamples = new Dictionary<int, int>(); // Dictionary to store the number of samples for each user
+            foreach (DataRow row in dt_user_fir.Rows)
+            {
+                int userID = Convert.ToInt32(row["id"]);
+                string userName = row["name"]?.ToString() ?? string.Empty;
+
+                // Get the number of samples for the current user ID
+                int sampleAmount = dt_user_fir.AsEnumerable().Count(row => Convert.ToInt32(row["id"]) == userID);
+
+                // Check if the user already exists in the dg_users
+                bool userExists = false;
+                foreach (DataGridViewRow dgRow in dg_users.Rows)
+                {
+                    if (Convert.ToInt32(dgRow.Cells["ID"].Value) == userID)
+                    {
+                        userExists = true;
+                        break;
+                    }
+                }
+
+                // Add the user to dg_users if it doesn't exist
+                if (!userExists)
+                {
+                    dg_users.Rows.Add(userID, userName, sampleAmount);
+                }
+            }
         }
 
         // Update ActivateCapture
