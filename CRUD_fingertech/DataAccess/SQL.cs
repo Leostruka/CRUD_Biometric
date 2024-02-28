@@ -62,7 +62,8 @@ namespace CRUD_User.DataAccess
             Connection con = new Connection();
             con.OpenConnection();
             sql = new MySqlCommand("SELECT user.id, user.name, fir.id, fir.hash, fir.sample FROM user " +
-                                   "INNER JOIN fir ON user.id = fir.id", con.con);
+                                   "INNER JOIN fir ON user.id = fir.id " +
+                                   "ORDER BY fir.id, fir.sample ASC", con.con);
             MySqlDataAdapter da = new MySqlDataAdapter(sql);
             DataTable dt = new DataTable();
             da.Fill(dt);
@@ -75,7 +76,8 @@ namespace CRUD_User.DataAccess
         {
             Connection con = new Connection();
             con.OpenConnection();
-            sql = new MySqlCommand("SELECT * FROM fir", con.con);
+            sql = new MySqlCommand("SELECT * FROM fir" +
+                                   "ORDER BY fir.id, fir.sample ASC", con.con);
             MySqlDataAdapter da = new MySqlDataAdapter(sql);
             DataTable dt = new DataTable();
             da.Fill(dt);

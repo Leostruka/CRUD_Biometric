@@ -16,6 +16,8 @@ namespace CRUD_User
         UserModel.User user;
         FIRModel.FIR fir;
 
+        DataTable dt_user_fir;
+
         uint UFIRid = 1;
 
         SQL sql;
@@ -121,7 +123,7 @@ namespace CRUD_User
         {
             // Set SQL and get data
             sql = new SQL();
-            DataTable dt_user_fir = sql.GetDataUserFir();
+            dt_user_fir = sql.GetDataUserFir();
 
             // Clear existing data in dg_users
             dg_users.Rows.Clear();
