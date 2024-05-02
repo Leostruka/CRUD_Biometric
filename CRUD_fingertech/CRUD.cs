@@ -3,6 +3,10 @@ using CRUD_User.View;
 using CRUD_User.DataAccess;
 using NITGEN.SDK.NBioBSP;
 using System.Data;
+using static NITGEN.SDK.NBioBSP.NBioAPI;
+using System.Drawing.Imaging;
+using static NITGEN.SDK.NBioBSP.NBioAPI.Export;
+using System.Runtime.InteropServices;
 
 
 namespace CRUD_User
@@ -10,6 +14,7 @@ namespace CRUD_User
     public partial class CRUD : Form
     {
         NBioAPI m_NBioAPI;
+        NBioAPI.Export m_Export;
         NBioAPI.IndexSearch m_IndexSearch;
 
         NBioAPI.Type.HFIR hActivatedFIR;
@@ -25,11 +30,12 @@ namespace CRUD_User
         public CRUD()
         {
             InitializeComponent();
-                       
+
 
             // Initialize NBioAPI
             m_NBioAPI = new NBioAPI();
             m_IndexSearch = new NBioAPI.IndexSearch(m_NBioAPI);
+            m_Export = new NBioAPI.Export(m_NBioAPI);
             uint ret = m_IndexSearch.InitEngine();
             if (ret != NBioAPI.Error.NONE)
             {
@@ -41,9 +47,6 @@ namespace CRUD_User
 
             user = new UserModel.User();
             fir = new FIRModel.FIR();
-
-            // Clear displays
-            tb_ActivatedCapture.Text = string.Empty;
 
             // Update IndexSearchDB
             UpdateIndexSearch(ret);
@@ -127,7 +130,7 @@ namespace CRUD_User
 
             // Clear existing data in dg_users
             dg_users.Rows.Clear();
-            dg_users.Columns.Clear(); // Clear existing columns
+            dg_users.Columns.Clear();
 
             // Add columns to dg_users
             dg_users.Columns.Add("ID", "ID");
@@ -163,15 +166,28 @@ namespace CRUD_User
             }
         }
 
-        // Update ActivateCapture
-        private void AttActivateCapture(NBioAPI.Type.HFIR hFIR)
+        private Image ConvertFIRToJpg(NBioAPI.Type.HFIR hFIR)
         {
-            // Get text FIR
-            NBioAPI.Type.FIR_TEXTENCODE textFIR;
-            m_NBioAPI.GetTextFIRFromHandle(hFIR, out textFIR, true);
+            NBioAPI.Export.EXPORT_AUDIT_DATA exportAuditData;
+            m_Export.NBioBSPToImage(hFIR, out exportAuditData);
 
+            uint r = m_NBioAPI.ImgConvRawToJpgBuf(exportAuditData.AuditData[0].Image[0].Data, exportAuditData.ImageWidth, exportAuditData.ImageHeight, 100, out byte[] outbuffer);
+            if (r != NBioAPI.Error.NONE)
+            {
+                ErrorMsg(r);
+                return null;
+            }
+
+            return Image.FromStream(new MemoryStream(outbuffer));
+        }
+
+        // Update ActivateCapture
+        private void AttActivateCapture(NBioAPI.Type.HFIR hFIR, NBioAPI.Type.HFIR hAuditFIR)
+        {
             // Add item to tb_ActivatedCapture
-            tb_ActivatedCapture.Text = textFIR.TextFIR;
+            pb_actvatedFir.Image = ConvertFIRToJpg(hAuditFIR);
+            pb_actvatedFir.SizeMode = PictureBoxSizeMode.Zoom;
+            pb_actvatedFir.Size = new Size(124, 146);
             tx_actual.Location = new Point(32, 10);
             hActivatedFIR = hFIR;
 
@@ -181,12 +197,15 @@ namespace CRUD_User
         {
             NBioAPI.Type.HFIR hNewFIR;
 
-            // Clear tb_ActivatedCapture
-            tb_ActivatedCapture.Text = string.Empty;
+            // Clear pb_actvaredFir
+            pb_actvatedFir.Image = null;
 
             // Capture FIR
             m_NBioAPI.OpenDevice(NBioAPI.Type.DEVICE_ID.AUTO);
-            uint ret = m_NBioAPI.Capture(out hNewFIR);
+
+            NBioAPI.Type.HFIR hAuditFIR = new NBioAPI.Type.HFIR();
+
+            uint ret = m_NBioAPI.Capture(NBioAPI.Type.FIR_PURPOSE.VERIFY, out hNewFIR, NBioAPI.Type.TIMEOUT.DEFAULT, hAuditFIR, null);
             if (ret != NBioAPI.Error.NONE)
             {
                 ErrorMsg(ret);
@@ -195,9 +214,9 @@ namespace CRUD_User
             }
 
             m_NBioAPI.CloseDevice(NBioAPI.Type.DEVICE_ID.AUTO);
-            
+
             // Activate FIR
-            AttActivateCapture(hNewFIR);
+            AttActivateCapture(hNewFIR, hAuditFIR);
         }
 
         private void bt_register_Click(object sender, EventArgs e)
@@ -217,7 +236,7 @@ namespace CRUD_User
                 int test = Convert.ToInt32(tb_userID.Text, 10);
                 if (test == 0)
                 {
-                    throw(new Exception());
+                    throw (new Exception());
                 }
             }
             catch
@@ -280,7 +299,7 @@ namespace CRUD_User
                 sql.InsertDataFir(fir); // Register FIR
                 NBioAPI.IndexSearch.FP_INFO[] fpinfo;
                 ret = m_IndexSearch.AddFIR(hActivatedFIR, UFIRid, out fpinfo); // Register FIR1 in IndexSearchDB
-                if(ret != NBioAPI.Error.NONE)
+                if (ret != NBioAPI.Error.NONE)
                 {
                     ErrorMsg(ret);
                     return;
@@ -292,7 +311,7 @@ namespace CRUD_User
                 fir.sample += 1;
                 sql.InsertDataFir(fir); // Register FIR2
                 ret = m_IndexSearch.AddFIR(hCapturedFIR, UFIRid, out fpinfo); // Register FIR2 in IndexSearchDB
-                if(ret != NBioAPI.Error.NONE)
+                if (ret != NBioAPI.Error.NONE)
                 {
                     ErrorMsg(ret);
                     return;
@@ -308,5 +327,11 @@ namespace CRUD_User
             }
 
         }
+
+        private void dg_users_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
     }
 }

@@ -44,11 +44,12 @@ namespace CRUD_User
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CRUD));
             tx_actual = new Label();
             bt_capture = new Button();
-            tb_ActivatedCapture = new TextBox();
             bt_register = new Button();
             tb_userID = new TextBox();
             tx_ID = new Label();
+            pb_actvatedFir = new PictureBox();
             dg_users = new DataGridView();
+            ((System.ComponentModel.ISupportInitialize)pb_actvatedFir).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dg_users).BeginInit();
             SuspendLayout();
             // 
@@ -61,20 +62,15 @@ namespace CRUD_User
             // bt_capture
             // 
             resources.ApplyResources(bt_capture, "bt_capture");
+            bt_capture.Cursor = Cursors.Hand;
             bt_capture.Name = "bt_capture";
             bt_capture.UseVisualStyleBackColor = true;
             bt_capture.Click += bt_capture_Click;
             // 
-            // tb_ActivatedCapture
-            // 
-            resources.ApplyResources(tb_ActivatedCapture, "tb_ActivatedCapture");
-            tb_ActivatedCapture.BackColor = SystemColors.HighlightText;
-            tb_ActivatedCapture.Name = "tb_ActivatedCapture";
-            tb_ActivatedCapture.ReadOnly = true;
-            // 
             // bt_register
             // 
             resources.ApplyResources(bt_register, "bt_register");
+            bt_register.Cursor = Cursors.Hand;
             bt_register.Name = "bt_register";
             bt_register.UseVisualStyleBackColor = true;
             bt_register.Click += bt_register_Click;
@@ -91,27 +87,37 @@ namespace CRUD_User
             tx_ID.BorderStyle = BorderStyle.FixedSingle;
             tx_ID.Name = "tx_ID";
             // 
+            // pb_actvatedFir
+            // 
+            resources.ApplyResources(pb_actvatedFir, "pb_actvatedFir");
+            pb_actvatedFir.BorderStyle = BorderStyle.Fixed3D;
+            pb_actvatedFir.Name = "pb_actvatedFir";
+            pb_actvatedFir.TabStop = false;
+            // 
             // dg_users
             // 
             resources.ApplyResources(dg_users, "dg_users");
+            dg_users.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dg_users.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dg_users.Name = "dg_users";
+            dg_users.CellContentClick += dg_users_CellContentClick;
             // 
             // CRUD
             // 
             resources.ApplyResources(this, "$this");
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(dg_users);
+            Controls.Add(tx_actual);
+            Controls.Add(pb_actvatedFir);
             Controls.Add(tx_ID);
             Controls.Add(tb_userID);
             Controls.Add(bt_register);
-            Controls.Add(tx_actual);
-            Controls.Add(tb_ActivatedCapture);
             Controls.Add(bt_capture);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             Name = "CRUD";
             ShowIcon = false;
+            ((System.ComponentModel.ISupportInitialize)pb_actvatedFir).EndInit();
             ((System.ComponentModel.ISupportInitialize)dg_users).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -120,10 +126,10 @@ namespace CRUD_User
 
         private Label tx_actual;
         private Button bt_capture;
-        private TextBox tb_ActivatedCapture;
         private Button bt_register;
         private TextBox tb_userID;
         private Label tx_ID;
+        private PictureBox pb_actvatedFir;
         private DataGridView dg_users;
     }
 }

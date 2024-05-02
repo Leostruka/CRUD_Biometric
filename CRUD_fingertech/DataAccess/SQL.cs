@@ -76,7 +76,7 @@ namespace CRUD_User.DataAccess
         {
             Connection con = new Connection();
             con.OpenConnection();
-            sql = new MySqlCommand("SELECT * FROM fir" +
+            sql = new MySqlCommand("SELECT * FROM fir " +
                                    "ORDER BY fir.id, fir.sample ASC", con.con);
             MySqlDataAdapter da = new MySqlDataAdapter(sql);
             DataTable dt = new DataTable();
