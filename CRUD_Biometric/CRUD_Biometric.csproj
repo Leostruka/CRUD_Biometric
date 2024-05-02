@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <Reference Include="NITGEN.SDK.NBioBSP">
-      <HintPath>..\..\..\..\..\Program Files (x86)\NITGEN\eNBSP SDK Professional\SDK\dotNET\NITGEN.SDK.NBioBSP.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\NITGEN\eNBSP SDK Professional\SDK\dotNET\NITGEN.SDK.NBioBSP.dll</HintPath>
     </Reference>
   </ItemGroup>
 

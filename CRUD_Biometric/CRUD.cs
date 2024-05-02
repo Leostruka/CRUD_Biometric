@@ -182,6 +182,11 @@ namespace CRUD_Biometric
             pb_actvatedFir.Size = new Size(124, 146);
             tx_actual.Location = new Point(32, 10);
             hActivatedFIR = hFIR;
+        }
+
+        // Update SelectedUser
+        private void AttSelectedUser()
+        {
 
         }
 
@@ -318,7 +323,13 @@ namespace CRUD_Biometric
                 MessageBox.Show("FIRs do not match!", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
+            // Update dg_users
+            UpdateDGUsers();
         }
 
+        private void dg_users_SelectionChanged(object sender, EventArgs e)
+        {
+            
+        }
     }
 }

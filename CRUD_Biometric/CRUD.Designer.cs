@@ -42,10 +42,12 @@
             tb_userID = new TextBox();
             bt_register = new Button();
             dg_users = new DataGridView();
+            tx_selected = new Label();
+            pb_selectedFir = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)pb_actvatedFir).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dg_users).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pb_selectedFir).BeginInit();
             SuspendLayout();
-
             // 
             // pb_actvatedFir
             // 
@@ -113,18 +115,51 @@
             // 
             // dg_users
             // 
+            dg_users.AllowUserToAddRows = false;
+            dg_users.AllowUserToDeleteRows = false;
+            dg_users.AllowUserToOrderColumns = true;
+            dg_users.AllowUserToResizeColumns = false;
+            dg_users.AllowUserToResizeRows = false;
             dg_users.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dg_users.CausesValidation = false;
             dg_users.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dg_users.Location = new Point(454, 18);
+            dg_users.EditMode = DataGridViewEditMode.EditProgrammatically;
+            dg_users.Location = new Point(384, 18);
             dg_users.Name = "dg_users";
+            dg_users.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dg_users.ShowCellToolTips = false;
+            dg_users.ShowEditingIcon = false;
             dg_users.Size = new Size(268, 388);
             dg_users.TabIndex = 6;
+            dg_users.SelectionChanged += dg_users_SelectionChanged;
+            // 
+            // tx_selected
+            // 
+            tx_selected.AutoSize = true;
+            tx_selected.Font = new Font("Nirmala UI", 9.75F, FontStyle.Bold);
+            tx_selected.Location = new Point(246, 18);
+            tx_selected.Name = "tx_selected";
+            tx_selected.Size = new Size(75, 17);
+            tx_selected.TabIndex = 8;
+            tx_selected.Text = "SelectedFir";
+            // 
+            // pb_selectedFir
+            // 
+            pb_selectedFir.BorderStyle = BorderStyle.Fixed3D;
+            pb_selectedFir.Location = new Point(235, 27);
+            pb_selectedFir.Name = "pb_selectedFir";
+            pb_selectedFir.Size = new Size(124, 146);
+            pb_selectedFir.SizeMode = PictureBoxSizeMode.Zoom;
+            pb_selectedFir.TabIndex = 7;
+            pb_selectedFir.TabStop = false;
             // 
             // CRUD
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(734, 418);
+            ClientSize = new Size(665, 418);
+            Controls.Add(tx_selected);
+            Controls.Add(pb_selectedFir);
             Controls.Add(dg_users);
             Controls.Add(bt_register);
             Controls.Add(tx_ID);
@@ -136,6 +171,7 @@
             Text = "CRUD";
             ((System.ComponentModel.ISupportInitialize)pb_actvatedFir).EndInit();
             ((System.ComponentModel.ISupportInitialize)dg_users).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pb_selectedFir).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -149,5 +185,7 @@
         private Button bt_register;
         private Label tx_actual;
         private Label tx_ID;
+        private Label tx_selected;
+        private PictureBox pb_selectedFir;
     }
 }
