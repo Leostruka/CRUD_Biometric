@@ -3,13 +3,8 @@ using CRUD_User.View;
 using CRUD_User.DataAccess;
 using NITGEN.SDK.NBioBSP;
 using System.Data;
-using static NITGEN.SDK.NBioBSP.NBioAPI;
-using System.Drawing.Imaging;
-using static NITGEN.SDK.NBioBSP.NBioAPI.Export;
-using System.Runtime.InteropServices;
 
-
-namespace CRUD_User
+namespace CRUD_Biometric
 {
     public partial class CRUD : Form
     {
@@ -30,7 +25,6 @@ namespace CRUD_User
         public CRUD()
         {
             InitializeComponent();
-
 
             // Initialize NBioAPI
             m_NBioAPI = new NBioAPI();
@@ -53,8 +47,6 @@ namespace CRUD_User
             // Update dg_users
             UpdateDGUsers();
         }
-
-
 
         // Error message
         private void ErrorMsg(uint ret) => MessageBox.Show("Error: " + ret.ToString() + "\n" + NBioAPI.Error.GetErrorDescription(ret), "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -325,11 +317,6 @@ namespace CRUD_User
             {
                 MessageBox.Show("FIRs do not match!", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-        }
-
-        private void dg_users_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
 
         }
 

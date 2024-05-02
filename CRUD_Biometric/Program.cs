@@ -1,5 +1,4 @@
-
-namespace CRUD_User
+namespace CRUD_Biometric
 {
     internal static class Program
     {
@@ -14,6 +13,5 @@ namespace CRUD_User
             ApplicationConfiguration.Initialize();
             Application.Run(new CRUD());
         }
-
     }
 }

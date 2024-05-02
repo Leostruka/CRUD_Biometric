@@ -1,5 +1,4 @@
-﻿
-namespace CRUD_User
+﻿namespace CRUD_Biometric
 {
     partial class CRUD
     {
@@ -7,7 +6,6 @@ namespace CRUD_User
         ///  Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
-
         /// <summary>
         ///  Clean up any resources being used.
         /// </summary>
@@ -35,101 +33,121 @@ namespace CRUD_User
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        ///  Required method for Designer support - do not modify
-        ///  the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CRUD));
+            pb_actvatedFir = new PictureBox();
             tx_actual = new Label();
             bt_capture = new Button();
-            bt_register = new Button();
-            tb_userID = new TextBox();
             tx_ID = new Label();
-            pb_actvatedFir = new PictureBox();
+            tb_userID = new TextBox();
+            bt_register = new Button();
             dg_users = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)pb_actvatedFir).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dg_users).BeginInit();
             SuspendLayout();
-            // 
-            // tx_actual
-            // 
-            resources.ApplyResources(tx_actual, "tx_actual");
-            tx_actual.BackColor = Color.Transparent;
-            tx_actual.Name = "tx_actual";
-            // 
-            // bt_capture
-            // 
-            resources.ApplyResources(bt_capture, "bt_capture");
-            bt_capture.Cursor = Cursors.Hand;
-            bt_capture.Name = "bt_capture";
-            bt_capture.UseVisualStyleBackColor = true;
-            bt_capture.Click += bt_capture_Click;
-            // 
-            // bt_register
-            // 
-            resources.ApplyResources(bt_register, "bt_register");
-            bt_register.Cursor = Cursors.Hand;
-            bt_register.Name = "bt_register";
-            bt_register.UseVisualStyleBackColor = true;
-            bt_register.Click += bt_register_Click;
-            // 
-            // tb_userID
-            // 
-            resources.ApplyResources(tb_userID, "tb_userID");
-            tb_userID.Name = "tb_userID";
-            // 
-            // tx_ID
-            // 
-            resources.ApplyResources(tx_ID, "tx_ID");
-            tx_ID.BackColor = Color.Transparent;
-            tx_ID.BorderStyle = BorderStyle.FixedSingle;
-            tx_ID.Name = "tx_ID";
+
             // 
             // pb_actvatedFir
             // 
-            resources.ApplyResources(pb_actvatedFir, "pb_actvatedFir");
             pb_actvatedFir.BorderStyle = BorderStyle.Fixed3D;
+            pb_actvatedFir.Location = new Point(21, 27);
             pb_actvatedFir.Name = "pb_actvatedFir";
+            pb_actvatedFir.Size = new Size(124, 146);
+            pb_actvatedFir.SizeMode = PictureBoxSizeMode.Zoom;
+            pb_actvatedFir.TabIndex = 0;
             pb_actvatedFir.TabStop = false;
+            // 
+            // tx_actual
+            // 
+            tx_actual.AutoSize = true;
+            tx_actual.Font = new Font("Nirmala UI", 9.75F, FontStyle.Bold);
+            tx_actual.Location = new Point(32, 18);
+            tx_actual.Name = "tx_actual";
+            tx_actual.Size = new Size(82, 17);
+            tx_actual.TabIndex = 1;
+            tx_actual.Text = "ActivatedFir";
+            // 
+            // bt_capture
+            // 
+            bt_capture.Cursor = Cursors.Hand;
+            bt_capture.Font = new Font("Nirmala UI", 9F);
+            bt_capture.Location = new Point(48, 179);
+            bt_capture.Name = "bt_capture";
+            bt_capture.Size = new Size(75, 23);
+            bt_capture.TabIndex = 2;
+            bt_capture.Text = "Capture";
+            bt_capture.UseVisualStyleBackColor = true;
+            bt_capture.Click += bt_capture_Click;
+            // 
+            // tx_ID
+            // 
+            tx_ID.AutoSize = true;
+            tx_ID.BackColor = Color.Transparent;
+            tx_ID.BorderStyle = BorderStyle.FixedSingle;
+            tx_ID.Font = new Font("Nirmala UI", 11.25F);
+            tx_ID.Location = new Point(174, 184);
+            tx_ID.Name = "tx_ID";
+            tx_ID.Size = new Size(55, 22);
+            tx_ID.TabIndex = 3;
+            tx_ID.Text = "UserID";
+            // 
+            // tb_userID
+            // 
+            tb_userID.Location = new Point(174, 184);
+            tb_userID.Name = "tb_userID";
+            tb_userID.Size = new Size(82, 23);
+            tb_userID.TabIndex = 4;
+            tb_userID.TextAlign = HorizontalAlignment.Right;
+            // 
+            // bt_register
+            // 
+            bt_register.Cursor = Cursors.Hand;
+            bt_register.Font = new Font("Nirmala UI", 9F);
+            bt_register.Location = new Point(262, 184);
+            bt_register.Name = "bt_register";
+            bt_register.Size = new Size(75, 23);
+            bt_register.TabIndex = 5;
+            bt_register.Text = "Register";
+            bt_register.UseVisualStyleBackColor = true;
+            bt_register.Click += bt_register_Click;
             // 
             // dg_users
             // 
-            resources.ApplyResources(dg_users, "dg_users");
             dg_users.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dg_users.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dg_users.Location = new Point(454, 18);
             dg_users.Name = "dg_users";
-            dg_users.CellContentClick += dg_users_CellContentClick;
+            dg_users.Size = new Size(268, 388);
+            dg_users.TabIndex = 6;
             // 
             // CRUD
             // 
-            resources.ApplyResources(this, "$this");
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(734, 418);
             Controls.Add(dg_users);
+            Controls.Add(bt_register);
+            Controls.Add(tx_ID);
+            Controls.Add(bt_capture);
             Controls.Add(tx_actual);
             Controls.Add(pb_actvatedFir);
-            Controls.Add(tx_ID);
             Controls.Add(tb_userID);
-            Controls.Add(bt_register);
-            Controls.Add(bt_capture);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
-            MaximizeBox = false;
             Name = "CRUD";
-            ShowIcon = false;
+            Text = "CRUD";
             ((System.ComponentModel.ISupportInitialize)pb_actvatedFir).EndInit();
             ((System.ComponentModel.ISupportInitialize)dg_users).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
+
         #endregion
 
-        private Label tx_actual;
+        private DataGridView dg_users;
+        private PictureBox pb_actvatedFir;
+        private TextBox tb_userID;
         private Button bt_capture;
         private Button bt_register;
-        private TextBox tb_userID;
+        private Label tx_actual;
         private Label tx_ID;
-        private PictureBox pb_actvatedFir;
-        private DataGridView dg_users;
     }
 }
