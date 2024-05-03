@@ -1,4 +1,4 @@
-﻿using CRUD_User.Model;
+﻿using CRUD_Biometric.Model;
 using MySqlConnector;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CRUD_User.DataAccess
+namespace CRUD_Biometric.DataAccess
 {
     public class SQL
     {
@@ -55,6 +55,25 @@ namespace CRUD_User.DataAccess
             con.CloseConnection();
             return dt;
         }
+
+        // Method to insert data into the auditdata database
+        public DataTable InsertDataAudit(AuditModel.Audit audit)
+        {
+            Connection con = new Connection();
+            con.OpenConnection();
+            sql = new MySqlCommand("INSERT INTO auditdata (id, data, imageWidth, imageHeight) values(@id, @data, @imageWidth, @imageHeight)", con.con);
+            sql.Parameters.AddWithValue("@id", audit.id);
+            sql.Parameters.AddWithValue("@data", audit.data);
+            sql.Parameters.AddWithValue("@imageWidth", audit.imageWidth);
+            sql.Parameters.AddWithValue("@imageHeight", audit.imageHeight);
+
+            MySqlDataAdapter da = new MySqlDataAdapter(sql);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            con.CloseConnection();
+            return dt;
+        }
+
 
         // Method to return user's and fir's data from the database
         public DataTable GetDataUserFir()

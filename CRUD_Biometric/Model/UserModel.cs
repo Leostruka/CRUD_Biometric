@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CRUD_User.Model
+namespace CRUD_Biometric.Model
 {
     public class UserModel
     {

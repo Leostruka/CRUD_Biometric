@@ -167,8 +167,8 @@ namespace CRUD_Biometric
             m_Export.NBioBSPToImage(hFIR, out exportAuditData);
             
             audit.data = exportAuditData.AuditData[0].Image[0].Data;
-            audit.height = exportAuditData.ImageHeight;
-            audit.width = exportAuditData.ImageWidth;
+            audit.imageHeight = exportAuditData.ImageHeight;
+            audit.imageWidth = exportAuditData.ImageWidth;
 
             uint r = m_NBioAPI.ImgConvRawToJpgBuf(exportAuditData.AuditData[0].Image[0].Data, exportAuditData.ImageWidth, exportAuditData.ImageHeight, 100, out byte[] outbuffer);
             if (r != NBioAPI.Error.NONE)
@@ -232,6 +232,7 @@ namespace CRUD_Biometric
             }
 
             NBioAPI.Type.HFIR hCapturedFIR;
+            NBioAPI.Type.HFIR hAuditFIR = new NBioAPI.Type.HFIR();
             uint userID = 0;
 
             // Verify if ID is valid
@@ -255,7 +256,7 @@ namespace CRUD_Biometric
             // Capture FIR2
             MessageBox.Show("Please, put the same finger of the capture!", "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
             m_NBioAPI.OpenDevice(NBioAPI.Type.DEVICE_ID.AUTO);
-            uint ret = m_NBioAPI.Capture(out hCapturedFIR);
+            uint ret = m_NBioAPI.Capture(NBioAPI.Type.FIR_PURPOSE.VERIFY,out hCapturedFIR, NBioAPI.Type.TIMEOUT.DEFAULT, hAuditFIR, null);
             if (ret != NBioAPI.Error.NONE)
             {
                 ErrorMsg(ret);
@@ -301,6 +302,8 @@ namespace CRUD_Biometric
                 fir.hash = textFIR.TextFIR;
                 fir.sample = 1;
                 sql.InsertDataFir(fir); // Register FIR
+                
+
                 NBioAPI.IndexSearch.FP_INFO[] fpinfo;
                 ret = m_IndexSearch.AddFIR(hActivatedFIR, UFIRid, out fpinfo); // Register FIR1 in IndexSearchDB
                 if (ret != NBioAPI.Error.NONE)

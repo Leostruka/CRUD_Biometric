@@ -11,8 +11,8 @@ namespace CRUD_Biometric.Model
     {
         public class Audit
         {
-            public int id { get; }
-
+            [Required]
+            public int id { get; set; }
             [Required]
             public byte[] data { get; set; }
             [Required]

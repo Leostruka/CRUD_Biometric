@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MySqlConnector;
 
-namespace CRUD_User.DataAccess
+namespace CRUD_Biometric.DataAccess
 {
     internal class Connection
     {
