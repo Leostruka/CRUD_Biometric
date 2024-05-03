@@ -125,6 +125,7 @@
             dg_users.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dg_users.EditMode = DataGridViewEditMode.EditProgrammatically;
             dg_users.Location = new Point(384, 18);
+            dg_users.MultiSelect = false;
             dg_users.Name = "dg_users";
             dg_users.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dg_users.ShowCellToolTips = false;
@@ -168,6 +169,7 @@
             Controls.Add(pb_actvatedFir);
             Controls.Add(tb_userID);
             Name = "CRUD";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "CRUD";
             ((System.ComponentModel.ISupportInitialize)pb_actvatedFir).EndInit();
             ((System.ComponentModel.ISupportInitialize)dg_users).EndInit();

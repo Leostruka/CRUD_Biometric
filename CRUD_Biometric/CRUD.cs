@@ -163,6 +163,8 @@ namespace CRUD_Biometric
             NBioAPI.Export.EXPORT_AUDIT_DATA exportAuditData;
             m_Export.NBioBSPToImage(hFIR, out exportAuditData);
 
+
+
             uint r = m_NBioAPI.ImgConvRawToJpgBuf(exportAuditData.AuditData[0].Image[0].Data, exportAuditData.ImageWidth, exportAuditData.ImageHeight, 100, out byte[] outbuffer);
             if (r != NBioAPI.Error.NONE)
             {
@@ -329,7 +331,13 @@ namespace CRUD_Biometric
 
         private void dg_users_SelectionChanged(object sender, EventArgs e)
         {
-            
+            if (dg_users.SelectedRows.Count > 0) // make sure user select at least 1 row 
+            {
+                string id = dg_users.SelectedRows[0].Cells[0].Value + string.Empty;
+
+                
+            }
         }
+
     }
 }
