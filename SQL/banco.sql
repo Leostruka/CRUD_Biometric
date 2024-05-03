@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `fir` (
 -- Copiando estrutura para tabela crud_users_db.auditdata
 CREATE TABLE IF NOT EXISTS `auditdata` (
   `auditID` int DEFAULT NULL,
-  `data` int DEFAULT NULL,
+  `data` bit DEFAULT NULL,
   `imageWidth` int DEFAULT NULL,
   `imageHeight` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

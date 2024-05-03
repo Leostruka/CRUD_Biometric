@@ -3,6 +3,7 @@ using CRUD_User.View;
 using CRUD_User.DataAccess;
 using NITGEN.SDK.NBioBSP;
 using System.Data;
+using CRUD_Biometric.Model;
 
 namespace CRUD_Biometric
 {
@@ -15,6 +16,7 @@ namespace CRUD_Biometric
         NBioAPI.Type.HFIR hActivatedFIR;
         UserModel.User user;
         FIRModel.FIR fir;
+        AuditModel.Audit audit;
 
         DataTable dt_user_fir;
 
@@ -41,6 +43,7 @@ namespace CRUD_Biometric
 
             user = new UserModel.User();
             fir = new FIRModel.FIR();
+            audit = new AuditModel.Audit();
 
             // Update IndexSearchDB
             UpdateIndexSearch(ret);
@@ -162,8 +165,10 @@ namespace CRUD_Biometric
         {
             NBioAPI.Export.EXPORT_AUDIT_DATA exportAuditData;
             m_Export.NBioBSPToImage(hFIR, out exportAuditData);
-
-
+            
+            audit.data = exportAuditData.AuditData[0].Image[0].Data;
+            audit.height = exportAuditData.ImageHeight;
+            audit.width = exportAuditData.ImageWidth;
 
             uint r = m_NBioAPI.ImgConvRawToJpgBuf(exportAuditData.AuditData[0].Image[0].Data, exportAuditData.ImageWidth, exportAuditData.ImageHeight, 100, out byte[] outbuffer);
             if (r != NBioAPI.Error.NONE)
