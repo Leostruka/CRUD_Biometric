@@ -335,9 +335,9 @@ namespace CRUD_Biometric
         {
             if (dg_users.SelectedRows.Count > 0) // make sure user select at least 1 row 
             {
-                string id = dg_users.SelectedRows[0].Cells[0].Value + string.Empty;
+                int id = Convert.ToInt32(dg_users.SelectedRows[0].Cells[0].Value + string.Empty);
 
-                
+                dt_user_fir = sql.GetSpecificDataUserFirAudit(id);
             }
         }
 

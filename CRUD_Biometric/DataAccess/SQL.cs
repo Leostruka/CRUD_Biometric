@@ -74,6 +74,37 @@ namespace CRUD_Biometric.DataAccess
             return dt;
         }
 
+        // Method to get specific user, fir and auditdata data from the database
+        public DataTable GetSpecificDataUserFirAudit(int id)
+        {
+            Connection con = new Connection();
+            con.OpenConnection();
+            sql = new MySqlCommand("SELECT user.id, user.name, fir.id, fir.hash, fir.sample, auditdata.id, auditdata.data, auditdata.imageWidth, auditdata.imageHeight FROM user " +
+                                   "INNER JOIN fir ON user.id = fir.id " +
+                                   "INNER JOIN auditdata ON user.id = auditdata.id " +
+                                   "WHERE user.id = @id " +
+                                   "ORDER BY fir.id, fir.sample ASC", con.con);
+            sql.Parameters.AddWithValue("@id", id);
+            MySqlDataAdapter da = new MySqlDataAdapter(sql);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            con.CloseConnection();
+            return dt;
+        }
+
+        // Method to return fir's
+        public DataTable GetDataFir()
+        {
+            Connection con = new Connection();
+            con.OpenConnection();
+            sql = new MySqlCommand("SELECT * FROM fir " +
+                                   "ORDER BY fir.id, fir.sample ASC", con.con);
+            MySqlDataAdapter da = new MySqlDataAdapter(sql);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            con.CloseConnection();
+            return dt;
+        }
 
         // Method to return user's and fir's data from the database
         public DataTable GetDataUserFir()
@@ -90,12 +121,14 @@ namespace CRUD_Biometric.DataAccess
             return dt;
         }
 
-        // Method to return fir's
-        public DataTable GetDataFir()
+        // Method to return user's, fir's and auditdata's data from the database
+        public DataTable GetDataUserFirAudit()
         {
             Connection con = new Connection();
             con.OpenConnection();
-            sql = new MySqlCommand("SELECT * FROM fir " +
+            sql = new MySqlCommand("SELECT user.id, user.name, fir.id, fir.hash, fir.sample, auditdata.id, auditdata.data, auditdata.imageWidth, auditdata.imageHeight FROM user " +
+                                   "INNER JOIN fir ON user.id = fir.id " +
+                                   "INNER JOIN auditdata ON user.id = auditdata.id " +
                                    "ORDER BY fir.id, fir.sample ASC", con.con);
             MySqlDataAdapter da = new MySqlDataAdapter(sql);
             DataTable dt = new DataTable();
