@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CRUD_Biometric.Model
 {
-    internal class AuditModel
+    public class AuditModel
     {
         public class Audit
         {

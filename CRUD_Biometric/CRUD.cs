@@ -1,6 +1,6 @@
-using CRUD_User.Model;
+using CRUD_Biometric.Model;
 using CRUD_User.View;
-using CRUD_User.DataAccess;
+using CRUD_Biometric.DataAccess;
 using NITGEN.SDK.NBioBSP;
 using System.Data;
 using CRUD_Biometric.Model;
@@ -302,27 +302,21 @@ namespace CRUD_Biometric
                 fir.hash = textFIR.TextFIR;
                 fir.sample = 1;
                 sql.InsertDataFir(fir); // Register FIR
-                
 
-                NBioAPI.IndexSearch.FP_INFO[] fpinfo;
-                ret = m_IndexSearch.AddFIR(hActivatedFIR, UFIRid, out fpinfo); // Register FIR1 in IndexSearchDB
-                if (ret != NBioAPI.Error.NONE)
-                {
-                    ErrorMsg(ret);
-                    return;
-                }
+                audit.id = (int)userID;
+                sql.InsertDataAudit(audit); // Register Audit
+
                 UFIRid += 1;
 
                 // Set Fir hash and sample 2
                 fir.hash = textFIR2.TextFIR;
                 fir.sample += 1;
                 sql.InsertDataFir(fir); // Register FIR2
-                ret = m_IndexSearch.AddFIR(hCapturedFIR, UFIRid, out fpinfo); // Register FIR2 in IndexSearchDB
-                if (ret != NBioAPI.Error.NONE)
-                {
-                    ErrorMsg(ret);
-                    return;
-                }
+
+                ConvertFIRToJpg(hAuditFIR);
+                audit.id = (int)userID;
+                sql.InsertDataAudit(audit); // Register Audit
+
                 UFIRid += 1;
 
                 MessageBox.Show("User ID: " + userID.ToString() + "\nName: " + user.name + "\nregistered!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
