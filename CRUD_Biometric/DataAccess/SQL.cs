@@ -63,7 +63,11 @@ namespace CRUD_Biometric.DataAccess
             con.OpenConnection();
             sql = new MySqlCommand("INSERT INTO auditdata (id, data, imageWidth, imageHeight) values(@id, @data, @imageWidth, @imageHeight)", con.con);
             sql.Parameters.AddWithValue("@id", audit.id);
-            sql.Parameters.AddWithValue("@data", audit.data);
+
+            // Convert audit.data to a hexadecimal string
+            string hexData = BitConverter.ToString(audit.data).Replace("-", string.Empty);
+            sql.Parameters.AddWithValue("@data", hexData);
+
             sql.Parameters.AddWithValue("@imageWidth", audit.imageWidth);
             sql.Parameters.AddWithValue("@imageHeight", audit.imageHeight);
 
@@ -79,11 +83,9 @@ namespace CRUD_Biometric.DataAccess
         {
             Connection con = new Connection();
             con.OpenConnection();
-            sql = new MySqlCommand("SELECT user.id, user.name, fir.id, fir.hash, fir.sample, auditdata.id, auditdata.data, auditdata.imageWidth, auditdata.imageHeight FROM user " +
-                                   "INNER JOIN fir ON user.id = fir.id " +
-                                   "INNER JOIN auditdata ON user.id = auditdata.id " +
-                                   "WHERE user.id = @id " +
-                                   "ORDER BY fir.id, fir.sample ASC", con.con);
+            sql = new MySqlCommand("SELECT id, data, imageWidth, imageHeight FROM auditdata " +
+                                   "WHERE id = @id " +
+                                   "ORDER BY id ASC", con.con);
             sql.Parameters.AddWithValue("@id", id);
             MySqlDataAdapter da = new MySqlDataAdapter(sql);
             DataTable dt = new DataTable();
@@ -121,20 +123,5 @@ namespace CRUD_Biometric.DataAccess
             return dt;
         }
 
-        // Method to return user's, fir's and auditdata's data from the database
-        public DataTable GetDataUserFirAudit()
-        {
-            Connection con = new Connection();
-            con.OpenConnection();
-            sql = new MySqlCommand("SELECT user.id, user.name, fir.id, fir.hash, fir.sample, auditdata.id, auditdata.data, auditdata.imageWidth, auditdata.imageHeight FROM user " +
-                                   "INNER JOIN fir ON user.id = fir.id " +
-                                   "INNER JOIN auditdata ON user.id = auditdata.id " +
-                                   "ORDER BY fir.id, fir.sample ASC", con.con);
-            MySqlDataAdapter da = new MySqlDataAdapter(sql);
-            DataTable dt = new DataTable();
-            da.Fill(dt);
-            con.CloseConnection();
-            return dt;
-        }
     }
 }

@@ -92,7 +92,8 @@ namespace CRUD_Biometric
                 {
                     NBioAPI.Type.FIR_TEXTENCODE textFIR = new NBioAPI.Type.FIR_TEXTENCODE();
                     textFIR.TextFIR = dt_fir.Rows[i]["hash"].ToString();
-                    ret = m_IndexSearch.AddFIR(textFIR, UFIRid, out fpinfo);
+                    string id = dt_fir.Rows[i]["id"].ToString() + dt_fir.Rows[i]["sample"].ToString();
+                    ret = m_IndexSearch.AddFIR(textFIR, Convert.ToUInt32(id), out fpinfo);
                     if (ret != NBioAPI.Error.NONE)
                     {
                         ErrorMsg(ret);
@@ -165,12 +166,12 @@ namespace CRUD_Biometric
         {
             NBioAPI.Export.EXPORT_AUDIT_DATA exportAuditData;
             m_Export.NBioBSPToImage(hFIR, out exportAuditData);
-            
+
             audit.data = exportAuditData.AuditData[0].Image[0].Data;
             audit.imageHeight = exportAuditData.ImageHeight;
             audit.imageWidth = exportAuditData.ImageWidth;
 
-            uint r = m_NBioAPI.ImgConvRawToJpgBuf(exportAuditData.AuditData[0].Image[0].Data, exportAuditData.ImageWidth, exportAuditData.ImageHeight, 100, out byte[] outbuffer);
+            uint r = m_NBioAPI.ImgConvRawToJpgBuf(audit.data, audit.imageWidth, audit.imageHeight, 100, out byte[] outbuffer);
             if (r != NBioAPI.Error.NONE)
             {
                 ErrorMsg(r);
@@ -180,21 +181,34 @@ namespace CRUD_Biometric
             return Image.FromStream(new MemoryStream(outbuffer));
         }
 
+        private Image ConvertFIRToJpg(AuditModel.Audit audit)
+        {
+            uint r = m_NBioAPI.ImgConvRawToJpgBuf(audit.data, audit.imageWidth, audit.imageHeight, 100, out byte[] outbuffer);
+            if (r != NBioAPI.Error.NONE)
+            {
+                ErrorMsg(r);
+                return null;
+            }
+
+            return Image.FromStream(new MemoryStream(outbuffer));
+        }
+
+        public static byte[] StringToByteArray(string hex)
+        {
+            return Enumerable.Range(0, hex.Length)
+                             .Where(x => x % 2 == 0)
+                             .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
+                             .ToArray();
+        }
+
         // Update ActivateCapture
         private void AttActivateCapture(NBioAPI.Type.HFIR hFIR, NBioAPI.Type.HFIR hAuditFIR)
         {
             // Add item to tb_ActivatedCapture
             pb_actvatedFir.Image = ConvertFIRToJpg(hAuditFIR);
-            pb_actvatedFir.SizeMode = PictureBoxSizeMode.Zoom;
             pb_actvatedFir.Size = new Size(124, 146);
             tx_actual.Location = new Point(32, 10);
             hActivatedFIR = hFIR;
-        }
-
-        // Update SelectedUser
-        private void AttSelectedUser()
-        {
-
         }
 
         private void bt_capture_Click(object sender, EventArgs e)
@@ -233,7 +247,6 @@ namespace CRUD_Biometric
 
             NBioAPI.Type.HFIR hCapturedFIR;
             NBioAPI.Type.HFIR hAuditFIR = new NBioAPI.Type.HFIR();
-            uint userID = 0;
 
             // Verify if ID is valid
             try
@@ -251,12 +264,46 @@ namespace CRUD_Biometric
             }
 
             // Get ID
-            userID = Convert.ToUInt32(tb_userID.Text, 10);
+            uint userID = Convert.ToUInt32(tb_userID.Text, 10);
+
+            m_IndexSearch.IdentifyData(hActivatedFIR, 7, out NBioAPI.IndexSearch.FP_INFO fpInfo, null);
+
+            if (fpInfo.ID != 0)
+            {
+                if (DialogResult.Yes == MessageBox.Show("User ID: " + fpInfo.ID.ToString() + " already exists!\nRegistry anyway?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+                {
+                    m_NBioAPI.GetTextFIRFromHandle(hActivatedFIR, out NBioAPI.Type.FIR_TEXTENCODE newTextFIR, true);
+                    fir.id = (int)fpInfo.ID;
+                    fir.hash = newTextFIR.TextFIR;
+                    fir.sample = 0;
+                    foreach (DataRow row in dt_user_fir.Rows)
+                    {
+                        if (Convert.ToInt32(row["id"]) == fir.id)
+                        {
+                            fir.sample += 1;
+                        }
+                    }
+                    sql.InsertDataFir(fir); // Register FIR
+                    MessageBox.Show("User ID: " + fpInfo.ID.ToString() + "\n New Sample registered!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+            }
+            else
+            {
+                foreach (DataRow row in dt_user_fir.Rows)
+                {
+                    if (Convert.ToInt32(row["id"]) == userID)
+                    {
+
+                    }
+                }
+            }
+
 
             // Capture FIR2
             MessageBox.Show("Please, put the same finger of the capture!", "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
             m_NBioAPI.OpenDevice(NBioAPI.Type.DEVICE_ID.AUTO);
-            uint ret = m_NBioAPI.Capture(NBioAPI.Type.FIR_PURPOSE.VERIFY,out hCapturedFIR, NBioAPI.Type.TIMEOUT.DEFAULT, hAuditFIR, null);
+            uint ret = m_NBioAPI.Capture(NBioAPI.Type.FIR_PURPOSE.VERIFY, out hCapturedFIR, NBioAPI.Type.TIMEOUT.DEFAULT, hAuditFIR, null);
             if (ret != NBioAPI.Error.NONE)
             {
                 ErrorMsg(ret);
@@ -335,9 +382,35 @@ namespace CRUD_Biometric
         {
             if (dg_users.SelectedRows.Count > 0) // make sure user select at least 1 row 
             {
-                int id = Convert.ToInt32(dg_users.SelectedRows[0].Cells[0].Value + string.Empty);
+                AuditModel.Audit selectedAudit = new AuditModel.Audit();
+                selectedAudit.id = Convert.ToInt32(dg_users.SelectedRows[0].Cells[0].Value + string.Empty);
 
-                dt_user_fir = sql.GetSpecificDataUserFirAudit(id);
+                for (int i = 0; i < dt_user_fir.Rows.Count; i++)
+                {
+                    if (Convert.ToInt32(dt_user_fir.Rows[i]["id"]) == selectedAudit.id)
+                    {
+                        DataTable dt_audit = sql.GetSpecificDataUserFirAudit(selectedAudit.id);
+
+                        foreach (DataRow row in dt_audit.Rows)
+                        {
+                            if (row == dt_audit.Rows[0])
+                            {
+                                string hexData = row["data"].ToString();
+                                selectedAudit.data = StringToByteArray(hexData);
+                                selectedAudit.imageWidth = Convert.ToUInt32(row["imageWidth"]);
+                                selectedAudit.imageHeight = Convert.ToUInt32(row["imageHeight"]);
+                            }
+                        }
+
+                        pb_selectedFir.Image = ConvertFIRToJpg(selectedAudit);
+                        pb_selectedFir.Size = new Size(124, 146);
+                        tx_selected.Location = new Point(235, 10);
+
+                        break;
+                    }
+                }
+
+
             }
         }
 

@@ -87,7 +87,7 @@
             tx_ID.BackColor = Color.Transparent;
             tx_ID.BorderStyle = BorderStyle.FixedSingle;
             tx_ID.Font = new Font("Nirmala UI", 11.25F);
-            tx_ID.Location = new Point(174, 184);
+            tx_ID.Location = new Point(194, 184);
             tx_ID.Name = "tx_ID";
             tx_ID.Size = new Size(55, 22);
             tx_ID.TabIndex = 3;
@@ -95,7 +95,7 @@
             // 
             // tb_userID
             // 
-            tb_userID.Location = new Point(174, 184);
+            tb_userID.Location = new Point(194, 184);
             tb_userID.Name = "tb_userID";
             tb_userID.Size = new Size(82, 23);
             tb_userID.TabIndex = 4;
@@ -105,7 +105,7 @@
             // 
             bt_register.Cursor = Cursors.Hand;
             bt_register.Font = new Font("Nirmala UI", 9F);
-            bt_register.Location = new Point(262, 184);
+            bt_register.Location = new Point(284, 184);
             bt_register.Name = "bt_register";
             bt_register.Size = new Size(75, 23);
             bt_register.TabIndex = 5;
