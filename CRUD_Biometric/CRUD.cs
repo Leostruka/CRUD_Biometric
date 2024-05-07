@@ -92,7 +92,7 @@ namespace CRUD_Biometric
                 {
                     NBioAPI.Type.FIR_TEXTENCODE textFIR = new NBioAPI.Type.FIR_TEXTENCODE();
                     textFIR.TextFIR = dt_fir.Rows[i]["hash"].ToString();
-                    string id = dt_fir.Rows[i]["id"].ToString() + dt_fir.Rows[i]["sample"].ToString();
+                    string id = dt_fir.Rows[i]["id"].ToString() + "909" + dt_fir.Rows[i]["sample"].ToString();
                     ret = m_IndexSearch.AddFIR(textFIR, Convert.ToUInt32(id), out fpinfo);
                     if (ret != NBioAPI.Error.NONE)
                     {
@@ -270,9 +270,17 @@ namespace CRUD_Biometric
 
             m_IndexSearch.IdentifyData(hActivatedFIR, NBioAPI.Type.FIR_SECURITY_LEVEL.NORMAL, out NBioAPI.IndexSearch.FP_INFO fpInfo, cbInfo);
 
+            string id = fpInfo.ID.ToString();
+            int index = id.IndexOf("909");
+            if (index != -1)
+            {
+                id = id.Substring(0, index);
+            }
+            fpInfo.ID = Convert.ToUInt32(id);
+
             if (fpInfo.ID != 0)
             {
-                if (DialogResult.Yes == MessageBox.Show("User ID already exists!\nRegistry anyway?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+                if (DialogResult.Yes == MessageBox.Show("This finger belongs to the user ID: " + (int)fpInfo.ID + "!\nRegistry anyway?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
                 {
                     m_NBioAPI.GetTextFIRFromHandle(hActivatedFIR, out NBioAPI.Type.FIR_TEXTENCODE newTextFIR, true);
                     fir.id = (int)fpInfo.ID;
@@ -286,7 +294,7 @@ namespace CRUD_Biometric
                         }
                     }
                     sql.InsertDataFir(fir); // Register FIR
-                    MessageBox.Show("User ID New Sample registered!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("User ID: " + (int)fpInfo.ID + "\nnew sample registered!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
                 else
