@@ -266,11 +266,13 @@ namespace CRUD_Biometric
             // Get ID
             uint userID = Convert.ToUInt32(tb_userID.Text, 10);
 
-            m_IndexSearch.IdentifyData(hActivatedFIR, 7, out NBioAPI.IndexSearch.FP_INFO fpInfo, null);
+            NBioAPI.IndexSearch.CALLBACK_INFO_0 cbInfo = new();
+
+            m_IndexSearch.IdentifyData(hActivatedFIR, NBioAPI.Type.FIR_SECURITY_LEVEL.NORMAL, out NBioAPI.IndexSearch.FP_INFO fpInfo, cbInfo);
 
             if (fpInfo.ID != 0)
             {
-                if (DialogResult.Yes == MessageBox.Show("User ID: " + fpInfo.ID.ToString() + " already exists!\nRegistry anyway?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+                if (DialogResult.Yes == MessageBox.Show("User ID already exists!\nRegistry anyway?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
                 {
                     m_NBioAPI.GetTextFIRFromHandle(hActivatedFIR, out NBioAPI.Type.FIR_TEXTENCODE newTextFIR, true);
                     fir.id = (int)fpInfo.ID;
@@ -284,7 +286,11 @@ namespace CRUD_Biometric
                         }
                     }
                     sql.InsertDataFir(fir); // Register FIR
-                    MessageBox.Show("User ID: " + fpInfo.ID.ToString() + "\n New Sample registered!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("User ID New Sample registered!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                else
+                {
                     return;
                 }
             }
