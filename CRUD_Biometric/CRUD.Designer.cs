@@ -45,6 +45,10 @@
             tx_selected = new Label();
             pb_selectedFir = new PictureBox();
             bt_remove = new Button();
+            tx_sample = new Label();
+            tb_sample = new TextBox();
+            bt_returnSample = new Button();
+            bt_nextSample = new Button();
             ((System.ComponentModel.ISupportInitialize)pb_actvatedFir).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dg_users).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pb_selectedFir).BeginInit();
@@ -170,11 +174,58 @@
             bt_remove.UseVisualStyleBackColor = true;
             bt_remove.Click += bt_remove_Click;
             // 
+            // tx_sample
+            // 
+            tx_sample.AutoSize = true;
+            tx_sample.BackColor = Color.Transparent;
+            tx_sample.BorderStyle = BorderStyle.FixedSingle;
+            tx_sample.Font = new Font("Nirmala UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            tx_sample.Location = new Point(194, 210);
+            tx_sample.Name = "tx_sample";
+            tx_sample.Size = new Size(46, 15);
+            tx_sample.TabIndex = 10;
+            tx_sample.Text = "Sample";
+            // 
+            // tb_sample
+            // 
+            tb_sample.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            tb_sample.Location = new Point(194, 213);
+            tb_sample.MaxLength = 3;
+            tb_sample.Name = "tb_sample";
+            tb_sample.Size = new Size(82, 22);
+            tb_sample.TabIndex = 11;
+            tb_sample.TextAlign = HorizontalAlignment.Right;
+            // 
+            // bt_returnSample
+            // 
+            bt_returnSample.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            bt_returnSample.Location = new Point(194, 228);
+            bt_returnSample.Name = "bt_returnSample";
+            bt_returnSample.Size = new Size(22, 22);
+            bt_returnSample.TabIndex = 12;
+            bt_returnSample.Text = "<";
+            bt_returnSample.UseVisualStyleBackColor = true;
+            bt_returnSample.Click += bt_returnSample_Click;
+            // 
+            // bt_nextSample
+            // 
+            bt_nextSample.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            bt_nextSample.Location = new Point(218, 228);
+            bt_nextSample.Name = "bt_nextSample";
+            bt_nextSample.Size = new Size(22, 22);
+            bt_nextSample.TabIndex = 13;
+            bt_nextSample.Text = ">";
+            bt_nextSample.UseVisualStyleBackColor = true;
+            bt_nextSample.Click += bt_nextSample_Click;
+            // 
             // CRUD
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(665, 418);
+            Controls.Add(bt_nextSample);
+            Controls.Add(bt_returnSample);
+            Controls.Add(tx_sample);
             Controls.Add(bt_remove);
             Controls.Add(tx_selected);
             Controls.Add(pb_selectedFir);
@@ -185,6 +236,7 @@
             Controls.Add(tx_actual);
             Controls.Add(pb_actvatedFir);
             Controls.Add(tb_userID);
+            Controls.Add(tb_sample);
             Name = "CRUD";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "CRUD";
@@ -207,5 +259,9 @@
         private Label tx_selected;
         private PictureBox pb_selectedFir;
         private Button bt_remove;
+        private Label tx_sample;
+        private TextBox tb_sample;
+        private Button bt_returnSample;
+        private Button bt_nextSample;
     }
 }

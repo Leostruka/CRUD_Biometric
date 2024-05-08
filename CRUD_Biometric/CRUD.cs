@@ -476,5 +476,15 @@ namespace CRUD_Biometric
 
             }
         }
+
+        private void bt_returnSample_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void bt_nextSample_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
