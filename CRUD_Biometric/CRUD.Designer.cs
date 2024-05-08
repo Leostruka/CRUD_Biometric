@@ -97,6 +97,7 @@
             // tb_userID
             // 
             tb_userID.Location = new Point(194, 184);
+            tb_userID.MaxLength = 4;
             tb_userID.Name = "tb_userID";
             tb_userID.Size = new Size(82, 23);
             tb_userID.TabIndex = 4;
