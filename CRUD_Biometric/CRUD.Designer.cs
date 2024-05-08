@@ -104,6 +104,7 @@
             // bt_register
             // 
             bt_register.Cursor = Cursors.Hand;
+            bt_register.Enabled = false;
             bt_register.Font = new Font("Nirmala UI", 9F);
             bt_register.Location = new Point(284, 184);
             bt_register.Name = "bt_register";

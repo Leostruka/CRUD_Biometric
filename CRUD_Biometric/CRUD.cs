@@ -44,9 +44,6 @@ namespace CRUD_Biometric
             user = new UserModel.User();
             fir = new FIRModel.FIR();
             audit = new AuditModel.Audit();
-
-            // Update IndexSearchDB
-            UpdateIndexSearch(ret);
             // Update dg_users
             UpdateDGUsers();
         }
@@ -78,8 +75,9 @@ namespace CRUD_Biometric
         }
 
         // Update IndexSearchDB
-        private void UpdateIndexSearch(uint ret)
+        private void UpdateIndexSearch()
         {
+            m_IndexSearch.ClearDB();
             // Set SQL
             sql = new SQL();
             DataTable dt_fir = sql.GetDataFir();
@@ -93,7 +91,7 @@ namespace CRUD_Biometric
                     NBioAPI.Type.FIR_TEXTENCODE textFIR = new NBioAPI.Type.FIR_TEXTENCODE();
                     textFIR.TextFIR = dt_fir.Rows[i]["hash"].ToString();
                     string id = dt_fir.Rows[i]["id"].ToString() + "909" + dt_fir.Rows[i]["sample"].ToString();
-                    ret = m_IndexSearch.AddFIR(textFIR, Convert.ToUInt32(id), out fpinfo);
+                    uint ret = m_IndexSearch.AddFIR(textFIR, Convert.ToUInt32(id), out fpinfo);
                     if (ret != NBioAPI.Error.NONE)
                     {
                         ErrorMsg(ret);
@@ -160,6 +158,7 @@ namespace CRUD_Biometric
                     dg_users.Rows.Add(userID, userName, sampleAmount);
                 }
             }
+            UpdateIndexSearch();
         }
 
         private Image ConvertFIRToJpg(NBioAPI.Type.HFIR hFIR)
@@ -209,6 +208,8 @@ namespace CRUD_Biometric
             pb_actvatedFir.Size = new Size(124, 146);
             tx_actual.Location = new Point(32, 10);
             hActivatedFIR = hFIR;
+
+            bt_register.Enabled = true;
         }
 
         private void bt_capture_Click(object sender, EventArgs e)
@@ -285,7 +286,8 @@ namespace CRUD_Biometric
                     m_NBioAPI.GetTextFIRFromHandle(hActivatedFIR, out NBioAPI.Type.FIR_TEXTENCODE newTextFIR, true);
                     fir.id = (int)fpInfo.ID;
                     fir.hash = newTextFIR.TextFIR;
-                    fir.sample = 0;
+                    fir.sample = 1;
+                    audit.id = (int)fpInfo.ID;
                     foreach (DataRow row in dt_user_fir.Rows)
                     {
                         if (Convert.ToInt32(row["id"]) == fir.id)
@@ -294,7 +296,12 @@ namespace CRUD_Biometric
                         }
                     }
                     sql.InsertDataFir(fir); // Register FIR
+                    sql.InsertDataAudit(audit); // Register Audit
                     MessageBox.Show("User ID: " + (int)fpInfo.ID + "\nnew sample registered!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    UpdateDGUsers();
+                    bt_register.Enabled = false;
+
                     return;
                 }
                 else
@@ -308,7 +315,33 @@ namespace CRUD_Biometric
                 {
                     if (Convert.ToInt32(row["id"]) == userID)
                     {
+                        if (DialogResult.Yes == MessageBox.Show("The user ID: " + (int)userID + " already exists!\nRegistry anyway?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+                        {
+                            m_NBioAPI.GetTextFIRFromHandle(hActivatedFIR, out NBioAPI.Type.FIR_TEXTENCODE newTextFIR, true);
+                            fir.id = (int)userID;
+                            fir.hash = newTextFIR.TextFIR;
+                            fir.sample = 1;
+                            audit.id = (int)userID;
+                            foreach (DataRow row2 in dt_user_fir.Rows)
+                            {
+                                if (Convert.ToInt32(row2["id"]) == fir.id)
+                                {
+                                    fir.sample += 1;
+                                }
+                            }
+                            sql.InsertDataFir(fir); // Register FIR
+                            sql.InsertDataAudit(audit); // Register Audit
+                            MessageBox.Show("User: " + row["name"] + "\nID: " + (int)userID + "\nnew sample registered!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+                            UpdateDGUsers();
+                            bt_register.Enabled = false;
+
+                            return;
+                        }
+                        else
+                        {
+                            return;
+                        }
                     }
                 }
             }
@@ -382,6 +415,8 @@ namespace CRUD_Biometric
 
                 MessageBox.Show("User ID: " + userID.ToString() + "\nName: " + user.name + "\nregistered!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 tb_userID.Text = (userID + 1).ToString();
+
+                bt_register.Enabled = false;
             }
             else
             {
