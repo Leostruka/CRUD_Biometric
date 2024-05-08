@@ -459,8 +459,7 @@ namespace CRUD_Biometric
                         {
                             if (row == dt_audit.Rows[0])
                             {
-                                string hexData = row["data"].ToString();
-                                selectedAudit.data = StringToByteArray(hexData);
+                                selectedAudit.data = StringToByteArray(row["data"].ToString());
                                 selectedAudit.imageWidth = Convert.ToUInt32(row["imageWidth"]);
                                 selectedAudit.imageHeight = Convert.ToUInt32(row["imageHeight"]);
                             }
