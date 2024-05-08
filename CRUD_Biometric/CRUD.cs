@@ -89,6 +89,7 @@ namespace CRUD_Biometric
                 for (int i = 0; i < dt_fir.Rows.Count; i++)
                 {
                     NBioAPI.Type.FIR_TEXTENCODE textFIR = new NBioAPI.Type.FIR_TEXTENCODE();
+
                     textFIR.TextFIR = dt_fir.Rows[i]["hash"].ToString();
                     string id = dt_fir.Rows[i]["id"].ToString() + "909" + dt_fir.Rows[i]["sample"].ToString();
                     uint ret = m_IndexSearch.AddFIR(textFIR, Convert.ToUInt32(id), out fpinfo);
@@ -273,15 +274,24 @@ namespace CRUD_Biometric
 
             string id = fpInfo.ID.ToString();
             int index = id.IndexOf("909");
-            if (index != -1)
-            {
-                id = id.Substring(0, index);
-            }
-            fpInfo.ID = Convert.ToUInt32(id);
+            string before909 = id.Substring(0, index);
+            string after909 = id.Substring(index + 3);
+            fpInfo.ID = Convert.ToUInt32(before909);
+            fpInfo.SampleNumber = (byte)Convert.ToUInt32(after909);
 
             if (fpInfo.ID != 0)
             {
-                if (DialogResult.Yes == MessageBox.Show("This finger belongs to the user ID: " + (int)fpInfo.ID + "!\nRegistry anyway?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+                string nome = string.Empty;
+                foreach (DataRow row in dt_user_fir.Rows)
+                {
+                    if (Convert.ToInt32(row["id"]) == userID)
+                    {
+                        nome = row["name"].ToString();
+                        break;
+                    }
+                }
+
+                if (DialogResult.Yes == MessageBox.Show("This finger belongs to the " + nome + "\nUser ID: " + (int)fpInfo.ID + "\nSample: " + fpInfo.SampleNumber + "\nRegistry anyway?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
                 {
                     m_NBioAPI.GetTextFIRFromHandle(hActivatedFIR, out NBioAPI.Type.FIR_TEXTENCODE newTextFIR, true);
                     fir.id = (int)fpInfo.ID;
@@ -297,7 +307,7 @@ namespace CRUD_Biometric
                     }
                     sql.InsertDataFir(fir); // Register FIR
                     sql.InsertDataAudit(audit); // Register Audit
-                    MessageBox.Show("User ID: " + (int)fpInfo.ID + "\nnew sample registered!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("User ID: " + (int)fpInfo.ID + "\nName: " + nome + "\nnew sample registered!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     UpdateDGUsers();
                     bt_register.Enabled = false;
@@ -315,7 +325,7 @@ namespace CRUD_Biometric
                 {
                     if (Convert.ToInt32(row["id"]) == userID)
                     {
-                        if (DialogResult.Yes == MessageBox.Show("The user ID: " + (int)userID + " already exists!\nRegistry anyway?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+                        if (DialogResult.Yes == MessageBox.Show("The user ID: " + (int)userID + " already exists!\nName: " + row["name"] + "\nRegistry anyway?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
                         {
                             m_NBioAPI.GetTextFIRFromHandle(hActivatedFIR, out NBioAPI.Type.FIR_TEXTENCODE newTextFIR, true);
                             fir.id = (int)userID;
@@ -331,7 +341,7 @@ namespace CRUD_Biometric
                             }
                             sql.InsertDataFir(fir); // Register FIR
                             sql.InsertDataAudit(audit); // Register Audit
-                            MessageBox.Show("User: " + row["name"] + "\nID: " + (int)userID + "\nnew sample registered!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show("ID: " + row["id"] + "\nName: " + row["name"] + "\nnew sample registered!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                             UpdateDGUsers();
                             bt_register.Enabled = false;
@@ -427,9 +437,14 @@ namespace CRUD_Biometric
             UpdateDGUsers();
         }
 
+        private void bt_remove_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void dg_users_SelectionChanged(object sender, EventArgs e)
         {
-            if (dg_users.SelectedRows.Count > 0) // make sure user select at least 1 row 
+            if (dg_users.SelectedRows.Count > 0)
             {
                 AuditModel.Audit selectedAudit = new AuditModel.Audit();
                 selectedAudit.id = Convert.ToInt32(dg_users.SelectedRows[0].Cells[0].Value + string.Empty);
@@ -462,6 +477,5 @@ namespace CRUD_Biometric
 
             }
         }
-
     }
 }

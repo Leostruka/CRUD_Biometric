@@ -44,6 +44,7 @@
             dg_users = new DataGridView();
             tx_selected = new Label();
             pb_selectedFir = new PictureBox();
+            bt_remove = new Button();
             ((System.ComponentModel.ISupportInitialize)pb_actvatedFir).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dg_users).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pb_selectedFir).BeginInit();
@@ -155,11 +156,25 @@
             pb_selectedFir.TabIndex = 7;
             pb_selectedFir.TabStop = false;
             // 
+            // bt_remove
+            // 
+            bt_remove.Cursor = Cursors.Hand;
+            bt_remove.Enabled = false;
+            bt_remove.Font = new Font("Nirmala UI", 9F);
+            bt_remove.Location = new Point(284, 213);
+            bt_remove.Name = "bt_remove";
+            bt_remove.Size = new Size(75, 23);
+            bt_remove.TabIndex = 9;
+            bt_remove.Text = "Remove";
+            bt_remove.UseVisualStyleBackColor = true;
+            bt_remove.Click += bt_remove_Click;
+            // 
             // CRUD
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(665, 418);
+            Controls.Add(bt_remove);
             Controls.Add(tx_selected);
             Controls.Add(pb_selectedFir);
             Controls.Add(dg_users);
@@ -190,5 +205,6 @@
         private Label tx_ID;
         private Label tx_selected;
         private PictureBox pb_selectedFir;
+        private Button bt_remove;
     }
 }
