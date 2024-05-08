@@ -19,6 +19,8 @@ namespace CRUD_Biometric.Model
             public uint imageWidth { get; set; }
             [Required]
             public uint imageHeight { get; set; }
+            [Required]
+            public int sample { get; set; }
         }
     }
 }

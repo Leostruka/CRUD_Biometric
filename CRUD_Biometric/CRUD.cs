@@ -20,8 +20,6 @@ namespace CRUD_Biometric
 
         DataTable dt_user_fir;
 
-        uint UFIRid = 1;
-
         SQL sql;
 
         public CRUD()
@@ -98,22 +96,8 @@ namespace CRUD_Biometric
                         ErrorMsg(ret);
                         this.Close();
                     }
-                    UFIRid += 1;
                 }
             }
-
-            // Set UserID
-            int maxId = 0;
-            foreach (DataRow row in dt_fir.Rows)
-            {
-                int id = Convert.ToInt32(row["id"]);
-                if (id > maxId)
-                {
-                    maxId = id;
-                }
-            }
-            int newId = maxId + 1;
-            tb_userID.Text = newId.ToString();
         }
 
         // Update dg_users based on database
@@ -191,6 +175,38 @@ namespace CRUD_Biometric
             }
 
             return Image.FromStream(new MemoryStream(outbuffer));
+        }
+
+        private void AttSelectFir(int id, int sample)
+        {
+            AuditModel.Audit audit = new AuditModel.Audit();
+            audit.id = id;
+
+            for (int i = 0; i < dt_user_fir.Rows.Count; i++)
+            {
+                if (Convert.ToInt32(dt_user_fir.Rows[i]["id"]) == audit.id)
+                {
+                    DataTable dt_audit = sql.GetSpecificDataUserFirAudit(audit.id);
+
+                    foreach (DataRow row in dt_audit.Rows)
+                    {
+                        if (Convert.ToInt32(row["sample"]) == sample)
+                        {
+                            audit.data = StringToByteArray(row["data"].ToString());
+                            audit.imageWidth = Convert.ToUInt32(row["imageWidth"]);
+                            audit.imageHeight = Convert.ToUInt32(row["imageHeight"]);
+                        }
+                    }
+
+                    pb_selectedFir.Image = ConvertFIRToJpg(audit);
+                    pb_selectedFir.Size = new Size(124, 146);
+                    tx_selected.Location = new Point(235, 10);
+
+                    tb_userID.Text = audit.id.ToString();
+
+                    break;
+                }
+            }
         }
 
         public static byte[] StringToByteArray(string hex)
@@ -291,7 +307,7 @@ namespace CRUD_Biometric
                     }
                 }
 
-                if (DialogResult.Yes == MessageBox.Show("This finger belongs to the " + nome + "\nUser ID: " + (int)fpInfo.ID + "\nSample: " + fpInfo.SampleNumber + "\nRegistry anyway?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+                if (DialogResult.Yes == MessageBox.Show("This finger belongs to the " + nome + "\nUser ID: " + (int)fpInfo.ID + "\nSample: " + fpInfo.SampleNumber + "\nRegistry anyway?", "Existing Finger!", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
                 {
                     m_NBioAPI.GetTextFIRFromHandle(hActivatedFIR, out NBioAPI.Type.FIR_TEXTENCODE newTextFIR, true);
                     fir.id = (int)fpInfo.ID;
@@ -302,9 +318,17 @@ namespace CRUD_Biometric
                     {
                         if (Convert.ToInt32(row["id"]) == fir.id)
                         {
-                            fir.sample += 1;
+                            if (Convert.ToInt32(row["sample"]) <= fir.sample)
+                            {
+                                fir.sample += 1;
+                            }
+                            else
+                            {
+                                break;
+                            }
                         }
                     }
+                    audit.sample = fir.sample;
                     sql.InsertDataFir(fir); // Register FIR
                     sql.InsertDataAudit(audit); // Register Audit
                     MessageBox.Show("User ID: " + (int)fpInfo.ID + "\nName: " + nome + "\nnew sample registered!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -325,7 +349,7 @@ namespace CRUD_Biometric
                 {
                     if (Convert.ToInt32(row["id"]) == userID)
                     {
-                        if (DialogResult.Yes == MessageBox.Show("The user ID: " + (int)userID + " already exists!\nName: " + row["name"] + "\nRegistry anyway?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+                        if (DialogResult.Yes == MessageBox.Show("The user ID: " + (int)userID + " already exists!\nName: " + row["name"] + "\nRegistry anyway?", "Existing User!", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
                         {
                             m_NBioAPI.GetTextFIRFromHandle(hActivatedFIR, out NBioAPI.Type.FIR_TEXTENCODE newTextFIR, true);
                             fir.id = (int)userID;
@@ -336,9 +360,17 @@ namespace CRUD_Biometric
                             {
                                 if (Convert.ToInt32(row2["id"]) == fir.id)
                                 {
-                                    fir.sample += 1;
+                                    if (Convert.ToInt32(row2["sample"]) <= fir.sample)
+                                    {
+                                        fir.sample += 1;
+                                    }
+                                    else
+                                    {
+                                        break;
+                                    }
                                 }
                             }
+                            audit.sample = fir.sample;
                             sql.InsertDataFir(fir); // Register FIR
                             sql.InsertDataAudit(audit); // Register Audit
                             MessageBox.Show("ID: " + row["id"] + "\nName: " + row["name"] + "\nnew sample registered!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -408,9 +440,8 @@ namespace CRUD_Biometric
                 sql.InsertDataFir(fir); // Register FIR
 
                 audit.id = (int)userID;
-                sql.InsertDataAudit(audit); // Register Audit
-
-                UFIRid += 1;
+                audit.sample = fir.sample;
+                sql.InsertDataAudit(audit); // Register 
 
                 // Set Fir hash and sample 2
                 fir.hash = textFIR2.TextFIR;
@@ -419,9 +450,8 @@ namespace CRUD_Biometric
 
                 ConvertFIRToJpg(hAuditFIR);
                 audit.id = (int)userID;
-                sql.InsertDataAudit(audit); // Register Audit
-
-                UFIRid += 1;
+                audit.sample = fir.sample;
+                sql.InsertDataAudit(audit); // Register 
 
                 MessageBox.Show("User ID: " + userID.ToString() + "\nName: " + user.name + "\nregistered!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 tb_userID.Text = (userID + 1).ToString();
@@ -437,9 +467,16 @@ namespace CRUD_Biometric
             UpdateDGUsers();
         }
 
-        private void bt_remove_Click(object sender, EventArgs e)
+        private void bt_modify_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void bt_remove_Click(object sender, EventArgs e)
+        {
+            sql.DeleteDataFirAudit(Convert.ToInt32(tb_userID.Text), Convert.ToInt32(tb_sample.Text));
+            UpdateDGUsers();
+            bt_returnSample_Click(sender, e);
         }
 
         private void dg_users_SelectionChanged(object sender, EventArgs e)
@@ -448,43 +485,90 @@ namespace CRUD_Biometric
             {
                 AuditModel.Audit selectedAudit = new AuditModel.Audit();
                 selectedAudit.id = Convert.ToInt32(dg_users.SelectedRows[0].Cells[0].Value + string.Empty);
+                tb_userID.Text = selectedAudit.id.ToString();
 
-                for (int i = 0; i < dt_user_fir.Rows.Count; i++)
+                foreach (DataRow row in dt_user_fir.Rows)
                 {
-                    if (Convert.ToInt32(dt_user_fir.Rows[i]["id"]) == selectedAudit.id)
+                    if (Convert.ToInt32(row["id"]) == selectedAudit.id)
                     {
-                        DataTable dt_audit = sql.GetSpecificDataUserFirAudit(selectedAudit.id);
-
-                        foreach (DataRow row in dt_audit.Rows)
-                        {
-                            if (row == dt_audit.Rows[0])
-                            {
-                                selectedAudit.data = StringToByteArray(row["data"].ToString());
-                                selectedAudit.imageWidth = Convert.ToUInt32(row["imageWidth"]);
-                                selectedAudit.imageHeight = Convert.ToUInt32(row["imageHeight"]);
-                            }
-                        }
-
-                        pb_selectedFir.Image = ConvertFIRToJpg(selectedAudit);
-                        pb_selectedFir.Size = new Size(124, 146);
-                        tx_selected.Location = new Point(235, 10);
-
+                        tb_sample.Text = row["sample"].ToString();
                         break;
                     }
                 }
-
-
             }
+        }
+
+        private void tb_userID_TextChanged(object sender, EventArgs e)
+        {
+            // Check if the user ID is valid
+            if (string.IsNullOrEmpty(tb_userID.Text) || !int.TryParse(tb_userID.Text, out _))
+            {
+                tb_userID.Text = "1";
+            }
+            else if (int.Parse(tb_userID.Text) < 1)
+            {
+                tb_userID.Text = "1";
+            }
+            AttSelectFir(int.Parse(tb_userID.Text), 1);
+        }
+
+        private void tb_sample_TextChanged(object sender, EventArgs e)
+        {
+            tb_sample.Focus();
+            AttSelectFir(int.Parse(tb_userID.Text), int.Parse(tb_sample.Text));
         }
 
         private void bt_returnSample_Click(object sender, EventArgs e)
         {
+            int currentSample = int.Parse(tb_sample.Text) - 1;
 
+            for (int i = dt_user_fir.Rows.Count - 1; i >= 0; i--)
+            {
+                DataRow row = dt_user_fir.Rows[i];
+                if (Convert.ToInt32(row["id"]) == Convert.ToInt32(tb_userID.Text) && Convert.ToInt32(row["sample"]) <= currentSample)
+                {
+                    currentSample = Convert.ToInt32(row["sample"]);
+                    break;
+                }
+            }
+            tb_sample.Text = currentSample.ToString();
+
+            if (currentSample == 1)
+            {
+                bt_returnSample.Enabled = false;
+                bt_nextSample.Enabled = true;
+            }
+            else
+            {
+                bt_nextSample.Enabled = true;
+            }
         }
 
         private void bt_nextSample_Click(object sender, EventArgs e)
         {
+            int currentSample = int.Parse(tb_sample.Text) + 1;
+            int lastSample = 0;
 
+            foreach (DataRow row in dt_user_fir.Rows)
+            {
+                if (Convert.ToInt32(row["id"]) == Convert.ToInt32(tb_userID.Text) && Convert.ToInt32(row["sample"]) >= currentSample)
+                {
+                    currentSample = Convert.ToInt32(row["sample"]);
+                    lastSample = dt_user_fir.AsEnumerable().Last(row => Convert.ToInt32(row["id"]) == Convert.ToInt32(tb_userID.Text)).Field<int>("sample");
+                    break;
+                }
+            }
+            tb_sample.Text = currentSample.ToString();
+
+            if (currentSample == lastSample)
+            {
+                bt_nextSample.Enabled = false;
+                bt_returnSample.Enabled = true;
+            }
+            else
+            {
+                bt_returnSample.Enabled = true;
+            }
         }
     }
 }

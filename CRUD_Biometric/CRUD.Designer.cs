@@ -49,6 +49,7 @@
             tb_sample = new TextBox();
             bt_returnSample = new Button();
             bt_nextSample = new Button();
+            bt_modify = new Button();
             ((System.ComponentModel.ISupportInitialize)pb_actvatedFir).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dg_users).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pb_selectedFir).BeginInit();
@@ -106,6 +107,7 @@
             tb_userID.Size = new Size(82, 23);
             tb_userID.TabIndex = 4;
             tb_userID.TextAlign = HorizontalAlignment.Right;
+            tb_userID.TextChanged += tb_userID_TextChanged;
             // 
             // bt_register
             // 
@@ -164,11 +166,10 @@
             // bt_remove
             // 
             bt_remove.Cursor = Cursors.Hand;
-            bt_remove.Enabled = false;
             bt_remove.Font = new Font("Nirmala UI", 9F);
-            bt_remove.Location = new Point(284, 213);
+            bt_remove.Location = new Point(246, 241);
             bt_remove.Name = "bt_remove";
-            bt_remove.Size = new Size(75, 23);
+            bt_remove.Size = new Size(113, 23);
             bt_remove.TabIndex = 9;
             bt_remove.Text = "Remove";
             bt_remove.UseVisualStyleBackColor = true;
@@ -180,7 +181,7 @@
             tx_sample.BackColor = Color.Transparent;
             tx_sample.BorderStyle = BorderStyle.FixedSingle;
             tx_sample.Font = new Font("Nirmala UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            tx_sample.Location = new Point(194, 210);
+            tx_sample.Location = new Point(194, 213);
             tx_sample.Name = "tx_sample";
             tx_sample.Size = new Size(46, 15);
             tx_sample.TabIndex = 10;
@@ -189,40 +190,59 @@
             // tb_sample
             // 
             tb_sample.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            tb_sample.Location = new Point(194, 213);
+            tb_sample.Location = new Point(235, 213);
             tb_sample.MaxLength = 3;
             tb_sample.Name = "tb_sample";
-            tb_sample.Size = new Size(82, 22);
+            tb_sample.Size = new Size(41, 22);
             tb_sample.TabIndex = 11;
             tb_sample.TextAlign = HorizontalAlignment.Right;
+            tb_sample.TextChanged += tb_sample_TextChanged;
             // 
             // bt_returnSample
             // 
-            bt_returnSample.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            bt_returnSample.Enabled = false;
+            bt_returnSample.FlatStyle = FlatStyle.Popup;
+            bt_returnSample.Font = new Font("Segoe UI Symbol", 8.25F, FontStyle.Bold);
             bt_returnSample.Location = new Point(194, 228);
             bt_returnSample.Name = "bt_returnSample";
-            bt_returnSample.Size = new Size(22, 22);
+            bt_returnSample.Size = new Size(24, 22);
             bt_returnSample.TabIndex = 12;
             bt_returnSample.Text = "<";
+            bt_returnSample.TextAlign = ContentAlignment.TopCenter;
             bt_returnSample.UseVisualStyleBackColor = true;
             bt_returnSample.Click += bt_returnSample_Click;
             // 
             // bt_nextSample
             // 
-            bt_nextSample.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            bt_nextSample.Location = new Point(218, 228);
+            bt_nextSample.FlatStyle = FlatStyle.Popup;
+            bt_nextSample.Font = new Font("Segoe UI Symbol", 8.25F, FontStyle.Bold);
+            bt_nextSample.Location = new Point(216, 228);
             bt_nextSample.Name = "bt_nextSample";
-            bt_nextSample.Size = new Size(22, 22);
+            bt_nextSample.Size = new Size(24, 22);
             bt_nextSample.TabIndex = 13;
             bt_nextSample.Text = ">";
+            bt_nextSample.TextAlign = ContentAlignment.TopCenter;
             bt_nextSample.UseVisualStyleBackColor = true;
             bt_nextSample.Click += bt_nextSample_Click;
+            // 
+            // bt_modify
+            // 
+            bt_modify.Cursor = Cursors.Hand;
+            bt_modify.Font = new Font("Nirmala UI", 9F);
+            bt_modify.Location = new Point(284, 213);
+            bt_modify.Name = "bt_modify";
+            bt_modify.Size = new Size(75, 23);
+            bt_modify.TabIndex = 14;
+            bt_modify.Text = "Modify";
+            bt_modify.UseVisualStyleBackColor = true;
+            bt_modify.Click += bt_modify_Click;
             // 
             // CRUD
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(665, 418);
+            Controls.Add(bt_modify);
             Controls.Add(bt_nextSample);
             Controls.Add(bt_returnSample);
             Controls.Add(tx_sample);
@@ -237,6 +257,8 @@
             Controls.Add(pb_actvatedFir);
             Controls.Add(tb_userID);
             Controls.Add(tb_sample);
+            FormBorderStyle = FormBorderStyle.Fixed3D;
+            MaximizeBox = false;
             Name = "CRUD";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "CRUD";
@@ -263,5 +285,6 @@
         private TextBox tb_sample;
         private Button bt_returnSample;
         private Button bt_nextSample;
+        private Button bt_modify;
     }
 }
