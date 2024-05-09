@@ -145,6 +145,13 @@ namespace CRUD_Biometric
                 if (!userExists)
                 {
                     dg_users.Rows.Add(userID, userName, sampleAmount);
+                    bt_modify.Enabled = true;
+                    bt_remove.Enabled = true;
+                }
+                else
+                {
+                    bt_modify.Enabled = false;
+                    bt_remove.Enabled = false;
                 }
             }
             UpdateIndexSearch();
@@ -244,6 +251,21 @@ namespace CRUD_Biometric
             pb_actvatedFir.Size = new Size(124, 146);
             tx_actual.Location = new Point(32, 10);
             hActivatedFIR = hFIR;
+
+            NBioAPI.IndexSearch.CALLBACK_INFO_0 cbInfo = new();
+            m_IndexSearch.IdentifyData(hActivatedFIR, NBioAPI.Type.FIR_SECURITY_LEVEL.NORMAL, out NBioAPI.IndexSearch.FP_INFO fpInfo, cbInfo);
+
+            if (fpInfo.ID != 0)
+            {
+                string id = fpInfo.ID.ToString();
+                int index = id.IndexOf("909");
+                string before909 = id.Substring(0, index);
+                string after909 = id.Substring(index + 3);
+                fpInfo.ID = Convert.ToUInt32(before909);
+                fpInfo.SampleNumber = (byte)Convert.ToUInt32(after909);
+                tb_userID.Text = fpInfo.ID.ToString();
+                tb_sample.Text = fpInfo.SampleNumber.ToString();
+            }
 
             bt_register.Enabled = true;
         }
@@ -555,6 +577,18 @@ namespace CRUD_Biometric
             }
         }
 
+        private void tb_userID_TextChanged(object sender, EventArgs e)
+        {
+            for (int i = 0; i < dg_users.Rows.Count; i++)
+            {
+                if (dg_users.Rows[i].Cells[0].Value.ToString() == tb_userID.Text)
+                {
+                    dg_users.Rows[i].Selected = true;
+                    break;
+                }
+            }
+        }
+
         private void tb_sample_TextChanged(object sender, EventArgs e)
         {
             tb_sample.Focus();
@@ -565,6 +599,7 @@ namespace CRUD_Biometric
         {
             int currentSample = int.Parse(tb_sample.Text) - 1;
             firstSample = 0;
+            int previousSample = 0;
 
             for (int i = 0; i < dt_user_fir.Rows.Count; i++)
             {
@@ -577,10 +612,10 @@ namespace CRUD_Biometric
 
                 if (Convert.ToInt32(row["id"]) == Convert.ToInt32(tb_userID.Text) && Convert.ToInt32(row["sample"]) <= currentSample)
                 {
-                    currentSample = Convert.ToInt32(row["sample"]);
-                    break;
+                    previousSample = Convert.ToInt32(row["sample"]);
                 }
             }
+            currentSample = previousSample;
             tb_sample.Text = currentSample.ToString();
 
             if (currentSample == firstSample)

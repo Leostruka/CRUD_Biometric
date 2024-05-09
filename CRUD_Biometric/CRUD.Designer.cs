@@ -108,6 +108,7 @@
             tb_userID.Size = new Size(82, 23);
             tb_userID.TabIndex = 4;
             tb_userID.TextAlign = HorizontalAlignment.Right;
+            tb_userID.TextChanged += tb_userID_TextChanged;
             // 
             // bt_register
             // 
@@ -126,16 +127,17 @@
             // 
             dg_users.AllowUserToAddRows = false;
             dg_users.AllowUserToDeleteRows = false;
-            dg_users.AllowUserToOrderColumns = true;
             dg_users.AllowUserToResizeColumns = false;
             dg_users.AllowUserToResizeRows = false;
             dg_users.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dg_users.CausesValidation = false;
+            dg_users.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
             dg_users.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dg_users.EditMode = DataGridViewEditMode.EditProgrammatically;
             dg_users.Location = new Point(384, 18);
             dg_users.MultiSelect = false;
             dg_users.Name = "dg_users";
+            dg_users.RowHeadersVisible = false;
             dg_users.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dg_users.ShowCellToolTips = false;
             dg_users.ShowEditingIcon = false;
@@ -166,6 +168,7 @@
             // bt_remove
             // 
             bt_remove.Cursor = Cursors.Hand;
+            bt_remove.Enabled = false;
             bt_remove.Font = new Font("Nirmala UI", 9F);
             bt_remove.Location = new Point(246, 250);
             bt_remove.Name = "bt_remove";
@@ -228,6 +231,7 @@
             // bt_modify
             // 
             bt_modify.Cursor = Cursors.Hand;
+            bt_modify.Enabled = false;
             bt_modify.Font = new Font("Nirmala UI", 9F);
             bt_modify.Location = new Point(284, 213);
             bt_modify.Name = "bt_modify";
