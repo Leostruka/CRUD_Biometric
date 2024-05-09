@@ -107,7 +107,6 @@
             tb_userID.Size = new Size(82, 23);
             tb_userID.TabIndex = 4;
             tb_userID.TextAlign = HorizontalAlignment.Right;
-            tb_userID.TextChanged += tb_userID_TextChanged;
             // 
             // bt_register
             // 

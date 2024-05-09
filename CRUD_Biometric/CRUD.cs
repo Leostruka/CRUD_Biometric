@@ -3,7 +3,6 @@ using CRUD_User.View;
 using CRUD_Biometric.DataAccess;
 using NITGEN.SDK.NBioBSP;
 using System.Data;
-using CRUD_Biometric.Model;
 
 namespace CRUD_Biometric
 {
@@ -19,6 +18,9 @@ namespace CRUD_Biometric
         AuditModel.Audit audit;
 
         DataTable dt_user_fir;
+
+        int firstSample = 0;
+        int lastSample = 0;
 
         SQL sql;
 
@@ -146,6 +148,21 @@ namespace CRUD_Biometric
             UpdateIndexSearch();
         }
 
+        public void UpdateFirstSample()
+        {
+            firstSample = 0;
+
+            for (int i = 0; i < dt_user_fir.Rows.Count; i++)
+            {
+                DataRow row = dt_user_fir.Rows[i];
+
+                if (Convert.ToInt32(row["id"]) == Convert.ToInt32(tb_userID.Text) && firstSample == 0)
+                {
+                    firstSample = Convert.ToInt32(row["sample"]);
+                }
+            }
+        }
+
         private Image ConvertFIRToJpg(NBioAPI.Type.HFIR hFIR)
         {
             NBioAPI.Export.EXPORT_AUDIT_DATA exportAuditData;
@@ -186,7 +203,7 @@ namespace CRUD_Biometric
             {
                 if (Convert.ToInt32(dt_user_fir.Rows[i]["id"]) == audit.id)
                 {
-                    DataTable dt_audit = sql.GetSpecificDataUserFirAudit(audit.id);
+                    DataTable dt_audit = sql.GetSpecificDataAudit(audit.id);
 
                     foreach (DataRow row in dt_audit.Rows)
                     {
@@ -220,7 +237,7 @@ namespace CRUD_Biometric
         // Update ActivateCapture
         private void AttActivateCapture(NBioAPI.Type.HFIR hFIR, NBioAPI.Type.HFIR hAuditFIR)
         {
-            // Add item to tb_ActivatedCapture
+            // Add item to pb_ActivatedCapture
             pb_actvatedFir.Image = ConvertFIRToJpg(hAuditFIR);
             pb_actvatedFir.Size = new Size(124, 146);
             tx_actual.Location = new Point(32, 10);
@@ -288,15 +305,15 @@ namespace CRUD_Biometric
 
             m_IndexSearch.IdentifyData(hActivatedFIR, NBioAPI.Type.FIR_SECURITY_LEVEL.NORMAL, out NBioAPI.IndexSearch.FP_INFO fpInfo, cbInfo);
 
-            string id = fpInfo.ID.ToString();
-            int index = id.IndexOf("909");
-            string before909 = id.Substring(0, index);
-            string after909 = id.Substring(index + 3);
-            fpInfo.ID = Convert.ToUInt32(before909);
-            fpInfo.SampleNumber = (byte)Convert.ToUInt32(after909);
-
             if (fpInfo.ID != 0)
             {
+                string id = fpInfo.ID.ToString();
+                int index = id.IndexOf("909");
+                string before909 = id.Substring(0, index);
+                string after909 = id.Substring(index + 3);
+                fpInfo.ID = Convert.ToUInt32(before909);
+                fpInfo.SampleNumber = (byte)Convert.ToUInt32(after909);
+
                 string nome = string.Empty;
                 foreach (DataRow row in dt_user_fir.Rows)
                 {
@@ -475,8 +492,33 @@ namespace CRUD_Biometric
         private void bt_remove_Click(object sender, EventArgs e)
         {
             sql.DeleteDataFirAudit(Convert.ToInt32(tb_userID.Text), Convert.ToInt32(tb_sample.Text));
-            UpdateDGUsers();
-            bt_returnSample_Click(sender, e);
+            foreach (DataRow row in dt_user_fir.Rows)
+            {
+                if (Convert.ToInt32(row["id"]) == Convert.ToInt32(tb_userID.Text))
+                {
+                    tb_sample.Text = row["sample"].ToString();
+                    if (Convert.ToInt32(dg_users.SelectedRows[0].Cells[2].Value + string.Empty) == 1)
+                    {
+                        sql.DeleteDataUser(Convert.ToInt32(tb_userID.Text));
+                        UpdateDGUsers();
+                        break;
+                    }
+                    else
+                    {
+                        UpdateFirstSample();
+                        if (firstSample != Convert.ToInt32(tb_sample.Text))
+                        {
+                            bt_returnSample_Click(sender, e);
+                        }
+                        else
+                        {
+                            bt_nextSample_Click(sender, e);
+                        }
+                        UpdateDGUsers();
+                        break;
+                    }
+                }
+            }
         }
 
         private void dg_users_SelectionChanged(object sender, EventArgs e)
@@ -492,24 +534,20 @@ namespace CRUD_Biometric
                     if (Convert.ToInt32(row["id"]) == selectedAudit.id)
                     {
                         tb_sample.Text = row["sample"].ToString();
+                        if (Convert.ToInt32(dg_users.SelectedRows[0].Cells[2].Value + string.Empty) > 1)
+                        {
+                            bt_returnSample.Enabled = false;
+                            bt_nextSample.Enabled = true;
+                        }
+                        else if (Convert.ToInt32(dg_users.SelectedRows[0].Cells[2].Value + string.Empty) == 1)
+                        {
+                            bt_returnSample.Enabled = false;
+                            bt_nextSample.Enabled = false;
+                        }
                         break;
                     }
                 }
             }
-        }
-
-        private void tb_userID_TextChanged(object sender, EventArgs e)
-        {
-            // Check if the user ID is valid
-            if (string.IsNullOrEmpty(tb_userID.Text) || !int.TryParse(tb_userID.Text, out _))
-            {
-                tb_userID.Text = "1";
-            }
-            else if (int.Parse(tb_userID.Text) < 1)
-            {
-                tb_userID.Text = "1";
-            }
-            AttSelectFir(int.Parse(tb_userID.Text), 1);
         }
 
         private void tb_sample_TextChanged(object sender, EventArgs e)
@@ -521,10 +559,17 @@ namespace CRUD_Biometric
         private void bt_returnSample_Click(object sender, EventArgs e)
         {
             int currentSample = int.Parse(tb_sample.Text) - 1;
+            firstSample = 0;
 
-            for (int i = dt_user_fir.Rows.Count - 1; i >= 0; i--)
+            for (int i = 0; i < dt_user_fir.Rows.Count; i++)
             {
                 DataRow row = dt_user_fir.Rows[i];
+
+                if (Convert.ToInt32(row["id"]) == Convert.ToInt32(tb_userID.Text) && firstSample == 0)
+                {
+                    firstSample = Convert.ToInt32(row["sample"]);
+                }
+
                 if (Convert.ToInt32(row["id"]) == Convert.ToInt32(tb_userID.Text) && Convert.ToInt32(row["sample"]) <= currentSample)
                 {
                     currentSample = Convert.ToInt32(row["sample"]);
@@ -533,7 +578,7 @@ namespace CRUD_Biometric
             }
             tb_sample.Text = currentSample.ToString();
 
-            if (currentSample == 1)
+            if (currentSample == firstSample)
             {
                 bt_returnSample.Enabled = false;
                 bt_nextSample.Enabled = true;
@@ -547,7 +592,7 @@ namespace CRUD_Biometric
         private void bt_nextSample_Click(object sender, EventArgs e)
         {
             int currentSample = int.Parse(tb_sample.Text) + 1;
-            int lastSample = 0;
+            lastSample = 0;
 
             foreach (DataRow row in dt_user_fir.Rows)
             {

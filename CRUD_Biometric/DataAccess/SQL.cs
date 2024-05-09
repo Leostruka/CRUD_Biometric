@@ -51,15 +51,15 @@ namespace CRUD_Biometric.DataAccess
         {
             Connection con = new Connection();
             con.OpenConnection();
-            sql = new MySqlCommand("INSERT INTO auditdata (id, data, imageWidth, imageHeight) values(@id, @data, @imageWidth, @imageHeight)", con.con);
+            sql = new MySqlCommand("INSERT INTO auditdata (id, data, imageWidth, imageHeight, sample) values(@id, @data, @imageWidth, @imageHeight, @sample)", con.con);
             sql.Parameters.AddWithValue("@id", audit.id);
 
             // Convert audit.data to a hexadecimal string
             string hexData = BitConverter.ToString(audit.data).Replace("-", string.Empty);
             sql.Parameters.AddWithValue("@data", hexData);
-
             sql.Parameters.AddWithValue("@imageWidth", audit.imageWidth);
             sql.Parameters.AddWithValue("@imageHeight", audit.imageHeight);
+            sql.Parameters.AddWithValue("@sample", audit.sample);
 
             MySqlDataAdapter da = new MySqlDataAdapter(sql);
             DataTable dt = new DataTable();
@@ -87,7 +87,7 @@ namespace CRUD_Biometric.DataAccess
         {
             Connection con = new Connection();
             con.OpenConnection();
-            sql = new MySqlCommand("SELECT user.id, user.name, fir.id, fir.hash, fir.sample FROM user " +
+            sql = new MySqlCommand("SELECT user.id, user.name, fir.hash, fir.sample FROM user " +
                                    "INNER JOIN fir ON user.id = fir.id " +
                                    "ORDER BY fir.id, fir.sample ASC", con.con);
             MySqlDataAdapter da = new MySqlDataAdapter(sql);
@@ -98,13 +98,13 @@ namespace CRUD_Biometric.DataAccess
         }
 
         // Method to get specific user, fir and auditdata data from the database
-        public DataTable GetSpecificDataUserFirAudit(int id)
+        public DataTable GetSpecificDataAudit(int id)
         {
             Connection con = new Connection();
             con.OpenConnection();
             sql = new MySqlCommand("SELECT id, data, imageWidth, imageHeight, sample FROM auditdata " +
                                    "WHERE id = @id " +
-                                   "ORDER BY id ASC", con.con);
+                                   "ORDER BY id, sample ASC", con.con);
             sql.Parameters.AddWithValue("@id", id);
             MySqlDataAdapter da = new MySqlDataAdapter(sql);
             DataTable dt = new DataTable();
