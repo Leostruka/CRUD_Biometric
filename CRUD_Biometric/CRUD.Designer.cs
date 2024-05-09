@@ -51,9 +51,13 @@
             bt_nextSample = new Button();
             bt_modify = new Button();
             tx_sampleCount = new Label();
+            tc_modify = new TabControl();
+            tp_user = new TabPage();
+            tp_sample = new TabPage();
             ((System.ComponentModel.ISupportInitialize)pb_actvatedFir).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dg_users).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pb_selectedFir).BeginInit();
+            tc_modify.SuspendLayout();
             SuspendLayout();
             // 
             // pb_actvatedFir
@@ -170,9 +174,9 @@
             bt_remove.Cursor = Cursors.Hand;
             bt_remove.Enabled = false;
             bt_remove.Font = new Font("Nirmala UI", 9F);
-            bt_remove.Location = new Point(246, 250);
+            bt_remove.Location = new Point(284, 213);
             bt_remove.Name = "bt_remove";
-            bt_remove.Size = new Size(113, 23);
+            bt_remove.Size = new Size(75, 23);
             bt_remove.TabIndex = 9;
             bt_remove.Text = "Remove";
             bt_remove.UseVisualStyleBackColor = true;
@@ -233,9 +237,9 @@
             bt_modify.Cursor = Cursors.Hand;
             bt_modify.Enabled = false;
             bt_modify.Font = new Font("Nirmala UI", 9F);
-            bt_modify.Location = new Point(284, 213);
+            bt_modify.Location = new Point(246, 251);
             bt_modify.Name = "bt_modify";
-            bt_modify.Size = new Size(75, 23);
+            bt_modify.Size = new Size(113, 23);
             bt_modify.TabIndex = 14;
             bt_modify.Text = "Modify";
             bt_modify.UseVisualStyleBackColor = true;
@@ -249,6 +253,41 @@
             tx_sampleCount.Size = new Size(0, 18);
             tx_sampleCount.TabIndex = 15;
             tx_sampleCount.UseCompatibleTextRendering = true;
+            // 
+            // tc_modify
+            // 
+            tc_modify.Appearance = TabAppearance.Buttons;
+            tc_modify.Controls.Add(tp_user);
+            tc_modify.Controls.Add(tp_sample);
+            tc_modify.Font = new Font("Nirmala UI", 9F);
+            tc_modify.Location = new Point(12, 256);
+            tc_modify.Name = "tc_modify";
+            tc_modify.SelectedIndex = 0;
+            tc_modify.Size = new Size(347, 150);
+            tc_modify.TabIndex = 16;
+            tc_modify.Tag = "";
+            tc_modify.Visible = false;
+            // 
+            // tp_user
+            // 
+            tp_user.Font = new Font("Nirmala UI", 9F);
+            tp_user.Location = new Point(4, 27);
+            tp_user.Name = "tp_user";
+            tp_user.Padding = new Padding(3);
+            tp_user.Size = new Size(339, 119);
+            tp_user.TabIndex = 0;
+            tp_user.Text = "User";
+            tp_user.UseVisualStyleBackColor = true;
+            // 
+            // tp_sample
+            // 
+            tp_sample.Location = new Point(4, 27);
+            tp_sample.Name = "tp_sample";
+            tp_sample.Padding = new Padding(3);
+            tp_sample.Size = new Size(339, 119);
+            tp_sample.TabIndex = 1;
+            tp_sample.Text = "Sample";
+            tp_sample.UseVisualStyleBackColor = true;
             // 
             // CRUD
             // 
@@ -271,6 +310,7 @@
             Controls.Add(tb_userID);
             Controls.Add(tb_sample);
             Controls.Add(tx_sampleCount);
+            Controls.Add(tc_modify);
             FormBorderStyle = FormBorderStyle.Fixed3D;
             MaximizeBox = false;
             Name = "CRUD";
@@ -279,6 +319,7 @@
             ((System.ComponentModel.ISupportInitialize)pb_actvatedFir).EndInit();
             ((System.ComponentModel.ISupportInitialize)dg_users).EndInit();
             ((System.ComponentModel.ISupportInitialize)pb_selectedFir).EndInit();
+            tc_modify.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -301,5 +342,8 @@
         private Button bt_nextSample;
         private Button bt_modify;
         private Label tx_sampleCount;
+        private TabControl tc_modify;
+        private TabPage tp_user;
+        private TabPage tp_sample;
     }
 }

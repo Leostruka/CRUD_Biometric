@@ -145,14 +145,19 @@ namespace CRUD_Biometric
                 if (!userExists)
                 {
                     dg_users.Rows.Add(userID, userName, sampleAmount);
-                    bt_modify.Enabled = true;
-                    bt_remove.Enabled = true;
+
                 }
-                else
-                {
-                    bt_modify.Enabled = false;
-                    bt_remove.Enabled = false;
-                }
+            }
+
+            if (dg_users.Rows.Count > 0)
+            {
+                bt_modify.Enabled = true;
+                bt_remove.Enabled = true;
+            }
+            else
+            {
+                bt_modify.Enabled = false;
+                bt_remove.Enabled = false;
             }
             UpdateIndexSearch();
         }
@@ -515,18 +520,22 @@ namespace CRUD_Biometric
 
         private void bt_remove_Click(object sender, EventArgs e)
         {
-            sql.DeleteDataFirAudit(Convert.ToInt32(tb_userID.Text), Convert.ToInt32(tb_sample.Text));
-            foreach (DataRow row in dt_user_fir.Rows)
+            if (Convert.ToInt32(dg_users.SelectedRows[0].Cells[2].Value + string.Empty) == 1)
             {
-                if (Convert.ToInt32(row["id"]) == Convert.ToInt32(tb_userID.Text))
+                if (DialogResult.Yes == MessageBox.Show("Do you want to delete the user?", "Delete user", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
                 {
-                    if (Convert.ToInt32(dg_users.SelectedRows[0].Cells[2].Value + string.Empty) == 1)
-                    {
-                        sql.DeleteDataUser(Convert.ToInt32(tb_userID.Text));
-                        UpdateDGUsers();
-                        break;
-                    }
-                    else
+                    sql.DeleteDataFirAudit(Convert.ToInt32(tb_userID.Text), Convert.ToInt32(tb_sample.Text));
+                    sql.DeleteDataUser(Convert.ToInt32(tb_userID.Text));
+                    UpdateDGUsers();
+                    return;
+                }
+            }
+            else if (DialogResult.Yes == MessageBox.Show("Do you want to delete the sample?", "Delete sample", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+            {
+                sql.DeleteDataFirAudit(Convert.ToInt32(tb_userID.Text), Convert.ToInt32(tb_sample.Text));
+                foreach (DataRow row in dt_user_fir.Rows)
+                {
+                    if (Convert.ToInt32(row["id"]) == Convert.ToInt32(tb_userID.Text))
                     {
                         UpdateFirstSample();
                         if (firstSample != Convert.ToInt32(tb_sample.Text))
