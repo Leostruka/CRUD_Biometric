@@ -50,6 +50,7 @@
             bt_returnSample = new Button();
             bt_nextSample = new Button();
             bt_modify = new Button();
+            tx_sampleCount = new Label();
             ((System.ComponentModel.ISupportInitialize)pb_actvatedFir).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dg_users).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pb_selectedFir).BeginInit();
@@ -166,7 +167,7 @@
             // 
             bt_remove.Cursor = Cursors.Hand;
             bt_remove.Font = new Font("Nirmala UI", 9F);
-            bt_remove.Location = new Point(246, 241);
+            bt_remove.Location = new Point(246, 250);
             bt_remove.Name = "bt_remove";
             bt_remove.Size = new Size(113, 23);
             bt_remove.TabIndex = 9;
@@ -182,9 +183,9 @@
             tx_sample.Font = new Font("Nirmala UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             tx_sample.Location = new Point(194, 213);
             tx_sample.Name = "tx_sample";
-            tx_sample.Size = new Size(46, 15);
+            tx_sample.Size = new Size(57, 15);
             tx_sample.TabIndex = 10;
-            tx_sample.Text = "Sample";
+            tx_sample.Text = "SampleID";
             // 
             // tb_sample
             // 
@@ -236,6 +237,15 @@
             bt_modify.UseVisualStyleBackColor = true;
             bt_modify.Click += bt_modify_Click;
             // 
+            // tx_sampleCount
+            // 
+            tx_sampleCount.AutoSize = true;
+            tx_sampleCount.Location = new Point(240, 234);
+            tx_sampleCount.Name = "tx_sampleCount";
+            tx_sampleCount.Size = new Size(0, 18);
+            tx_sampleCount.TabIndex = 15;
+            tx_sampleCount.UseCompatibleTextRendering = true;
+            // 
             // CRUD
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -256,6 +266,7 @@
             Controls.Add(pb_actvatedFir);
             Controls.Add(tb_userID);
             Controls.Add(tb_sample);
+            Controls.Add(tx_sampleCount);
             FormBorderStyle = FormBorderStyle.Fixed3D;
             MaximizeBox = false;
             Name = "CRUD";
@@ -285,5 +296,6 @@
         private Button bt_returnSample;
         private Button bt_nextSample;
         private Button bt_modify;
+        private Label tx_sampleCount;
     }
 }

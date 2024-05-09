@@ -22,6 +22,8 @@ namespace CRUD_Biometric
         int firstSample = 0;
         int lastSample = 0;
 
+        int currentSampleNumber = 0;
+
         SQL sql;
 
         public CRUD()
@@ -538,12 +540,16 @@ namespace CRUD_Biometric
                         {
                             bt_returnSample.Enabled = false;
                             bt_nextSample.Enabled = true;
+                            tx_sampleCount.Text = "1/" + dg_users.SelectedRows[0].Cells[2].Value + string.Empty;
                         }
                         else if (Convert.ToInt32(dg_users.SelectedRows[0].Cells[2].Value + string.Empty) == 1)
                         {
                             bt_returnSample.Enabled = false;
                             bt_nextSample.Enabled = false;
+                            tx_sampleCount.Text = "1/1";
                         }
+                        currentSampleNumber = 1;
+                        AttSelectFir(Convert.ToInt32(tb_userID.Text), Convert.ToInt32(tb_sample.Text));
                         break;
                     }
                 }
@@ -582,11 +588,14 @@ namespace CRUD_Biometric
             {
                 bt_returnSample.Enabled = false;
                 bt_nextSample.Enabled = true;
+                currentSampleNumber = 1;
             }
             else
             {
                 bt_nextSample.Enabled = true;
+                currentSampleNumber -= 1;
             }
+            tx_sampleCount.Text = currentSampleNumber + "/" + dg_users.SelectedRows[0].Cells[2].Value + string.Empty;
         }
 
         private void bt_nextSample_Click(object sender, EventArgs e)
@@ -609,11 +618,14 @@ namespace CRUD_Biometric
             {
                 bt_nextSample.Enabled = false;
                 bt_returnSample.Enabled = true;
+                currentSampleNumber = Convert.ToInt32(dg_users.SelectedRows[0].Cells[2].Value + string.Empty);
             }
             else
             {
                 bt_returnSample.Enabled = true;
+                currentSampleNumber += 1;
             }
+            tx_sampleCount.Text = currentSampleNumber + "/" + dg_users.SelectedRows[0].Cells[2].Value + string.Empty;
         }
     }
 }
