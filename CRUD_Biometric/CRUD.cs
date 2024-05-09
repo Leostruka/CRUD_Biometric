@@ -380,8 +380,11 @@ namespace CRUD_Biometric
                     MessageBox.Show("User ID: " + (int)fpInfo.ID + "\nName: " + nome + "\nnew sample registered!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     UpdateDGUsers();
-                    bt_register.Enabled = false;
 
+                    tb_userID.Text = fir.id.ToString();
+                    tb_sample.Text = fir.sample.ToString();
+
+                    bt_register.Enabled = false;
                     return;
                 }
                 else
@@ -422,8 +425,11 @@ namespace CRUD_Biometric
                             MessageBox.Show("ID: " + row["id"] + "\nName: " + row["name"] + "\nnew sample registered!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                             UpdateDGUsers();
-                            bt_register.Enabled = false;
 
+                            tb_userID.Text = fir.id.ToString();
+                            tb_sample.Text = fir.sample.ToString();
+
+                            bt_register.Enabled = false;
                             return;
                         }
                         else
@@ -498,6 +504,9 @@ namespace CRUD_Biometric
                 audit.id = (int)userID;
                 audit.sample = fir.sample;
                 sql.InsertDataAudit(audit); // Register 
+
+                tb_userID.Text = fir.id.ToString();
+                tb_sample.Text = fir.sample.ToString();
 
                 MessageBox.Show("User ID: " + userID.ToString() + "\nName: " + user.name + "\nregistered!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 tb_userID.Text = (userID + 1).ToString();

@@ -53,11 +53,13 @@
             tx_sampleCount = new Label();
             tc_modify = new TabControl();
             tp_user = new TabPage();
+            lb = new Label();
             tp_sample = new TabPage();
             ((System.ComponentModel.ISupportInitialize)pb_actvatedFir).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dg_users).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pb_selectedFir).BeginInit();
             tc_modify.SuspendLayout();
+            tp_user.SuspendLayout();
             SuspendLayout();
             // 
             // pb_actvatedFir
@@ -270,6 +272,7 @@
             // 
             // tp_user
             // 
+            tp_user.Controls.Add(lb);
             tp_user.Font = new Font("Nirmala UI", 9F);
             tp_user.Location = new Point(4, 27);
             tp_user.Name = "tp_user";
@@ -278,6 +281,15 @@
             tp_user.TabIndex = 0;
             tp_user.Text = "User";
             tp_user.UseVisualStyleBackColor = true;
+            // 
+            // lb
+            // 
+            lb.AutoSize = true;
+            lb.Location = new Point(91, 12);
+            lb.Name = "lb";
+            lb.Size = new Size(38, 15);
+            lb.TabIndex = 0;
+            lb.Text = "label1";
             // 
             // tp_sample
             // 
@@ -320,6 +332,8 @@
             ((System.ComponentModel.ISupportInitialize)dg_users).EndInit();
             ((System.ComponentModel.ISupportInitialize)pb_selectedFir).EndInit();
             tc_modify.ResumeLayout(false);
+            tp_user.ResumeLayout(false);
+            tp_user.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -345,5 +359,6 @@
         private TabControl tc_modify;
         private TabPage tp_user;
         private TabPage tp_sample;
+        private Label lb;
     }
 }
