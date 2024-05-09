@@ -498,7 +498,6 @@ namespace CRUD_Biometric
             {
                 if (Convert.ToInt32(row["id"]) == Convert.ToInt32(tb_userID.Text))
                 {
-                    tb_sample.Text = row["sample"].ToString();
                     if (Convert.ToInt32(dg_users.SelectedRows[0].Cells[2].Value + string.Empty) == 1)
                     {
                         sql.DeleteDataUser(Convert.ToInt32(tb_userID.Text));
