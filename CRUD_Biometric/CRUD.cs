@@ -3,6 +3,7 @@ using CRUD_User.View;
 using CRUD_Biometric.DataAccess;
 using NITGEN.SDK.NBioBSP;
 using System.Data;
+using static System.ComponentModel.Design.ObjectSelectorEditor;
 
 namespace CRUD_Biometric
 {
@@ -509,7 +510,8 @@ namespace CRUD_Biometric
                 tb_sample.Text = fir.sample.ToString();
 
                 MessageBox.Show("User ID: " + userID.ToString() + "\nName: " + user.name + "\nregistered!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                tb_userID.Text = (userID + 1).ToString();
+                tb_userID.Text = userID.ToString();
+                tb_sample.Text = fir.sample.ToString();
 
                 bt_register.Enabled = false;
             }
@@ -520,11 +522,6 @@ namespace CRUD_Biometric
 
             // Update dg_users
             UpdateDGUsers();
-        }
-
-        private void bt_modify_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void bt_remove_Click(object sender, EventArgs e)
@@ -610,6 +607,10 @@ namespace CRUD_Biometric
         private void tb_sample_TextChanged(object sender, EventArgs e)
         {
             tb_sample.Focus();
+
+            int index = tx_selectedIDSample.Text.IndexOf(" - ");
+            tx_selectedIDSample.Text = tx_selectedIDSample.Text.ToString().Substring(0, index) + " - " + tb_sample.Text;
+
             AttSelectFir(int.Parse(tb_userID.Text), int.Parse(tb_sample.Text));
         }
 
@@ -678,6 +679,79 @@ namespace CRUD_Biometric
                 currentSampleNumber += 1;
             }
             tx_sampleCount.Text = currentSampleNumber + "/" + dg_users.SelectedRows[0].Cells[2].Value + string.Empty;
+        }
+
+
+        private void bt_modify_Click(object sender, EventArgs e)
+        {
+            if (tc_modify.Visible == false)
+            {
+                tx_selectedID.Text = dg_users.SelectedRows[0].Cells[1].Value + " : " + dg_users.SelectedRows[0].Cells[0].Value + string.Empty;
+                tx_selectedIDSample.Text = dg_users.SelectedRows[0].Cells[1].Value + string.Empty + " : " + dg_users.SelectedRows[0].Cells[0].Value + string.Empty + " - " + tb_sample.Text;
+
+                user.id = Convert.ToInt32(dg_users.SelectedRows[0].Cells[0].Value + string.Empty);
+                user.name = dg_users.SelectedRows[0].Cells[1].Value + string.Empty;
+
+                tc_modify.Visible = true;
+                tb_alterName.Text = "";
+                tc_modify.SelectedTab = tp_user;
+                dg_users.Enabled = false;
+                dg_users.BackgroundColor = Color.Gray;
+                dg_users.DefaultCellStyle.SelectionBackColor = Color.Gray;
+                tb_userID.Enabled = false;
+                bt_modify.Text = "Cancel";
+            }
+            else
+            {
+                tc_modify.Visible = false;
+                dg_users.Enabled = true;
+                dg_users.BackgroundColor = Color.DarkGray;
+                dg_users.DefaultCellStyle.SelectionBackColor = Color.DodgerBlue;
+                tb_userID.Enabled = true;
+                bt_modify.Text = "Modify";
+            }
+
+        }
+
+        private void bt_saveAlterUser_Click(object sender, EventArgs e)
+        {
+            if (char.ToUpper(tb_alterName.Text[0]) + tb_alterName.Text.Substring(1) == user.name)
+            {
+                MessageBox.Show("Please enter a new name.", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            else if (tb_alterName.Text.Any(char.IsDigit) || tb_alterName.Text.Any(c => !char.IsLetter(c) && !char.IsWhiteSpace(c)))
+            {
+                MessageBox.Show("Please enter a valid name or Cancel the Rename.", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            foreach (DataRow row in dg_users.Rows)
+            {
+                if (row["Name"] + string.Empty == tb_alterName.Text)
+                {
+                    MessageBox.Show("This name already exists!\nAdd a last name.", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+
+            if (DialogResult.Yes == MessageBox.Show("Do you want to save the changes?", "Save changes", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+            {
+                user.name = tb_alterName.Text;
+                sql.UpdateDataUser(user);
+                UpdateDGUsers();
+                tc_modify.Visible = false;
+                dg_users.Enabled = true;
+                dg_users.BackgroundColor = Color.DarkGray;
+                dg_users.DefaultCellStyle.SelectionBackColor = Color.DodgerBlue;
+                tb_userID.Enabled = true;
+                bt_modify.Text = "Modify";
+            }
+        }
+
+        private void bt_captureReplace_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

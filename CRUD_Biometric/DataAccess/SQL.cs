@@ -1,11 +1,6 @@
 ﻿using CRUD_Biometric.Model;
 using MySqlConnector;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CRUD_Biometric.DataAccess
 {
@@ -20,7 +15,7 @@ namespace CRUD_Biometric.DataAccess
             con.OpenConnection();
             sql = new MySqlCommand("INSERT INTO user (id, name) values(@id, @name)", con.con);
             sql.Parameters.AddWithValue("@id", user.id);
-            sql.Parameters.AddWithValue("@name", user.name);
+            sql.Parameters.AddWithValue("@name", char.ToUpper(user.name[0]) + user.name.Substring(1));
 
             MySqlDataAdapter da = new MySqlDataAdapter(sql);
             DataTable dt = new DataTable();
@@ -111,6 +106,20 @@ namespace CRUD_Biometric.DataAccess
             da.Fill(dt);
             con.CloseConnection();
             return dt;
+        }
+
+        // Method to alter data in the User database
+        public void UpdateDataUser(UserModel.User user)
+        {
+            Connection con = new Connection();
+            con.OpenConnection();
+            sql = new MySqlCommand("UPDATE user SET name = @name WHERE id = @id", con.con);
+            sql.Parameters.AddWithValue("@id", user.id);
+            sql.Parameters.AddWithValue("@name", char.ToUpper(user.name[0]) + user.name.Substring(1));
+            MySqlDataAdapter da = new MySqlDataAdapter(sql);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            con.CloseConnection();
         }
 
         // Method to Delete data from the User database
