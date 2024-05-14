@@ -248,12 +248,12 @@ namespace CRUD_Biometric
 
                     tb_userID.Text = audit.id.ToString();
 
-                    if(currentSampleNumber == 1)
+                    if (currentSampleNumber == 1)
                     {
                         bt_returnSample.Enabled = false;
                         bt_nextSample.Enabled = true;
                     }
-                    else if(currentSampleNumber == Convert.ToInt32(dg_users.SelectedRows[0].Cells[2].Value + string.Empty))
+                    else if (currentSampleNumber == Convert.ToInt32(dg_users.SelectedRows[0].Cells[2].Value + string.Empty))
                     {
                         bt_nextSample.Enabled = false;
                         bt_returnSample.Enabled = true;
@@ -773,9 +773,6 @@ namespace CRUD_Biometric
         {
             NBioAPI.Type.HFIR hNewFIR;
 
-            // Clear pb_actvaredFir
-            pb_actvatedFir.Image = null;
-
             // Capture FIR
             m_NBioAPI.OpenDevice(NBioAPI.Type.DEVICE_ID.AUTO);
 
@@ -795,7 +792,6 @@ namespace CRUD_Biometric
 
             replaseFir.id = user.id;
             replaseFir.hash = newTextFIR.TextFIR;
-            replaseFir.sample = int.Parse(dg_users.SelectedRows[0].Cells[2].Value + string.Empty);
 
             NBioAPI.Export.EXPORT_AUDIT_DATA exportAuditData;
             m_Export.NBioBSPToImage(hAuditFIR, out exportAuditData);
@@ -804,7 +800,6 @@ namespace CRUD_Biometric
             replaseAudit.data = exportAuditData.AuditData[0].Image[0].Data;
             replaseAudit.imageHeight = exportAuditData.ImageHeight;
             replaseAudit.imageWidth = exportAuditData.ImageWidth;
-            replaseAudit.sample = replaseFir.sample;
 
             tx_selectedIDSample.Location = new Point(13, 33);
             bt_saveAlterSample.Location = new Point(20, 66);
@@ -814,6 +809,30 @@ namespace CRUD_Biometric
             bt_saveAlterSample.Enabled = true;
 
             bt_sampleReplace.BackgroundImage = ConvertFIRToJpg(replaseAudit);
+        }
+
+        private void bt_saveAlterSample_Click(object sender, EventArgs e)
+        {
+            if (DialogResult.Yes == MessageBox.Show("Do you want to save the changes?", "Save changes", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+            {
+                replaseFir.sample = Convert.ToInt32(tb_sample.Text);
+                replaseAudit.sample = replaseFir.sample;
+
+                sql.UpdateDataFirAudit(replaseFir, replaseAudit);
+                UpdateDGUsers();
+                tc_modify.Visible = false;
+                dg_users.Enabled = true;
+                dg_users.BackgroundColor = Color.DarkGray;
+                dg_users.DefaultCellStyle.SelectionBackColor = Color.DodgerBlue;
+                tb_userID.Enabled = true;
+                bt_modify.Text = "Modify";
+
+                bt_capture.Enabled = true;
+                if (hActivatedFIR != null)
+                    bt_register.Enabled = true;
+                if (dg_users.SelectedRows.Count > 0)
+                    bt_remove.Enabled = true;
+            }
         }
     }
 }

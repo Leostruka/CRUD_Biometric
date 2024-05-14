@@ -122,6 +122,29 @@ namespace CRUD_Biometric.DataAccess
             con.CloseConnection();
         }
 
+        // Method to alter data in the Fir and Sample database
+        public void UpdateDataFirAudit(FIRModel.FIR fir, AuditModel.Audit audit)
+        {
+            Connection con = new Connection();
+            con.OpenConnection();
+            sql = new MySqlCommand("UPDATE fir SET hash = @hash WHERE id = @id AND sample = @sample; " +
+                                   "UPDATE auditdata SET data = @data, imageWidth = @imageWidth, imageHeight = @imageHeight WHERE id = @id AND sample = @sample;", con.con);
+            sql.Parameters.AddWithValue("@id", fir.id);
+            sql.Parameters.AddWithValue("@hash", fir.hash);
+            sql.Parameters.AddWithValue("@sample", fir.sample);
+
+            // Convert audit.data to a hexadecimal string
+            string hexData = BitConverter.ToString(audit.data).Replace("-", string.Empty);
+            sql.Parameters.AddWithValue("@data", hexData);
+            sql.Parameters.AddWithValue("@imageWidth", audit.imageWidth);
+            sql.Parameters.AddWithValue("@imageHeight", audit.imageHeight);
+
+            MySqlDataAdapter da = new MySqlDataAdapter(sql);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            con.CloseConnection();
+        }
+
         // Method to Delete data from the User database
         public DataTable DeleteDataUser(int id)
         {
