@@ -5,31 +5,45 @@ using NITGEN.SDK.NBioBSP;
 using System.Data;
 using static System.ComponentModel.Design.ObjectSelectorEditor;
 using CRUD_Biometric.Properties;
+using System.Management;
 
 namespace CRUD_Biometric
 {
     public partial class CRUD : Form
     {
+        // ------------------------------Variables and Objects-----------------------
+
+        // NBioAPI objects
         NBioAPI m_NBioAPI;
         NBioAPI.Export m_Export;
         NBioAPI.IndexSearch m_IndexSearch;
 
+        // FIR and Audit objects
         NBioAPI.Type.HFIR hActivatedFIR;
         UserModel.User user;
         FIRModel.FIR fir;
         AuditModel.Audit audit;
-
+        // FIR and Audit objects for replace
         FIRModel.FIR replaseFir;
         AuditModel.Audit replaseAudit;
 
+        // DataTables for user and FIR data
         DataTable dt_user_fir;
 
+        // Variables for sample navigation
         int firstSample = 0;
-        int lastSample = 0;
-
         int currentSampleNumber = 0;
 
+        // WMI query to monitor for device arrival events
+        ManagementEventWatcher arrivalWatcher;
+        // WMI query to monitor for device removal events
+        ManagementEventWatcher removalWatcher;
+        // Device is plugged
+        bool devicePlugged = false;
+
         SQL sql;
+
+        // ------------------------------Methods For Forms-----------------------
 
         public CRUD()
         {
@@ -59,9 +73,30 @@ namespace CRUD_Biometric
             UpdateDGUsers();
         }
 
+        // ------------------------------Methods For Events-----------------------
+
+        // Initialize WMI event watchers
+        private void InitializeWmiWatchers()
+        {
+            // WMI query to monitor for device arrival events
+            string arrivalQuery = "SELECT * FROM Win32_DeviceChangeEvent WHERE EventType = 2";
+            arrivalWatcher = new ManagementEventWatcher(arrivalQuery);
+            arrivalWatcher.EventArrived += ArrivalEventArrived;
+            arrivalWatcher.Start();
+
+            // WMI query to monitor for device removal events
+            string removalQuery = "SELECT * FROM Win32_DeviceChangeEvent WHERE EventType = 3";
+            removalWatcher = new ManagementEventWatcher(removalQuery);
+            removalWatcher.EventArrived += RemovalEventArrived;
+            removalWatcher.Start();
+        }
+
+        // ------------------------------Methods Called---------------------------
+
         // Error message
         private void ErrorMsg(uint ret) => MessageBox.Show("Error: " + ret.ToString() + "\n" + NBioAPI.Error.GetErrorDescription(ret), "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
+        // Check if the name is valid
         private bool IsValidName(string name)
         {
             // Check if the name is empty
@@ -85,32 +120,13 @@ namespace CRUD_Biometric
             return true;
         }
 
-        // Update IndexSearchDB
-        private void UpdateIndexSearch()
+        // Convert hexadecimal string to byte array
+        public static byte[] StringToByteArray(string hex)
         {
-            m_IndexSearch.ClearDB();
-            // Set SQL
-            sql = new SQL();
-            DataTable dt_fir = sql.GetDataFir();
-
-            // Add FIR to IndexSearchDB if exists in database
-            if (dt_fir.Rows.Count > 0)
-            {
-                NBioAPI.IndexSearch.FP_INFO[] fpinfo;
-                for (int i = 0; i < dt_fir.Rows.Count; i++)
-                {
-                    NBioAPI.Type.FIR_TEXTENCODE textFIR = new NBioAPI.Type.FIR_TEXTENCODE();
-
-                    textFIR.TextFIR = dt_fir.Rows[i]["hash"].ToString();
-                    string id = dt_fir.Rows[i]["id"].ToString() + "909" + dt_fir.Rows[i]["sample"].ToString();
-                    uint ret = m_IndexSearch.AddFIR(textFIR, Convert.ToUInt32(id), out fpinfo);
-                    if (ret != NBioAPI.Error.NONE)
-                    {
-                        ErrorMsg(ret);
-                        this.Close();
-                    }
-                }
-            }
+            return Enumerable.Range(0, hex.Length)
+                             .Where(x => x % 2 == 0)
+                             .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
+                             .ToArray();
         }
 
         // Update dg_users based on database
@@ -171,6 +187,35 @@ namespace CRUD_Biometric
             UpdateIndexSearch();
         }
 
+        // Update IndexSearchDB
+        private void UpdateIndexSearch()
+        {
+            m_IndexSearch.ClearDB();
+            // Set SQL
+            sql = new SQL();
+            DataTable dt_fir = sql.GetDataFir();
+
+            // Add FIR to IndexSearchDB if exists in database
+            if (dt_fir.Rows.Count > 0)
+            {
+                NBioAPI.IndexSearch.FP_INFO[] fpinfo;
+                for (int i = 0; i < dt_fir.Rows.Count; i++)
+                {
+                    NBioAPI.Type.FIR_TEXTENCODE textFIR = new NBioAPI.Type.FIR_TEXTENCODE();
+
+                    textFIR.TextFIR = dt_fir.Rows[i]["hash"].ToString();
+                    string id = dt_fir.Rows[i]["id"].ToString() + "909" + dt_fir.Rows[i]["sample"].ToString();
+                    uint ret = m_IndexSearch.AddFIR(textFIR, Convert.ToUInt32(id), out fpinfo);
+                    if (ret != NBioAPI.Error.NONE)
+                    {
+                        ErrorMsg(ret);
+                        this.Close();
+                    }
+                }
+            }
+        }
+
+        // Update FirstSample based on the database
         public void UpdateFirstSample()
         {
             firstSample = 0;
@@ -186,6 +231,7 @@ namespace CRUD_Biometric
             }
         }
 
+        // Convert FIR to JPG image based on hFIR handle and set audit data
         private Image ConvertFIRToJpg(NBioAPI.Type.HFIR hFIR)
         {
             NBioAPI.Export.EXPORT_AUDIT_DATA exportAuditData;
@@ -205,6 +251,7 @@ namespace CRUD_Biometric
             return Image.FromStream(new MemoryStream(outbuffer));
         }
 
+        // Convert FIR to JPG image based on Audit data
         private Image ConvertFIRToJpg(AuditModel.Audit audit)
         {
             uint r = m_NBioAPI.ImgConvRawToJpgBuf(audit.data, audit.imageWidth, audit.imageHeight, 100, out byte[] outbuffer);
@@ -217,6 +264,7 @@ namespace CRUD_Biometric
             return Image.FromStream(new MemoryStream(outbuffer));
         }
 
+        // Select FIR based on ID and sample, set image and text
         private void AttSelectFir(int id, int sample)
         {
             AuditModel.Audit audit = new AuditModel.Audit();
@@ -271,14 +319,6 @@ namespace CRUD_Biometric
             }
         }
 
-        public static byte[] StringToByteArray(string hex)
-        {
-            return Enumerable.Range(0, hex.Length)
-                             .Where(x => x % 2 == 0)
-                             .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
-                             .ToArray();
-        }
-
         // Update ActivateCapture
         private void AttActivateCapture(NBioAPI.Type.HFIR hFIR, NBioAPI.Type.HFIR hAuditFIR)
         {
@@ -306,18 +346,39 @@ namespace CRUD_Biometric
             bt_register.Enabled = true;
         }
 
+        // ------------------------------Methods For USB-----------------------
+
+        // For the usb arrival and removal events
+        private void ArrivalEventArrived(object sender, EventArgs e)
+        {
+            // USB device was plugged in
+            SearchDevice(devicePlugged);
+        }
+
+        private void RemovalEventArrived(object sender, EventArgs e)
+        {
+            // USB device was removed
+            SearchDevice(devicePlugged);
+        }
+
+        // Search for the device
+        private void SearchDevice(bool devicePlugged)
+        {
+            m_NBioAPI.EnumerateDevice(out uint numDevices,out short[] deviceID, out NBioAPI.Type.DEVICE_INFO_EX[] deviceInfoEx);
+        }
+
+        // ------------------------------Methods For Capture, Register and Delete-----------------------
+
+        // Capture FIR
         private void bt_capture_Click(object sender, EventArgs e)
         {
             NBioAPI.Type.HFIR hNewFIR;
 
-            // Clear pb_actvaredFir
-            pb_actvatedFir.Image = null;
-
-            // Capture FIR
             m_NBioAPI.OpenDevice(NBioAPI.Type.DEVICE_ID.AUTO);
 
             NBioAPI.Type.HFIR hAuditFIR = new NBioAPI.Type.HFIR();
 
+            // Capture FIR
             uint ret = m_NBioAPI.Capture(NBioAPI.Type.FIR_PURPOSE.VERIFY, out hNewFIR, NBioAPI.Type.TIMEOUT.DEFAULT, hAuditFIR, null);
             if (ret != NBioAPI.Error.NONE)
             {
@@ -328,10 +389,14 @@ namespace CRUD_Biometric
 
             m_NBioAPI.CloseDevice(NBioAPI.Type.DEVICE_ID.AUTO);
 
+            // Clear pb_actvaredFir
+            pb_actvatedFir.Image = null;
+
             // Activate FIR
             AttActivateCapture(hNewFIR, hAuditFIR);
         }
 
+        // Register activated FIR, if new user, register user and second FIR
         private void bt_register_Click(object sender, EventArgs e)
         {
             if (hActivatedFIR == null)
@@ -365,6 +430,7 @@ namespace CRUD_Biometric
 
             m_IndexSearch.IdentifyData(hActivatedFIR, NBioAPI.Type.FIR_SECURITY_LEVEL.NORMAL, out NBioAPI.IndexSearch.FP_INFO fpInfo, cbInfo);
 
+            // Check if the finger already exists
             if (fpInfo.ID != 0)
             {
                 string id = fpInfo.ID.ToString();
@@ -425,6 +491,7 @@ namespace CRUD_Biometric
                     return;
                 }
             }
+            // Check if the user already exists
             else
             {
                 foreach (DataRow row in dt_user_fir.Rows)
@@ -475,7 +542,7 @@ namespace CRUD_Biometric
                 }
             }
 
-
+            // Register new user and FIR
             // Capture FIR2
             MessageBox.Show("Please, put the same finger of the capture!", "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
             m_NBioAPI.OpenDevice(NBioAPI.Type.DEVICE_ID.AUTO);
@@ -493,6 +560,7 @@ namespace CRUD_Biometric
             m_NBioAPI.GetTextFIRFromHandle(hCapturedFIR, out NBioAPI.Type.FIR_TEXTENCODE textFIR2, true);
             m_NBioAPI.VerifyMatch(textFIR, textFIR2, out bool result, null);
 
+            // Check if FIRs match
             if (result)
             {
                 // Set UserID and FIRID
@@ -560,6 +628,7 @@ namespace CRUD_Biometric
             tb_sample.Text = fir.sample.ToString();
         }
 
+        // Remove sample, if the last sample, remove user
         private void bt_remove_Click(object sender, EventArgs e)
         {
             if (Convert.ToInt32(dg_users.SelectedRows[0].Cells[2].Value + string.Empty) == 1)
@@ -603,6 +672,9 @@ namespace CRUD_Biometric
             }
         }
 
+        // ------------------------------Methods To Select User and Sample-----------------------
+
+        // Get selected user from dg_users
         private void dg_users_SelectionChanged(object sender, EventArgs e)
         {
             if (dg_users.SelectedRows.Count > 0)
@@ -636,6 +708,7 @@ namespace CRUD_Biometric
             }
         }
 
+        // Search for user ID in dg_users when typing in tb_userID
         private void tb_userID_TextChanged(object sender, EventArgs e)
         {
             for (int i = 0; i < dg_users.Rows.Count; i++)
@@ -648,6 +721,7 @@ namespace CRUD_Biometric
             }
         }
 
+        // Get selected sample and update selected FIR img
         private void tb_sample_TextChanged(object sender, EventArgs e)
         {
             tb_sample.Focus();
@@ -658,6 +732,7 @@ namespace CRUD_Biometric
             AttSelectFir(int.Parse(tb_userID.Text), int.Parse(tb_sample.Text));
         }
 
+        // Return to previous sample
         private void bt_returnSample_Click(object sender, EventArgs e)
         {
             int currentSample = int.Parse(tb_sample.Text) - 1;
@@ -675,24 +750,25 @@ namespace CRUD_Biometric
             tb_sample.Text = currentSample.ToString();
         }
 
+        // Go to next sample
         private void bt_nextSample_Click(object sender, EventArgs e)
         {
             int currentSample = int.Parse(tb_sample.Text) + 1;
-            lastSample = 0;
 
             foreach (DataRow row in dt_user_fir.Rows)
             {
                 if (Convert.ToInt32(row["id"]) == Convert.ToInt32(tb_userID.Text) && Convert.ToInt32(row["sample"]) >= currentSample)
                 {
                     currentSample = Convert.ToInt32(row["sample"]);
-                    lastSample = dt_user_fir.AsEnumerable().Last(row => Convert.ToInt32(row["id"]) == Convert.ToInt32(tb_userID.Text)).Field<int>("sample");
                     break;
                 }
             }
             tb_sample.Text = currentSample.ToString();
         }
 
+        // ------------------------------Methods For Modify-----------------------
 
+        // Modify user name or selected sample
         private void bt_modify_Click(object sender, EventArgs e)
         {
             if (tc_modify.Visible == false)
@@ -741,6 +817,7 @@ namespace CRUD_Biometric
 
         }
 
+        // Save changes to user name
         private void bt_saveAlterUser_Click(object sender, EventArgs e)
         {
             if (char.ToUpper(tb_alterName.Text[0]) + tb_alterName.Text.Substring(1) == user.name)
@@ -788,6 +865,7 @@ namespace CRUD_Biometric
             }
         }
 
+        // Capture a new FIR to replace the selected sample
         private void bt_sampleReplace_Click(object sender, EventArgs e)
         {
             NBioAPI.Type.HFIR hNewFIR;
@@ -830,6 +908,7 @@ namespace CRUD_Biometric
             bt_sampleReplace.BackgroundImage = ConvertFIRToJpg(replaseAudit);
         }
 
+        // Save changes to sample
         private void bt_saveAlterSample_Click(object sender, EventArgs e)
         {
             if (DialogResult.Yes == MessageBox.Show("Do you want to save the changes?", "Save changes", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
