@@ -412,6 +412,8 @@ namespace CRUD_Biometric
 
                     UpdateDGUsers();
 
+                    pb_actvatedFir.Image = null;
+
                     tb_userID.Text = fir.id.ToString();
                     tb_sample.Text = fir.sample.ToString();
 
@@ -456,6 +458,8 @@ namespace CRUD_Biometric
                             MessageBox.Show("ID: " + row["id"] + "\nName: " + row["name"] + "\nnew sample registered!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                             UpdateDGUsers();
+
+                            pb_actvatedFir.Image = null;
 
                             tb_userID.Text = fir.id.ToString();
                             tb_sample.Text = fir.sample.ToString();
@@ -540,8 +544,8 @@ namespace CRUD_Biometric
                 tb_sample.Text = fir.sample.ToString();
 
                 MessageBox.Show("User ID: " + userID.ToString() + "\nName: " + user.name + "\nregistered!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                tb_userID.Text = userID.ToString();
-                tb_sample.Text = fir.sample.ToString();
+
+                pb_actvatedFir.Image = null;
 
                 bt_register.Enabled = false;
             }
@@ -552,6 +556,8 @@ namespace CRUD_Biometric
 
             // Update dg_users
             UpdateDGUsers();
+            tb_userID.Text = userID.ToString();
+            tb_sample.Text = fir.sample.ToString();
         }
 
         private void bt_remove_Click(object sender, EventArgs e)
@@ -582,7 +588,15 @@ namespace CRUD_Biometric
                         {
                             bt_nextSample_Click(sender, e);
                         }
+
+                        string id = tb_userID.Text;
+                        string sample = tb_sample.Text;
+
                         UpdateDGUsers();
+
+                        tb_userID.Text = id;
+                        tb_sample.Text = sample;
+
                         break;
                     }
                 }
@@ -753,7 +767,12 @@ namespace CRUD_Biometric
             {
                 user.name = tb_alterName.Text;
                 sql.UpdateDataUser(user);
+
+                string sample = tb_sample.Text;
                 UpdateDGUsers();
+                tb_userID.Text = user.id.ToString();
+                tb_sample.Text = sample;
+
                 tc_modify.Visible = false;
                 dg_users.Enabled = true;
                 dg_users.BackgroundColor = Color.DarkGray;
@@ -819,7 +838,11 @@ namespace CRUD_Biometric
                 replaseAudit.sample = replaseFir.sample;
 
                 sql.UpdateDataFirAudit(replaseFir, replaseAudit);
+
                 UpdateDGUsers();
+                tb_userID.Text = Convert.ToString(replaseFir.id);
+                tb_sample.Text = Convert.ToString(replaseFir.sample);
+
                 tc_modify.Visible = false;
                 dg_users.Enabled = true;
                 dg_users.BackgroundColor = Color.DarkGray;
