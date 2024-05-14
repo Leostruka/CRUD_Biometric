@@ -4,6 +4,7 @@ using CRUD_Biometric.DataAccess;
 using NITGEN.SDK.NBioBSP;
 using System.Data;
 using static System.ComponentModel.Design.ObjectSelectorEditor;
+using CRUD_Biometric.Properties;
 
 namespace CRUD_Biometric
 {
@@ -17,6 +18,9 @@ namespace CRUD_Biometric
         UserModel.User user;
         FIRModel.FIR fir;
         AuditModel.Audit audit;
+
+        FIRModel.FIR replaseFir;
+        AuditModel.Audit replaseAudit;
 
         DataTable dt_user_fir;
 
@@ -47,6 +51,10 @@ namespace CRUD_Biometric
             user = new UserModel.User();
             fir = new FIRModel.FIR();
             audit = new AuditModel.Audit();
+
+            replaseFir = new FIRModel.FIR();
+            replaseAudit = new AuditModel.Audit();
+
             // Update dg_users
             UpdateDGUsers();
         }
@@ -700,6 +708,17 @@ namespace CRUD_Biometric
                 dg_users.DefaultCellStyle.SelectionBackColor = Color.Gray;
                 tb_userID.Enabled = false;
                 bt_modify.Text = "Cancel";
+
+                bt_capture.Enabled = false;
+                bt_register.Enabled = false;
+                bt_remove.Enabled = false;
+
+                tx_selectedIDSample.Location = new Point(68, 15);
+                bt_sampleReplace.Location = new Point(88, 41);
+                bt_sampleReplace.Size = new Size(38, 38);
+                bt_saveAlterSample.Location = new Point(71, 91);
+                bt_sampleReplace.BackgroundImage = Resources.fingerprint_scan;
+                bt_saveAlterSample.Enabled = false;
             }
             else
             {
@@ -709,6 +728,12 @@ namespace CRUD_Biometric
                 dg_users.DefaultCellStyle.SelectionBackColor = Color.DodgerBlue;
                 tb_userID.Enabled = true;
                 bt_modify.Text = "Modify";
+
+                bt_capture.Enabled = true;
+                if (hActivatedFIR != null)
+                    bt_register.Enabled = true;
+                if (dg_users.SelectedRows.Count > 0)
+                    bt_remove.Enabled = true;
             }
 
         }
@@ -746,12 +771,60 @@ namespace CRUD_Biometric
                 dg_users.DefaultCellStyle.SelectionBackColor = Color.DodgerBlue;
                 tb_userID.Enabled = true;
                 bt_modify.Text = "Modify";
+
+                bt_capture.Enabled = true;
+                if (hActivatedFIR != null)
+                    bt_register.Enabled = true;
+                if (dg_users.SelectedRows.Count > 0)
+                    bt_remove.Enabled = true;
             }
         }
 
-        private void bt_captureReplace_Click(object sender, EventArgs e)
+        private void bt_sampleReplace_Click(object sender, EventArgs e)
         {
+            NBioAPI.Type.HFIR hNewFIR;
 
+            // Clear pb_actvaredFir
+            pb_actvatedFir.Image = null;
+
+            // Capture FIR
+            m_NBioAPI.OpenDevice(NBioAPI.Type.DEVICE_ID.AUTO);
+
+            NBioAPI.Type.HFIR hAuditFIR = new NBioAPI.Type.HFIR();
+
+            uint ret = m_NBioAPI.Capture(NBioAPI.Type.FIR_PURPOSE.VERIFY, out hNewFIR, NBioAPI.Type.TIMEOUT.DEFAULT, hAuditFIR, null);
+            if (ret != NBioAPI.Error.NONE)
+            {
+                ErrorMsg(ret);
+                m_NBioAPI.CloseDevice(NBioAPI.Type.DEVICE_ID.AUTO);
+                return;
+            }
+
+            m_NBioAPI.CloseDevice(NBioAPI.Type.DEVICE_ID.AUTO);
+
+            m_NBioAPI.GetTextFIRFromHandle(hNewFIR, out NBioAPI.Type.FIR_TEXTENCODE newTextFIR, true);
+
+            replaseFir.id = user.id;
+            replaseFir.hash = newTextFIR.TextFIR;
+            replaseFir.sample = int.Parse(dg_users.SelectedRows[0].Cells[2].Value + string.Empty);
+
+            NBioAPI.Export.EXPORT_AUDIT_DATA exportAuditData;
+            m_Export.NBioBSPToImage(hAuditFIR, out exportAuditData);
+
+            replaseAudit.id = replaseFir.id;
+            replaseAudit.data = exportAuditData.AuditData[0].Image[0].Data;
+            replaseAudit.imageHeight = exportAuditData.ImageHeight;
+            replaseAudit.imageWidth = exportAuditData.ImageWidth;
+            replaseAudit.sample = replaseFir.sample;
+
+            tx_selectedIDSample.Location = new Point(13, 33);
+            bt_saveAlterSample.Location = new Point(20, 66);
+            bt_sampleReplace.Location = new Point(122, 23);
+            bt_sampleReplace.Size = new Size(72, 80);
+
+            bt_saveAlterSample.Enabled = true;
+
+            bt_sampleReplace.BackgroundImage = ConvertFIRToJpg(replaseAudit);
         }
     }
 }

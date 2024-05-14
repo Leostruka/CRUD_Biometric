@@ -59,7 +59,7 @@
             bt_saveAlterUser = new Button();
             tb_alterName = new TextBox();
             tp_sample = new TabPage();
-            bt_captureReplace = new Button();
+            bt_sampleReplace = new Button();
             tx_selectedIDSample = new Label();
             bt_saveAlterSample = new Button();
             ((System.ComponentModel.ISupportInitialize)pb_actvatedFir).BeginInit();
@@ -350,7 +350,7 @@
             // tp_sample
             // 
             tp_sample.BorderStyle = BorderStyle.FixedSingle;
-            tp_sample.Controls.Add(bt_captureReplace);
+            tp_sample.Controls.Add(bt_sampleReplace);
             tp_sample.Controls.Add(tx_selectedIDSample);
             tp_sample.Controls.Add(bt_saveAlterSample);
             tp_sample.Location = new Point(4, 28);
@@ -361,20 +361,20 @@
             tp_sample.Text = "Sample";
             tp_sample.UseVisualStyleBackColor = true;
             // 
-            // bt_captureReplace
+            // bt_sampleReplace
             // 
-            bt_captureReplace.BackgroundImage = Properties.Resources.fingerprint_scan;
-            bt_captureReplace.BackgroundImageLayout = ImageLayout.Zoom;
-            bt_captureReplace.FlatAppearance.BorderColor = SystemColors.Control;
-            bt_captureReplace.FlatAppearance.BorderSize = 0;
-            bt_captureReplace.FlatAppearance.MouseOverBackColor = SystemColors.MenuHighlight;
-            bt_captureReplace.FlatStyle = FlatStyle.Popup;
-            bt_captureReplace.Location = new Point(88, 41);
-            bt_captureReplace.Name = "bt_captureReplace";
-            bt_captureReplace.Size = new Size(38, 38);
-            bt_captureReplace.TabIndex = 9;
-            bt_captureReplace.UseVisualStyleBackColor = true;
-            bt_captureReplace.Click += bt_captureReplace_Click;
+            bt_sampleReplace.BackgroundImage = Properties.Resources.fingerprint_scan;
+            bt_sampleReplace.BackgroundImageLayout = ImageLayout.Zoom;
+            bt_sampleReplace.FlatAppearance.BorderColor = SystemColors.Control;
+            bt_sampleReplace.FlatAppearance.BorderSize = 0;
+            bt_sampleReplace.FlatAppearance.MouseOverBackColor = SystemColors.MenuHighlight;
+            bt_sampleReplace.FlatStyle = FlatStyle.Popup;
+            bt_sampleReplace.Location = new Point(88, 41);
+            bt_sampleReplace.Name = "bt_sampleReplace";
+            bt_sampleReplace.Size = new Size(38, 38);
+            bt_sampleReplace.TabIndex = 9;
+            bt_sampleReplace.UseVisualStyleBackColor = true;
+            bt_sampleReplace.Click += bt_sampleReplace_Click;
             // 
             // tx_selectedIDSample
             // 
@@ -465,6 +465,6 @@
         private Label tx_selectedID;
         private Label tx_selectedIDSample;
         private Button bt_saveAlterSample;
-        private Button bt_captureReplace;
+        private Button bt_sampleReplace;
     }
 }
