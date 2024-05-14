@@ -222,6 +222,8 @@ namespace CRUD_Biometric
             AuditModel.Audit audit = new AuditModel.Audit();
             audit.id = id;
 
+            int y = 0;
+
             for (int i = 0; i < dt_user_fir.Rows.Count; i++)
             {
                 if (Convert.ToInt32(dt_user_fir.Rows[i]["id"]) == audit.id)
@@ -230,11 +232,13 @@ namespace CRUD_Biometric
 
                     foreach (DataRow row in dt_audit.Rows)
                     {
+                        y++;
                         if (Convert.ToInt32(row["sample"]) == sample)
                         {
                             audit.data = StringToByteArray(row["data"].ToString());
                             audit.imageWidth = Convert.ToUInt32(row["imageWidth"]);
                             audit.imageHeight = Convert.ToUInt32(row["imageHeight"]);
+                            currentSampleNumber = y;
                         }
                     }
 
@@ -243,6 +247,24 @@ namespace CRUD_Biometric
                     tx_selected.Location = new Point(235, 10);
 
                     tb_userID.Text = audit.id.ToString();
+
+                    if(currentSampleNumber == 1)
+                    {
+                        bt_returnSample.Enabled = false;
+                        bt_nextSample.Enabled = true;
+                    }
+                    else if(currentSampleNumber == Convert.ToInt32(dg_users.SelectedRows[0].Cells[2].Value + string.Empty))
+                    {
+                        bt_nextSample.Enabled = false;
+                        bt_returnSample.Enabled = true;
+                    }
+                    else
+                    {
+                        bt_nextSample.Enabled = true;
+                        bt_returnSample.Enabled = true;
+                    }
+
+                    tx_sampleCount.Text = currentSampleNumber + "/" + dg_users.SelectedRows[0].Cells[2].Value + string.Empty;
 
                     break;
                 }
@@ -625,18 +647,11 @@ namespace CRUD_Biometric
         private void bt_returnSample_Click(object sender, EventArgs e)
         {
             int currentSample = int.Parse(tb_sample.Text) - 1;
-            firstSample = 0;
             int previousSample = 0;
 
             for (int i = 0; i < dt_user_fir.Rows.Count; i++)
             {
                 DataRow row = dt_user_fir.Rows[i];
-
-                if (Convert.ToInt32(row["id"]) == Convert.ToInt32(tb_userID.Text) && firstSample == 0)
-                {
-                    firstSample = Convert.ToInt32(row["sample"]);
-                }
-
                 if (Convert.ToInt32(row["id"]) == Convert.ToInt32(tb_userID.Text) && Convert.ToInt32(row["sample"]) <= currentSample)
                 {
                     previousSample = Convert.ToInt32(row["sample"]);
@@ -644,19 +659,6 @@ namespace CRUD_Biometric
             }
             currentSample = previousSample;
             tb_sample.Text = currentSample.ToString();
-
-            if (currentSample == firstSample)
-            {
-                bt_returnSample.Enabled = false;
-                bt_nextSample.Enabled = true;
-                currentSampleNumber = 1;
-            }
-            else
-            {
-                bt_nextSample.Enabled = true;
-                currentSampleNumber -= 1;
-            }
-            tx_sampleCount.Text = currentSampleNumber + "/" + dg_users.SelectedRows[0].Cells[2].Value + string.Empty;
         }
 
         private void bt_nextSample_Click(object sender, EventArgs e)
@@ -674,19 +676,6 @@ namespace CRUD_Biometric
                 }
             }
             tb_sample.Text = currentSample.ToString();
-
-            if (currentSample == lastSample)
-            {
-                bt_nextSample.Enabled = false;
-                bt_returnSample.Enabled = true;
-                currentSampleNumber = Convert.ToInt32(dg_users.SelectedRows[0].Cells[2].Value + string.Empty);
-            }
-            else
-            {
-                bt_returnSample.Enabled = true;
-                currentSampleNumber += 1;
-            }
-            tx_sampleCount.Text = currentSampleNumber + "/" + dg_users.SelectedRows[0].Cells[2].Value + string.Empty;
         }
 
 
