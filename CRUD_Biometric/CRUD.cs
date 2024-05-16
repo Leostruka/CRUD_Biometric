@@ -3,7 +3,6 @@ using CRUD_User.View;
 using CRUD_Biometric.DataAccess;
 using NITGEN.SDK.NBioBSP;
 using System.Data;
-using static System.ComponentModel.Design.ObjectSelectorEditor;
 using CRUD_Biometric.Properties;
 using System.Management;
 
@@ -38,8 +37,11 @@ namespace CRUD_Biometric
         ManagementEventWatcher arrivalWatcher;
         // WMI query to monitor for device removal events
         ManagementEventWatcher removalWatcher;
-        // Device is plugged
-        bool devicePlugged = false;
+
+        // Device information
+        short[] deviceID;
+        NBioAPI.Type.DEVICE_INFO_EX[] deviceInfoEx;
+        int currentDeviceID;
 
         SQL sql;
 
@@ -51,7 +53,9 @@ namespace CRUD_Biometric
 
             // Initialize NBioAPI
             m_NBioAPI = new NBioAPI();
+            // Initialize IndexSearch
             m_IndexSearch = new NBioAPI.IndexSearch(m_NBioAPI);
+            // Initialize Export for image conversion and extraction
             m_Export = new NBioAPI.Export(m_NBioAPI);
             uint ret = m_IndexSearch.InitEngine();
             if (ret != NBioAPI.Error.NONE)
@@ -59,18 +63,26 @@ namespace CRUD_Biometric
                 ErrorMsg(ret);
                 this.Close();
             }
+            // Get version of NBioAPI
             NBioAPI.Type.VERSION version = new NBioAPI.Type.VERSION();
             m_NBioAPI.GetVersion(out version);
 
+            // Initialize User, FIR and Audit objects
             user = new UserModel.User();
             fir = new FIRModel.FIR();
             audit = new AuditModel.Audit();
-
+            // Initialize FIR and Audit objects for replace
             replaseFir = new FIRModel.FIR();
             replaseAudit = new AuditModel.Audit();
 
+            // Get Device(s) connected and information
+            SearchDevice();
+
             // Update dg_users
             UpdateDGUsers();
+
+            // Initialize WMI event watchers 
+            InitializeWmiWatchers();
         }
 
         // ------------------------------Methods For Events-----------------------
@@ -127,6 +139,19 @@ namespace CRUD_Biometric
                              .Where(x => x % 2 == 0)
                              .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
                              .ToArray();
+        }
+
+        // Get serial number of the device
+        public string GetSerialNumber(short deviceID)
+        {
+            byte[] serial;
+            byte[] input = new byte[8];
+
+            m_NBioAPI.OpenDevice(deviceID);
+            m_NBioAPI.DeviceIoControl(514, input, out serial);
+            m_NBioAPI.CloseDevice(deviceID);
+
+            return BitConverter.ToString(serial);
         }
 
         // Update dg_users based on database
@@ -191,20 +216,17 @@ namespace CRUD_Biometric
         private void UpdateIndexSearch()
         {
             m_IndexSearch.ClearDB();
-            // Set SQL
-            sql = new SQL();
-            DataTable dt_fir = sql.GetDataFir();
 
             // Add FIR to IndexSearchDB if exists in database
-            if (dt_fir.Rows.Count > 0)
+            if (dt_user_fir.Rows.Count > 0)
             {
                 NBioAPI.IndexSearch.FP_INFO[] fpinfo;
-                for (int i = 0; i < dt_fir.Rows.Count; i++)
+                for (int i = 0; i < dt_user_fir.Rows.Count; i++)
                 {
                     NBioAPI.Type.FIR_TEXTENCODE textFIR = new NBioAPI.Type.FIR_TEXTENCODE();
 
-                    textFIR.TextFIR = dt_fir.Rows[i]["hash"].ToString();
-                    string id = dt_fir.Rows[i]["id"].ToString() + "909" + dt_fir.Rows[i]["sample"].ToString();
+                    textFIR.TextFIR = dt_user_fir.Rows[i]["hash"].ToString();
+                    string id = dt_user_fir.Rows[i]["id"].ToString() + "909" + dt_user_fir.Rows[i]["sample"].ToString();
                     uint ret = m_IndexSearch.AddFIR(textFIR, Convert.ToUInt32(id), out fpinfo);
                     if (ret != NBioAPI.Error.NONE)
                     {
@@ -229,39 +251,6 @@ namespace CRUD_Biometric
                     firstSample = Convert.ToInt32(row["sample"]);
                 }
             }
-        }
-
-        // Convert FIR to JPG image based on hFIR handle and set audit data
-        private Image ConvertFIRToJpg(NBioAPI.Type.HFIR hFIR)
-        {
-            NBioAPI.Export.EXPORT_AUDIT_DATA exportAuditData;
-            m_Export.NBioBSPToImage(hFIR, out exportAuditData);
-
-            audit.data = exportAuditData.AuditData[0].Image[0].Data;
-            audit.imageHeight = exportAuditData.ImageHeight;
-            audit.imageWidth = exportAuditData.ImageWidth;
-
-            uint r = m_NBioAPI.ImgConvRawToJpgBuf(audit.data, audit.imageWidth, audit.imageHeight, 100, out byte[] outbuffer);
-            if (r != NBioAPI.Error.NONE)
-            {
-                ErrorMsg(r);
-                return null;
-            }
-
-            return Image.FromStream(new MemoryStream(outbuffer));
-        }
-
-        // Convert FIR to JPG image based on Audit data
-        private Image ConvertFIRToJpg(AuditModel.Audit audit)
-        {
-            uint r = m_NBioAPI.ImgConvRawToJpgBuf(audit.data, audit.imageWidth, audit.imageHeight, 100, out byte[] outbuffer);
-            if (r != NBioAPI.Error.NONE)
-            {
-                ErrorMsg(r);
-                return null;
-            }
-
-            return Image.FromStream(new MemoryStream(outbuffer));
         }
 
         // Select FIR based on ID and sample, set image and text
@@ -346,25 +335,197 @@ namespace CRUD_Biometric
             bt_register.Enabled = true;
         }
 
-        // ------------------------------Methods For USB-----------------------
+        // Convert FIR to JPG image based on hFIR handle and set audit data
+        private Image ConvertFIRToJpg(NBioAPI.Type.HFIR hFIR)
+        {
+            NBioAPI.Export.EXPORT_AUDIT_DATA exportAuditData;
+            m_Export.NBioBSPToImage(hFIR, out exportAuditData);
+
+            audit.data = exportAuditData.AuditData[0].Image[0].Data;
+            audit.imageHeight = exportAuditData.ImageHeight;
+            audit.imageWidth = exportAuditData.ImageWidth;
+
+            uint r = m_NBioAPI.ImgConvRawToJpgBuf(audit.data, audit.imageWidth, audit.imageHeight, 100, out byte[] outbuffer);
+            if (r != NBioAPI.Error.NONE)
+            {
+                ErrorMsg(r);
+                return null;
+            }
+
+            return Image.FromStream(new MemoryStream(outbuffer));
+        }
+
+        // Convert FIR to JPG image based on Audit data
+        private Image ConvertFIRToJpg(AuditModel.Audit audit)
+        {
+            uint r = m_NBioAPI.ImgConvRawToJpgBuf(audit.data, audit.imageWidth, audit.imageHeight, 100, out byte[] outbuffer);
+            if (r != NBioAPI.Error.NONE)
+            {
+                ErrorMsg(r);
+                return null;
+            }
+
+            return Image.FromStream(new MemoryStream(outbuffer));
+        }
+
+        // ------------------------------Methods For USB and Device-----------------------
 
         // For the usb arrival and removal events
         private void ArrivalEventArrived(object sender, EventArgs e)
         {
             // USB device was plugged in
-            SearchDevice(devicePlugged);
+            SearchDevice();
         }
 
         private void RemovalEventArrived(object sender, EventArgs e)
         {
             // USB device was removed
-            SearchDevice(devicePlugged);
+            SearchDevice();
         }
 
         // Search for the device
-        private void SearchDevice(bool devicePlugged)
+        private void SearchDevice()
         {
-            m_NBioAPI.EnumerateDevice(out uint numDevices,out short[] deviceID, out NBioAPI.Type.DEVICE_INFO_EX[] deviceInfoEx);
+            // Get the number of devices connected and some information
+            m_NBioAPI.EnumerateDevice(out uint numDevices, out deviceID, out deviceInfoEx);
+
+            // Clear the flow layout panel
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() =>
+                {
+                    flp_devices.Controls.Clear();
+                }));
+            }
+            else
+            {
+                flp_devices.Controls.Clear();
+            }
+
+            // if no any device connected
+            if (numDevices == 0)
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        bt_capture.Enabled = false;
+                        bt_sampleReplace.Enabled = false;
+                        flp_deviceInf.Visible = false;
+                    }));
+                }
+                else
+                {
+                    bt_capture.Enabled = false;
+                    bt_sampleReplace.Enabled = false;
+                    flp_deviceInf.Visible = false;
+                }
+
+                currentDeviceID = -1;
+                MessageBox.Show("No device connected!\nCapture functions are disabled.", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
+            else
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        bt_capture.Enabled = true;
+                        bt_sampleReplace.Enabled = true;
+                        flp_deviceInf.Visible = true;
+                    }));
+                }
+                else
+                {
+                    bt_capture.Enabled = true;
+                    bt_sampleReplace.Enabled = true;
+                    flp_deviceInf.Visible = true;
+                }
+
+                // Add a new button for each device
+                for (int i = 0; i < numDevices; i++)
+                {
+                    Button bt_device = new Button();
+                    bt_device.Name = "hamister" + i;
+                    bt_device.Size = new Size(34, 28);
+                    bt_device.FlatStyle = FlatStyle.Flat;
+                    bt_device.Anchor = AnchorStyles.Right;
+                    bt_device.FlatAppearance.BorderSize = 0;
+                    bt_device.BackgroundImageLayout = ImageLayout.Zoom;
+                    bt_device.FlatAppearance.BorderColor = Color.LightSteelBlue;
+                    bt_device.FlatAppearance.MouseOverBackColor = Color.LightSteelBlue;
+                    bt_device.Font = new Font("Montserrat", 5, FontStyle.Bold);
+                    bt_device.TextAlign = ContentAlignment.TopLeft;
+
+                    if (i == 0)
+                    {
+                        currentDeviceID = i;
+
+                        bt_device.Enabled = false;
+                        bt_device.BackColor = Color.AliceBlue;
+                        bt_device.FlatAppearance.BorderSize = 1;
+                    }
+
+                    if (deviceInfoEx[i].Name == "FDU01" || deviceInfoEx[i].Name == "FDU04" || deviceInfoEx[i].Name == "FDU06")
+                    {
+                        bt_device.Text = (i + 1).ToString();
+                        bt_device.Click += new EventHandler(bt_device_Click);
+                        bt_device.BackgroundImage = Resources.H_DX;
+
+                        if (this.InvokeRequired)
+                        {
+                            this.Invoke(new Action(() =>
+                            {
+                                flp_devices.Controls.Add(bt_device);
+                            }));
+                        }
+                        else
+                        {
+                            flp_devices.Controls.Add(bt_device);
+                        }
+                    }
+                    else if (deviceInfoEx[i].Name == "FDU11" || deviceInfoEx[i].Name == "FDU14" || deviceInfoEx[i].Name == "FDU06M" || deviceInfoEx[i].Name == "FDU06S")
+                    {
+                        bt_device.Text = (i + 1).ToString();
+                        bt_device.Click += new EventHandler(bt_device_Click);
+                        bt_device.BackgroundImage = Resources.H_3;
+
+                        if (this.InvokeRequired)
+                        {
+                            this.Invoke(new Action(() =>
+                            {
+                                flp_devices.Controls.Add(bt_device);
+                            }));
+                        }
+                        else
+                        {
+                            flp_devices.Controls.Add(bt_device);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Add a new event handler for each device button
+        private void bt_device_Click(object sender, EventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+            currentDeviceID = int.Parse(clickedButton.Name.Substring(8));
+            string serialNumber = GetSerialNumber(deviceID[currentDeviceID]);
+
+            // Disable all buttons in flp_devices
+            foreach (Button button in flp_devices.Controls)
+            {
+                button.Enabled = true;
+                button.BackColor = Color.White;
+                button.FlatAppearance.BorderSize = 0;
+            }
+
+            // Disable the pressed button
+            clickedButton.Enabled = false;
+            clickedButton.BackColor = Color.AliceBlue;
+            clickedButton.FlatAppearance.BorderSize = 1;
         }
 
         // ------------------------------Methods For Capture, Register and Delete-----------------------
@@ -374,7 +535,7 @@ namespace CRUD_Biometric
         {
             NBioAPI.Type.HFIR hNewFIR;
 
-            m_NBioAPI.OpenDevice(NBioAPI.Type.DEVICE_ID.AUTO);
+            m_NBioAPI.OpenDevice(deviceID[currentDeviceID]);
 
             NBioAPI.Type.HFIR hAuditFIR = new NBioAPI.Type.HFIR();
 
@@ -383,11 +544,11 @@ namespace CRUD_Biometric
             if (ret != NBioAPI.Error.NONE)
             {
                 ErrorMsg(ret);
-                m_NBioAPI.CloseDevice(NBioAPI.Type.DEVICE_ID.AUTO);
+                m_NBioAPI.CloseDevice(deviceID[currentDeviceID]);
                 return;
             }
 
-            m_NBioAPI.CloseDevice(NBioAPI.Type.DEVICE_ID.AUTO);
+            m_NBioAPI.CloseDevice(deviceID[currentDeviceID]);
 
             // Clear pb_actvaredFir
             pb_actvatedFir.Image = null;
@@ -545,15 +706,15 @@ namespace CRUD_Biometric
             // Register new user and FIR
             // Capture FIR2
             MessageBox.Show("Please, put the same finger of the capture!", "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            m_NBioAPI.OpenDevice(NBioAPI.Type.DEVICE_ID.AUTO);
+            m_NBioAPI.OpenDevice(deviceID[currentDeviceID]);
             uint ret = m_NBioAPI.Capture(NBioAPI.Type.FIR_PURPOSE.VERIFY, out hCapturedFIR, NBioAPI.Type.TIMEOUT.DEFAULT, hAuditFIR, null);
             if (ret != NBioAPI.Error.NONE)
             {
                 ErrorMsg(ret);
-                m_NBioAPI.CloseDevice(NBioAPI.Type.DEVICE_ID.AUTO);
+                m_NBioAPI.CloseDevice(deviceID[currentDeviceID]);
                 return;
             }
-            m_NBioAPI.CloseDevice(NBioAPI.Type.DEVICE_ID.AUTO);
+            m_NBioAPI.CloseDevice(deviceID[currentDeviceID]);
 
             // Get FIR2 and compare with activated FIR
             m_NBioAPI.GetTextFIRFromHandle(hActivatedFIR, out NBioAPI.Type.FIR_TEXTENCODE textFIR, true);
@@ -808,7 +969,8 @@ namespace CRUD_Biometric
                 tb_userID.Enabled = true;
                 bt_modify.Text = "Modify";
 
-                bt_capture.Enabled = true;
+                if (currentDeviceID != -1)
+                    bt_capture.Enabled = true;
                 if (hActivatedFIR != null)
                     bt_register.Enabled = true;
                 if (dg_users.SelectedRows.Count > 0)
@@ -871,7 +1033,7 @@ namespace CRUD_Biometric
             NBioAPI.Type.HFIR hNewFIR;
 
             // Capture FIR
-            m_NBioAPI.OpenDevice(NBioAPI.Type.DEVICE_ID.AUTO);
+            m_NBioAPI.OpenDevice(deviceID[currentDeviceID]);
 
             NBioAPI.Type.HFIR hAuditFIR = new NBioAPI.Type.HFIR();
 
@@ -879,11 +1041,11 @@ namespace CRUD_Biometric
             if (ret != NBioAPI.Error.NONE)
             {
                 ErrorMsg(ret);
-                m_NBioAPI.CloseDevice(NBioAPI.Type.DEVICE_ID.AUTO);
+                m_NBioAPI.CloseDevice(deviceID[currentDeviceID]);
                 return;
             }
 
-            m_NBioAPI.CloseDevice(NBioAPI.Type.DEVICE_ID.AUTO);
+            m_NBioAPI.CloseDevice(deviceID[currentDeviceID]);
 
             m_NBioAPI.GetTextFIRFromHandle(hNewFIR, out NBioAPI.Type.FIR_TEXTENCODE newTextFIR, true);
 

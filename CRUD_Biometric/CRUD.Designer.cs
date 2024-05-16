@@ -27,6 +27,13 @@
                 {
                     m_NBioAPI.Dispose();
                 }
+
+                // Stop the WMI event watcher
+                arrivalWatcher.Stop();
+                arrivalWatcher.Dispose();
+
+                removalWatcher.Stop();
+                removalWatcher.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -35,8 +42,8 @@
 
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             pb_actvatedFir = new PictureBox();
             tx_actual = new Label();
             bt_capture = new Button();
@@ -62,12 +69,16 @@
             bt_sampleReplace = new Button();
             tx_selectedIDSample = new Label();
             bt_saveAlterSample = new Button();
+            flp_devices = new FlowLayoutPanel();
+            flp_deviceInf = new FlowLayoutPanel();
+            tx_deviceName = new Label();
             ((System.ComponentModel.ISupportInitialize)pb_actvatedFir).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dg_users).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pb_selectedFir).BeginInit();
             tc_modify.SuspendLayout();
             tp_user.SuspendLayout();
             tp_sample.SuspendLayout();
+            flp_deviceInf.SuspendLayout();
             SuspendLayout();
             // 
             // pb_actvatedFir
@@ -149,23 +160,23 @@
             dg_users.CausesValidation = false;
             dg_users.CellBorderStyle = DataGridViewCellBorderStyle.SunkenHorizontal;
             dg_users.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Montserrat", 8.999999F);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Control;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dg_users.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = SystemColors.Control;
+            dataGridViewCellStyle3.Font = new Font("Montserrat", 8.999999F);
+            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Control;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            dg_users.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             dg_users.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Montserrat", 8.999999F);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            dg_users.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = SystemColors.Window;
+            dataGridViewCellStyle4.Font = new Font("Montserrat", 8.999999F);
+            dataGridViewCellStyle4.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
+            dg_users.DefaultCellStyle = dataGridViewCellStyle4;
             dg_users.EditMode = DataGridViewEditMode.EditProgrammatically;
             dg_users.Location = new Point(439, 19);
             dg_users.MultiSelect = false;
@@ -292,7 +303,7 @@
             tc_modify.Location = new Point(185, 273);
             tc_modify.Name = "tc_modify";
             tc_modify.SelectedIndex = 0;
-            tc_modify.Size = new Size(228, 160);
+            tc_modify.Size = new Size(228, 161);
             tc_modify.TabIndex = 16;
             tc_modify.Tag = "";
             tc_modify.Visible = false;
@@ -307,7 +318,7 @@
             tp_user.Location = new Point(4, 28);
             tp_user.Name = "tp_user";
             tp_user.Padding = new Padding(3);
-            tp_user.Size = new Size(220, 128);
+            tp_user.Size = new Size(220, 129);
             tp_user.TabIndex = 0;
             tp_user.Text = "User";
             tp_user.UseVisualStyleBackColor = true;
@@ -317,7 +328,7 @@
             tx_selectedID.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             tx_selectedID.AutoSize = true;
             tx_selectedID.Font = new Font("Montserrat", 8.999999F);
-            tx_selectedID.Location = new Point(68, 15);
+            tx_selectedID.Location = new Point(68, 16);
             tx_selectedID.Name = "tx_selectedID";
             tx_selectedID.Size = new Size(86, 16);
             tx_selectedID.TabIndex = 6;
@@ -328,7 +339,7 @@
             // 
             bt_saveAlterUser.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             bt_saveAlterUser.Font = new Font("Montserrat", 8.999999F);
-            bt_saveAlterUser.Location = new Point(71, 91);
+            bt_saveAlterUser.Location = new Point(71, 92);
             bt_saveAlterUser.Name = "bt_saveAlterUser";
             bt_saveAlterUser.Size = new Size(75, 23);
             bt_saveAlterUser.TabIndex = 4;
@@ -340,7 +351,7 @@
             // 
             tb_alterName.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             tb_alterName.Font = new Font("Montserrat", 8.999999F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            tb_alterName.Location = new Point(51, 51);
+            tb_alterName.Location = new Point(51, 52);
             tb_alterName.Name = "tb_alterName";
             tb_alterName.PlaceholderText = "New Name";
             tb_alterName.Size = new Size(114, 22);
@@ -356,7 +367,7 @@
             tp_sample.Location = new Point(4, 28);
             tp_sample.Name = "tp_sample";
             tp_sample.Padding = new Padding(3);
-            tp_sample.Size = new Size(220, 128);
+            tp_sample.Size = new Size(220, 129);
             tp_sample.TabIndex = 1;
             tp_sample.Text = "Sample";
             tp_sample.UseVisualStyleBackColor = true;
@@ -368,7 +379,7 @@
             bt_sampleReplace.FlatAppearance.BorderColor = SystemColors.Control;
             bt_sampleReplace.FlatAppearance.BorderSize = 0;
             bt_sampleReplace.FlatAppearance.MouseOverBackColor = SystemColors.MenuHighlight;
-            bt_sampleReplace.FlatStyle = FlatStyle.Popup;
+            bt_sampleReplace.FlatStyle = FlatStyle.Flat;
             bt_sampleReplace.Location = new Point(88, 41);
             bt_sampleReplace.Name = "bt_sampleReplace";
             bt_sampleReplace.Size = new Size(38, 38);
@@ -381,7 +392,7 @@
             tx_selectedIDSample.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             tx_selectedIDSample.AutoSize = true;
             tx_selectedIDSample.Font = new Font("Montserrat", 8.999999F);
-            tx_selectedIDSample.Location = new Point(68, 15);
+            tx_selectedIDSample.Location = new Point(68, 16);
             tx_selectedIDSample.Name = "tx_selectedIDSample";
             tx_selectedIDSample.Size = new Size(86, 16);
             tx_selectedIDSample.TabIndex = 8;
@@ -392,7 +403,7 @@
             // 
             bt_saveAlterSample.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             bt_saveAlterSample.Font = new Font("Montserrat", 8.999999F);
-            bt_saveAlterSample.Location = new Point(71, 91);
+            bt_saveAlterSample.Location = new Point(71, 92);
             bt_saveAlterSample.Name = "bt_saveAlterSample";
             bt_saveAlterSample.Size = new Size(75, 23);
             bt_saveAlterSample.TabIndex = 7;
@@ -400,11 +411,38 @@
             bt_saveAlterSample.UseVisualStyleBackColor = true;
             bt_saveAlterSample.Click += bt_saveAlterSample_Click;
             // 
+            // flp_devices
+            // 
+            flp_devices.Location = new Point(12, 270);
+            flp_devices.Name = "flp_devices";
+            flp_devices.Size = new Size(32, 160);
+            flp_devices.TabIndex = 17;
+            // 
+            // flp_deviceInf
+            // 
+            flp_deviceInf.BackColor = Color.AliceBlue;
+            flp_deviceInf.Controls.Add(tx_deviceName);
+            flp_deviceInf.Location = new Point(43, 270);
+            flp_deviceInf.Name = "flp_deviceInf";
+            flp_deviceInf.Size = new Size(132, 160);
+            flp_deviceInf.TabIndex = 18;
+            // 
+            // tx_deviceName
+            // 
+            tx_deviceName.AutoSize = true;
+            tx_deviceName.Font = new Font("Montserrat", 7.999999F);
+            tx_deviceName.Location = new Point(3, 0);
+            tx_deviceName.Name = "tx_deviceName";
+            tx_deviceName.Size = new Size(47, 15);
+            tx_deviceName.TabIndex = 0;
+            tx_deviceName.Text = "Device:";
+            // 
             // CRUD
             // 
             AutoScaleDimensions = new SizeF(8F, 16F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(760, 446);
+            Controls.Add(flp_deviceInf);
             Controls.Add(bt_modify);
             Controls.Add(bt_nextSample);
             Controls.Add(bt_returnSample);
@@ -422,6 +460,7 @@
             Controls.Add(tb_sample);
             Controls.Add(tx_sampleCount);
             Controls.Add(tc_modify);
+            Controls.Add(flp_devices);
             Font = new Font("Montserrat", 8.999999F);
             FormBorderStyle = FormBorderStyle.Fixed3D;
             MaximizeBox = false;
@@ -436,6 +475,8 @@
             tp_user.PerformLayout();
             tp_sample.ResumeLayout(false);
             tp_sample.PerformLayout();
+            flp_deviceInf.ResumeLayout(false);
+            flp_deviceInf.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -467,5 +508,8 @@
         private Label tx_selectedIDSample;
         private Button bt_saveAlterSample;
         private Button bt_sampleReplace;
+        private FlowLayoutPanel flp_devices;
+        private FlowLayoutPanel flp_deviceInf;
+        private Label tx_deviceName;
     }
 }
