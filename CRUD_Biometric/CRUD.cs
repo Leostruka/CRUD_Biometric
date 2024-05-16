@@ -411,14 +411,14 @@ namespace CRUD_Biometric
                     {
                         bt_capture.Enabled = false;
                         bt_sampleReplace.Enabled = false;
-                        flp_deviceInf.Visible = false;
+                        pn_deviceInf.Visible = false;
                     }));
                 }
                 else
                 {
                     bt_capture.Enabled = false;
                     bt_sampleReplace.Enabled = false;
-                    flp_deviceInf.Visible = false;
+                    pn_deviceInf.Visible = false;
                 }
 
                 currentDeviceID = -1;
@@ -433,14 +433,14 @@ namespace CRUD_Biometric
                     {
                         bt_capture.Enabled = true;
                         bt_sampleReplace.Enabled = true;
-                        flp_deviceInf.Visible = true;
+                        pn_deviceInf.Visible = true;
                     }));
                 }
                 else
                 {
                     bt_capture.Enabled = true;
                     bt_sampleReplace.Enabled = true;
-                    flp_deviceInf.Visible = true;
+                    pn_deviceInf.Visible = true;
                 }
 
                 // Add a new button for each device

@@ -42,8 +42,8 @@
 
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             pb_actvatedFir = new PictureBox();
             tx_actual = new Label();
             bt_capture = new Button();
@@ -70,15 +70,15 @@
             tx_selectedIDSample = new Label();
             bt_saveAlterSample = new Button();
             flp_devices = new FlowLayoutPanel();
-            flp_deviceInf = new FlowLayoutPanel();
             tx_deviceName = new Label();
+            pn_deviceInf = new Panel();
             ((System.ComponentModel.ISupportInitialize)pb_actvatedFir).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dg_users).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pb_selectedFir).BeginInit();
             tc_modify.SuspendLayout();
             tp_user.SuspendLayout();
             tp_sample.SuspendLayout();
-            flp_deviceInf.SuspendLayout();
+            pn_deviceInf.SuspendLayout();
             SuspendLayout();
             // 
             // pb_actvatedFir
@@ -160,23 +160,23 @@
             dg_users.CausesValidation = false;
             dg_users.CellBorderStyle = DataGridViewCellBorderStyle.SunkenHorizontal;
             dg_users.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = SystemColors.Control;
-            dataGridViewCellStyle3.Font = new Font("Montserrat", 8.999999F);
-            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Control;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            dg_users.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Montserrat", 8.999999F);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Control;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dg_users.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dg_users.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = SystemColors.Window;
-            dataGridViewCellStyle4.Font = new Font("Montserrat", 8.999999F);
-            dataGridViewCellStyle4.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
-            dg_users.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Montserrat", 8.999999F);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dg_users.DefaultCellStyle = dataGridViewCellStyle2;
             dg_users.EditMode = DataGridViewEditMode.EditProgrammatically;
             dg_users.Location = new Point(439, 19);
             dg_users.MultiSelect = false;
@@ -418,15 +418,6 @@
             flp_devices.Size = new Size(32, 160);
             flp_devices.TabIndex = 17;
             // 
-            // flp_deviceInf
-            // 
-            flp_deviceInf.BackColor = Color.AliceBlue;
-            flp_deviceInf.Controls.Add(tx_deviceName);
-            flp_deviceInf.Location = new Point(43, 270);
-            flp_deviceInf.Name = "flp_deviceInf";
-            flp_deviceInf.Size = new Size(132, 160);
-            flp_deviceInf.TabIndex = 18;
-            // 
             // tx_deviceName
             // 
             tx_deviceName.AutoSize = true;
@@ -437,12 +428,21 @@
             tx_deviceName.TabIndex = 0;
             tx_deviceName.Text = "Device:";
             // 
+            // pn_deviceInf
+            // 
+            pn_deviceInf.BackColor = Color.AliceBlue;
+            pn_deviceInf.Controls.Add(tx_deviceName);
+            pn_deviceInf.Location = new Point(43, 270);
+            pn_deviceInf.Name = "pn_deviceInf";
+            pn_deviceInf.Size = new Size(132, 160);
+            pn_deviceInf.TabIndex = 19;
+            // 
             // CRUD
             // 
             AutoScaleDimensions = new SizeF(8F, 16F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(760, 446);
-            Controls.Add(flp_deviceInf);
+            Controls.Add(pn_deviceInf);
             Controls.Add(bt_modify);
             Controls.Add(bt_nextSample);
             Controls.Add(bt_returnSample);
@@ -475,8 +475,8 @@
             tp_user.PerformLayout();
             tp_sample.ResumeLayout(false);
             tp_sample.PerformLayout();
-            flp_deviceInf.ResumeLayout(false);
-            flp_deviceInf.PerformLayout();
+            pn_deviceInf.ResumeLayout(false);
+            pn_deviceInf.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -509,7 +509,7 @@
         private Button bt_saveAlterSample;
         private Button bt_sampleReplace;
         private FlowLayoutPanel flp_devices;
-        private FlowLayoutPanel flp_deviceInf;
         private Label tx_deviceName;
+        private Panel pn_deviceInf;
     }
 }
