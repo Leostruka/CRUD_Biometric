@@ -469,8 +469,8 @@
             Controls.Add(tb_sample);
             Controls.Add(tx_sampleCount);
             Controls.Add(tc_modify);
-            Controls.Add(flp_devices);
             Controls.Add(pn_deviceInf);
+            Controls.Add(flp_devices);
             Font = new Font("Montserrat", 8.999999F);
             FormBorderStyle = FormBorderStyle.Fixed3D;
             MaximizeBox = false;
