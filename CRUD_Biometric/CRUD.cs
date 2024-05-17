@@ -453,7 +453,6 @@ namespace CRUD_Biometric
                     bt_device.Anchor = AnchorStyles.Right;
                     bt_device.FlatAppearance.BorderSize = 0;
                     bt_device.BackgroundImageLayout = ImageLayout.Zoom;
-                    bt_device.FlatAppearance.BorderColor = Color.LightSteelBlue;
                     bt_device.FlatAppearance.MouseOverBackColor = Color.LightSteelBlue;
                     bt_device.Font = new Font("Montserrat", 5, FontStyle.Bold);
                     bt_device.TextAlign = ContentAlignment.TopLeft;
@@ -463,8 +462,7 @@ namespace CRUD_Biometric
                         currentDeviceID = i;
 
                         bt_device.Enabled = false;
-                        bt_device.BackColor = Color.AliceBlue;
-                        bt_device.FlatAppearance.BorderSize = 1;
+                        bt_device.BackColor = Color.LightSkyBlue;
                     }
 
                     if (deviceInfoEx[i].Name == "FDU01" || deviceInfoEx[i].Name == "FDU04" || deviceInfoEx[i].Name == "FDU06")
@@ -519,13 +517,11 @@ namespace CRUD_Biometric
             {
                 button.Enabled = true;
                 button.BackColor = Color.White;
-                button.FlatAppearance.BorderSize = 0;
             }
 
             // Disable the pressed button
             clickedButton.Enabled = false;
-            clickedButton.BackColor = Color.AliceBlue;
-            clickedButton.FlatAppearance.BorderSize = 1;
+            clickedButton.BackColor = Color.LightSkyBlue;
         }
 
         // ------------------------------Methods For Capture, Register and Delete-----------------------

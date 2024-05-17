@@ -44,6 +44,7 @@
         {
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             pb_actvatedFir = new PictureBox();
             tx_actual = new Label();
             bt_capture = new Button();
@@ -181,6 +182,14 @@
             dg_users.Location = new Point(439, 19);
             dg_users.MultiSelect = false;
             dg_users.Name = "dg_users";
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = SystemColors.Control;
+            dataGridViewCellStyle3.Font = new Font("Montserrat", 8.999999F);
+            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Control;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            dg_users.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             dg_users.RowHeadersVisible = false;
             dg_users.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dg_users.ShowCellToolTips = false;
@@ -413,16 +422,16 @@
             // 
             // flp_devices
             // 
-            flp_devices.Location = new Point(12, 270);
+            flp_devices.Location = new Point(12, 267);
             flp_devices.Name = "flp_devices";
-            flp_devices.Size = new Size(32, 160);
+            flp_devices.Size = new Size(32, 164);
             flp_devices.TabIndex = 17;
             // 
             // tx_deviceName
             // 
             tx_deviceName.AutoSize = true;
             tx_deviceName.Font = new Font("Montserrat", 7.999999F);
-            tx_deviceName.Location = new Point(3, 0);
+            tx_deviceName.Location = new Point(3, 3);
             tx_deviceName.Name = "tx_deviceName";
             tx_deviceName.Size = new Size(47, 15);
             tx_deviceName.TabIndex = 0;
@@ -430,8 +439,9 @@
             // 
             // pn_deviceInf
             // 
-            pn_deviceInf.BackColor = Color.AliceBlue;
+            pn_deviceInf.BackColor = Color.LightSkyBlue;
             pn_deviceInf.Controls.Add(tx_deviceName);
+            pn_deviceInf.Font = new Font("Montserrat", 7.999999F);
             pn_deviceInf.Location = new Point(43, 270);
             pn_deviceInf.Name = "pn_deviceInf";
             pn_deviceInf.Size = new Size(132, 160);
@@ -442,7 +452,6 @@
             AutoScaleDimensions = new SizeF(8F, 16F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(760, 446);
-            Controls.Add(pn_deviceInf);
             Controls.Add(bt_modify);
             Controls.Add(bt_nextSample);
             Controls.Add(bt_returnSample);
@@ -461,6 +470,7 @@
             Controls.Add(tx_sampleCount);
             Controls.Add(tc_modify);
             Controls.Add(flp_devices);
+            Controls.Add(pn_deviceInf);
             Font = new Font("Montserrat", 8.999999F);
             FormBorderStyle = FormBorderStyle.Fixed3D;
             MaximizeBox = false;
