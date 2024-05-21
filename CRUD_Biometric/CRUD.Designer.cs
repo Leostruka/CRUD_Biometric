@@ -73,6 +73,9 @@
             flp_devices = new FlowLayoutPanel();
             tx_deviceName = new Label();
             pn_deviceInf = new Panel();
+            tb_serialN = new TextBox();
+            tx_serialNumber = new Label();
+            tb_deviceName = new TextBox();
             ((System.ComponentModel.ISupportInitialize)pb_actvatedFir).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dg_users).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pb_selectedFir).BeginInit();
@@ -430,22 +433,59 @@
             // tx_deviceName
             // 
             tx_deviceName.AutoSize = true;
-            tx_deviceName.Font = new Font("Montserrat", 7.999999F);
+            tx_deviceName.Font = new Font("Montserrat", 6.999999F);
             tx_deviceName.Location = new Point(3, 3);
             tx_deviceName.Name = "tx_deviceName";
-            tx_deviceName.Size = new Size(47, 15);
+            tx_deviceName.Size = new Size(43, 14);
             tx_deviceName.TabIndex = 0;
             tx_deviceName.Text = "Device:";
             // 
             // pn_deviceInf
             // 
             pn_deviceInf.BackColor = Color.LightSkyBlue;
+            pn_deviceInf.Controls.Add(tb_serialN);
+            pn_deviceInf.Controls.Add(tx_serialNumber);
+            pn_deviceInf.Controls.Add(tb_deviceName);
             pn_deviceInf.Controls.Add(tx_deviceName);
             pn_deviceInf.Font = new Font("Montserrat", 7.999999F);
             pn_deviceInf.Location = new Point(43, 270);
             pn_deviceInf.Name = "pn_deviceInf";
-            pn_deviceInf.Size = new Size(132, 160);
+            pn_deviceInf.Size = new Size(140, 160);
             pn_deviceInf.TabIndex = 19;
+            // 
+            // tb_serialN
+            // 
+            tb_serialN.BackColor = Color.LightSkyBlue;
+            tb_serialN.BorderStyle = BorderStyle.None;
+            tb_serialN.Font = new Font("Montserrat", 6.999999F);
+            tb_serialN.Location = new Point(22, 20);
+            tb_serialN.Name = "tb_serialN";
+            tb_serialN.ReadOnly = true;
+            tb_serialN.Size = new Size(115, 12);
+            tb_serialN.TabIndex = 3;
+            tb_serialN.TextAlign = HorizontalAlignment.Right;
+            // 
+            // tx_serialNumber
+            // 
+            tx_serialNumber.AutoSize = true;
+            tx_serialNumber.Font = new Font("Montserrat", 6.999999F);
+            tx_serialNumber.Location = new Point(3, 20);
+            tx_serialNumber.Name = "tx_serialNumber";
+            tx_serialNumber.Size = new Size(23, 14);
+            tx_serialNumber.TabIndex = 2;
+            tx_serialNumber.Text = "SN:";
+            // 
+            // tb_deviceName
+            // 
+            tb_deviceName.BackColor = Color.LightSkyBlue;
+            tb_deviceName.BorderStyle = BorderStyle.None;
+            tb_deviceName.Font = new Font("Montserrat", 9.999999F);
+            tb_deviceName.Location = new Point(49, 0);
+            tb_deviceName.Name = "tb_deviceName";
+            tb_deviceName.ReadOnly = true;
+            tb_deviceName.Size = new Size(88, 17);
+            tb_deviceName.TabIndex = 1;
+            tb_deviceName.TextAlign = HorizontalAlignment.Right;
             // 
             // CRUD
             // 
@@ -521,5 +561,8 @@
         private FlowLayoutPanel flp_devices;
         private Label tx_deviceName;
         private Panel pn_deviceInf;
+        private Label tx_serialNumber;
+        private TextBox tb_deviceName;
+        private TextBox tb_serialN;
     }
 }

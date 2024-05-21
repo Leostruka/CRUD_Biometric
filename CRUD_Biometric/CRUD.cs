@@ -457,14 +457,6 @@ namespace CRUD_Biometric
                     bt_device.Font = new Font("Montserrat", 5, FontStyle.Bold);
                     bt_device.TextAlign = ContentAlignment.TopLeft;
 
-                    if (i == 0)
-                    {
-                        currentDeviceID = i;
-
-                        bt_device.Enabled = false;
-                        bt_device.BackColor = Color.LightSkyBlue;
-                    }
-
                     if (deviceInfoEx[i].Name == "FDU01" || deviceInfoEx[i].Name == "FDU04" || deviceInfoEx[i].Name == "FDU06")
                     {
                         bt_device.Text = (i + 1).ToString();
@@ -501,6 +493,55 @@ namespace CRUD_Biometric
                             flp_devices.Controls.Add(bt_device);
                         }
                     }
+
+                    if (i == 0)
+                    {
+                        currentDeviceID = i;
+                        if (bt_device.BackgroundImage == Resources.H_DX)
+                        {
+                            if (this.InvokeRequired)
+                            {
+                                this.Invoke(new Action(() =>
+                                {
+                                    tb_deviceName.Text = "FDU01";
+                                }));
+                            }
+                            else
+                            {
+                                tb_deviceName.Text = "FDU01";
+                            }
+                        }
+                        else
+                        {
+                            if (this.InvokeRequired)
+                            {
+                                this.Invoke(new Action(() =>
+                                {
+                                    tb_deviceName.Text = "Hamster III";
+                                }));
+                            }
+                            else
+                            {
+                                tb_deviceName.Text = "Hamster III";
+                            }
+                        }
+
+                        if (this.InvokeRequired)
+                        {
+                            this.Invoke(new Action(() =>
+                            {
+                                tb_serialN.Text = GetSerialNumber(deviceID[currentDeviceID]);
+                                bt_device.Enabled = false;
+                                bt_device.BackColor = Color.LightSkyBlue;
+                            }));
+                        }
+                        else
+                        {
+                            tb_serialN.Text = GetSerialNumber(deviceID[currentDeviceID]);
+                            bt_device.Enabled = false;
+                            bt_device.BackColor = Color.LightSkyBlue;
+                        }
+                    }
                 }
             }
         }
@@ -522,6 +563,17 @@ namespace CRUD_Biometric
             // Disable the pressed button
             clickedButton.Enabled = false;
             clickedButton.BackColor = Color.LightSkyBlue;
+
+            // Set the device name and serial number
+            tb_serialN.Text = serialNumber;
+            if (deviceInfoEx[currentDeviceID].Name == "FDU01" || deviceInfoEx[currentDeviceID].Name == "FDU04" || deviceInfoEx[currentDeviceID].Name == "FDU06")
+            {
+                tb_deviceName.Text = "FDU01";
+            }
+            else
+            {
+                tb_deviceName.Text = "Hamster III";
+            }
         }
 
         // ------------------------------Methods For Capture, Register and Delete-----------------------
