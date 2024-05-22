@@ -10,7 +10,7 @@ namespace CRUD_Biometric
 {
     public partial class CRUD : Form
     {
-        // ------------------------------Variables and Objects-----------------------
+        #region ------------------------------Variables and Objects-------------------------------------------------
 
         // NBioAPI objects
         NBioAPI m_NBioAPI;
@@ -45,7 +45,9 @@ namespace CRUD_Biometric
 
         SQL sql;
 
-        // ------------------------------Methods For Forms-----------------------
+        #endregion
+
+        #region ------------------------------Methods For Forms-----------------------------------------------------
 
         public CRUD()
         {
@@ -85,7 +87,9 @@ namespace CRUD_Biometric
             InitializeWmiWatchers();
         }
 
-        // ------------------------------Methods For Events-----------------------
+        #endregion
+
+        #region ------------------------------Methods For Events----------------------------------------------------
 
         // Initialize WMI event watchers
         private void InitializeWmiWatchers()
@@ -103,7 +107,9 @@ namespace CRUD_Biometric
             removalWatcher.Start();
         }
 
-        // ------------------------------Methods Called---------------------------
+        #endregion
+
+        #region ------------------------------Methods Called--------------------------------------------------------
 
         // Error message
         private void ErrorMsg(uint ret) => MessageBox.Show("Error: " + ret.ToString() + "\n" + NBioAPI.Error.GetErrorDescription(ret), "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -368,7 +374,9 @@ namespace CRUD_Biometric
             return Image.FromStream(new MemoryStream(outbuffer));
         }
 
-        // ------------------------------Methods For USB and Device-----------------------
+        #endregion
+
+        #region ------------------------------Methods For USB and Device--------------------------------------------
 
         // For the usb arrival and removal events
         private void ArrivalEventArrived(object sender, EventArgs e)
@@ -576,7 +584,9 @@ namespace CRUD_Biometric
             }
         }
 
-        // ------------------------------Methods For Capture, Register and Delete-----------------------
+#endregion
+
+        #region ------------------------------Methods For Capture, Register and Delete------------------------------
 
         // Capture FIR
         private void bt_capture_Click(object sender, EventArgs e)
@@ -881,7 +891,9 @@ namespace CRUD_Biometric
             }
         }
 
-        // ------------------------------Methods To Select User and Sample-----------------------
+        #endregion
+
+        #region ------------------------------Methods To Select User and Sample-------------------------------------
 
         // Get selected user from dg_users
         private void dg_users_SelectionChanged(object sender, EventArgs e)
@@ -975,7 +987,9 @@ namespace CRUD_Biometric
             tb_sample.Text = currentSample.ToString();
         }
 
-        // ------------------------------Methods For Modify-----------------------
+        #endregion
+
+        #region ------------------------------Methods For Modify----------------------------------------------------
 
         // Modify user name or selected sample
         private void bt_modify_Click(object sender, EventArgs e)
@@ -1146,5 +1160,7 @@ namespace CRUD_Biometric
                     bt_remove.Enabled = true;
             }
         }
+    
+        #endregion
     }
 }
