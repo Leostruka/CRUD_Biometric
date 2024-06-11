@@ -5,6 +5,7 @@ using NITGEN.SDK.NBioBSP;
 using System.Data;
 using CRUD_Biometric.Properties;
 using System.Management;
+using System.ComponentModel;
 
 namespace CRUD_Biometric
 {
@@ -42,6 +43,7 @@ namespace CRUD_Biometric
         short[] deviceID;
         NBioAPI.Type.DEVICE_INFO_EX[] deviceInfoEx;
         int currentDeviceID;
+        bool isFingerPlaced;
 
         SQL sql;
 
@@ -85,6 +87,9 @@ namespace CRUD_Biometric
 
             // Initialize WMI event watchers 
             InitializeWmiWatchers();
+
+            // Initialize background worker for finger check
+            InitializeFingerCheckWorkerFunctions();
         }
 
         #endregion
@@ -105,6 +110,13 @@ namespace CRUD_Biometric
             removalWatcher = new ManagementEventWatcher(removalQuery);
             removalWatcher.EventArrived += RemovalEventArrived;
             removalWatcher.Start();
+        }
+
+        private void InitializeFingerCheckWorkerFunctions()
+        {
+            // Initialize the background worker for finger check
+            fingerCheckWorker.DoWork += fingerCheckWorker_DoWork;
+            fingerCheckWorker.WorkerSupportsCancellation = true;
         }
 
         #endregion
@@ -384,12 +396,40 @@ namespace CRUD_Biometric
             // USB device was plugged in
             SearchDevice();
         }
-
         private void RemovalEventArrived(object sender, EventArgs e)
         {
             // USB device was removed
             SearchDevice();
         }
+
+        // Handle the DoWork event of the background worker
+        private void fingerCheckWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while (cb_autoOn.Checked)
+            {
+                m_NBioAPI.OpenDevice(deviceID[currentDeviceID]);
+                // Continuously check if a finger is placed on the device
+                m_NBioAPI.CheckFinger(out isFingerPlaced);
+                m_NBioAPI.CloseDevice(deviceID[currentDeviceID]);
+
+                // If a finger is placed on the device, enable the capture button
+                if (isFingerPlaced)
+                {
+                    if (!tc_modify.Visible && tc_modify.SelectedTab == tp_sample)
+                    {
+                        bt_sampleReplace_Click(sender, e);
+                    }
+                    else if (!tc_modify.Visible)
+                    {
+                        bt_capture_Click(sender, e);
+                    }
+                }
+
+                // Add a delay to avoid continuous checking and reduce CPU usage
+                Thread.Sleep(100);
+            }
+        }
+
 
         // Search for the device
         private void SearchDevice()
@@ -574,7 +614,7 @@ namespace CRUD_Biometric
 
             // Set the device name and serial number
             tb_serialN.Text = serialNumber;
-            if (deviceInfoEx[currentDeviceID].Name == "FDU01" || deviceInfoEx[currentDeviceID].Name == "FDU04" || deviceInfoEx[currentDeviceID].Name == "FDU06")
+            if (clickedButton.BackgroundImage == Resources.H_DX)
             {
                 tb_deviceName.Text = "FDU01";
             }
@@ -584,7 +624,38 @@ namespace CRUD_Biometric
             }
         }
 
-#endregion
+        // cb_autoOn value changed
+        private void cb_autoOn_CheckedChanged(object sender, EventArgs e)
+        {
+            // Enable event to track if autoOn is modified to true
+            if (cb_autoOn.Checked)
+            {
+                // Start the background worker to perform the finger check operation
+                fingerCheckWorker.RunWorkerAsync();
+
+                bt_capture.Enabled = false;
+                bt_sampleReplace.Enabled = false;
+            }
+            // Disable event to track if autoOn is modified to true
+            else
+            {
+                // Cancel the background worker if it is running
+                if (fingerCheckWorker.IsBusy)
+                {
+                    fingerCheckWorker.CancelAsync();
+
+                    if (m_NBioAPI.GetOpenedDeviceID() == deviceID[currentDeviceID])
+                    {
+                        m_NBioAPI.CloseDevice(deviceID[currentDeviceID]);
+                    }
+                }
+
+                bt_capture.Enabled = true;
+                bt_sampleReplace.Enabled = true;
+            }
+        }
+
+        #endregion
 
         #region ------------------------------Methods For Capture, Register and Delete------------------------------
 
@@ -764,6 +835,13 @@ namespace CRUD_Biometric
             // Register new user and FIR
             // Capture FIR2
             MessageBox.Show("Please, put the same finger of the capture!", "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            // Cancel the background worker if it is running
+            if (fingerCheckWorker.IsBusy)
+            {
+                fingerCheckWorker.CancelAsync();
+            }
+
             m_NBioAPI.OpenDevice(deviceID[currentDeviceID]);
             uint ret = m_NBioAPI.Capture(NBioAPI.Type.FIR_PURPOSE.VERIFY, out hCapturedFIR, NBioAPI.Type.TIMEOUT.DEFAULT, hAuditFIR, null);
             if (ret != NBioAPI.Error.NONE)
@@ -845,6 +923,11 @@ namespace CRUD_Biometric
             UpdateDGUsers();
             tb_userID.Text = userID.ToString();
             tb_sample.Text = fir.sample.ToString();
+
+            if (cb_autoOn.Checked)
+            {
+                fingerCheckWorker.RunWorkerAsync();
+            }
         }
 
         // Remove sample, if the last sample, remove user
@@ -1031,7 +1114,7 @@ namespace CRUD_Biometric
                 tb_userID.Enabled = true;
                 bt_modify.Text = "Modify";
 
-                if (currentDeviceID != -1)
+                if (currentDeviceID != -1 && !cb_autoOn.Checked)
                     bt_capture.Enabled = true;
                 if (hActivatedFIR != null)
                     bt_register.Enabled = true;
@@ -1160,7 +1243,7 @@ namespace CRUD_Biometric
                     bt_remove.Enabled = true;
             }
         }
-    
+
         #endregion
     }
 }

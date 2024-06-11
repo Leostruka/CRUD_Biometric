@@ -1,4 +1,6 @@
-﻿namespace CRUD_Biometric
+﻿using System.ComponentModel;
+
+namespace CRUD_Biometric
 {
     partial class CRUD
     {
@@ -73,12 +75,15 @@
             flp_devices = new FlowLayoutPanel();
             tx_deviceName = new Label();
             pn_deviceInf = new Panel();
+            cb_autoOn = new CheckBox();
+            tx_autoOn = new Label();
             tb_serialN = new TextBox();
             tx_serialNumber = new Label();
             tb_deviceName = new TextBox();
-            ((System.ComponentModel.ISupportInitialize)pb_actvatedFir).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dg_users).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pb_selectedFir).BeginInit();
+            fingerCheckWorker = new BackgroundWorker();
+            ((ISupportInitialize)pb_actvatedFir).BeginInit();
+            ((ISupportInitialize)dg_users).BeginInit();
+            ((ISupportInitialize)pb_selectedFir).BeginInit();
             tc_modify.SuspendLayout();
             tp_user.SuspendLayout();
             tp_sample.SuspendLayout();
@@ -443,6 +448,8 @@
             // pn_deviceInf
             // 
             pn_deviceInf.BackColor = Color.LightSkyBlue;
+            pn_deviceInf.Controls.Add(cb_autoOn);
+            pn_deviceInf.Controls.Add(tx_autoOn);
             pn_deviceInf.Controls.Add(tb_serialN);
             pn_deviceInf.Controls.Add(tx_serialNumber);
             pn_deviceInf.Controls.Add(tb_deviceName);
@@ -452,6 +459,32 @@
             pn_deviceInf.Name = "pn_deviceInf";
             pn_deviceInf.Size = new Size(140, 160);
             pn_deviceInf.TabIndex = 19;
+            // 
+            // cb_autoOn
+            // 
+            cb_autoOn.AutoSize = true;
+            cb_autoOn.BackColor = Color.LightSkyBlue;
+            cb_autoOn.FlatAppearance.BorderSize = 4;
+            cb_autoOn.FlatAppearance.CheckedBackColor = Color.DeepSkyBlue;
+            cb_autoOn.FlatAppearance.MouseDownBackColor = Color.SkyBlue;
+            cb_autoOn.FlatAppearance.MouseOverBackColor = Color.LightBlue;
+            cb_autoOn.FlatStyle = FlatStyle.System;
+            cb_autoOn.Location = new Point(111, 35);
+            cb_autoOn.Name = "cb_autoOn";
+            cb_autoOn.Size = new Size(25, 13);
+            cb_autoOn.TabIndex = 5;
+            cb_autoOn.UseVisualStyleBackColor = true;
+            cb_autoOn.CheckedChanged += cb_autoOn_CheckedChanged;
+            // 
+            // tx_autoOn
+            // 
+            tx_autoOn.AutoSize = true;
+            tx_autoOn.Font = new Font("Montserrat", 6.999999F);
+            tx_autoOn.Location = new Point(3, 35);
+            tx_autoOn.Name = "tx_autoOn";
+            tx_autoOn.Size = new Size(49, 14);
+            tx_autoOn.TabIndex = 4;
+            tx_autoOn.Text = "Auto On";
             // 
             // tb_serialN
             // 
@@ -517,9 +550,9 @@
             Name = "CRUD";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "CRUD";
-            ((System.ComponentModel.ISupportInitialize)pb_actvatedFir).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dg_users).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pb_selectedFir).EndInit();
+            ((ISupportInitialize)pb_actvatedFir).EndInit();
+            ((ISupportInitialize)dg_users).EndInit();
+            ((ISupportInitialize)pb_selectedFir).EndInit();
             tc_modify.ResumeLayout(false);
             tp_user.ResumeLayout(false);
             tp_user.PerformLayout();
@@ -564,5 +597,8 @@
         private Label tx_serialNumber;
         private TextBox tb_deviceName;
         private TextBox tb_serialN;
+        private CheckBox cb_autoOn;
+        private Label tx_autoOn;
+        private BackgroundWorker fingerCheckWorker;
     }
 }
