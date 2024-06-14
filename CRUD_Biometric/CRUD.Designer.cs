@@ -25,6 +25,10 @@ namespace CRUD_Biometric
                     m_IndexSearch.ClearDB();
                     m_IndexSearch.TerminateEngine();
                 }
+                if (cb_autoOn.Checked)
+                {
+                    m_NBioAPI.CloseDevice(deviceID[currentDeviceID]);
+                }
                 if (m_NBioAPI != null)
                 {
                     m_NBioAPI.Dispose();
@@ -81,6 +85,7 @@ namespace CRUD_Biometric
             tx_serialNumber = new Label();
             tb_deviceName = new TextBox();
             fingerCheckWorker = new BackgroundWorker();
+            tx_NBioV = new Label();
             ((ISupportInitialize)pb_actvatedFir).BeginInit();
             ((ISupportInitialize)dg_users).BeginInit();
             ((ISupportInitialize)pb_selectedFir).BeginInit();
@@ -520,6 +525,16 @@ namespace CRUD_Biometric
             tb_deviceName.TabIndex = 1;
             tb_deviceName.TextAlign = HorizontalAlignment.Right;
             // 
+            // tx_NBioV
+            // 
+            tx_NBioV.AutoSize = true;
+            tx_NBioV.Font = new Font("Montserrat", 6.999999F);
+            tx_NBioV.Location = new Point(664, 432);
+            tx_NBioV.Name = "tx_NBioV";
+            tx_NBioV.Size = new Size(79, 14);
+            tx_NBioV.TabIndex = 20;
+            tx_NBioV.Text = "NBioVersion - ";
+            // 
             // CRUD
             // 
             AutoScaleDimensions = new SizeF(8F, 16F);
@@ -544,6 +559,7 @@ namespace CRUD_Biometric
             Controls.Add(tc_modify);
             Controls.Add(pn_deviceInf);
             Controls.Add(flp_devices);
+            Controls.Add(tx_NBioV);
             Font = new Font("Montserrat", 8.999999F);
             FormBorderStyle = FormBorderStyle.Fixed3D;
             MaximizeBox = false;
@@ -600,5 +616,6 @@ namespace CRUD_Biometric
         private CheckBox cb_autoOn;
         private Label tx_autoOn;
         private BackgroundWorker fingerCheckWorker;
+        private Label tx_NBioV;
     }
 }

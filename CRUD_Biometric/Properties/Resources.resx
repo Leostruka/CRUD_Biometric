@@ -121,10 +121,13 @@
   <data name="fingerprint-scan" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\img\fingerprint-scan.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="H-DX" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\img\H-DX.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="H-3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\img\H-3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="H-DX" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\img\H-DX.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="error-500-page-empty-symbol-260nw-1711106146" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\img\error-500-page-empty-symbol-260nw-1711106146.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

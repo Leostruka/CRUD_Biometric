@@ -13,8 +13,6 @@ namespace CRUD_User.View
 {
     public partial class UserInformationView : Form
     {
-        string name = "";
-
         public UserInformationView()
         {
             InitializeComponent();

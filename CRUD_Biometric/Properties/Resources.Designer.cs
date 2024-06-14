@@ -63,6 +63,16 @@ namespace CRUD_Biometric.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap error_500_page_empty_symbol_260nw_1711106146 {
+            get {
+                object obj = ResourceManager.GetObject("error-500-page-empty-symbol-260nw-1711106146", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap fingerprint_scan {
             get {
                 object obj = ResourceManager.GetObject("fingerprint-scan", resourceCulture);

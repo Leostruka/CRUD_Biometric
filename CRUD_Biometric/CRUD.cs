@@ -45,6 +45,9 @@ namespace CRUD_Biometric
         int currentDeviceID;
         bool isFingerPlaced;
 
+        // verify finger check
+        int i;
+
         SQL sql;
 
         #endregion
@@ -68,8 +71,8 @@ namespace CRUD_Biometric
                 this.Close();
             }
             // Get version of NBioAPI
-            NBioAPI.Type.VERSION version = new NBioAPI.Type.VERSION();
-            m_NBioAPI.GetVersion(out version);
+            m_NBioAPI.GetVersion(out NBioAPI.Type.VERSION version);
+            tx_NBioV.Text += version.Major + "." + version.Minor; 
 
             // Initialize User, FIR and Audit objects
             user = new UserModel.User();
@@ -189,7 +192,6 @@ namespace CRUD_Biometric
             dg_users.Columns.Add("Samples", "Sample amount");
 
             // Populate dg_users with user information
-            var userSamples = new Dictionary<int, int>(); // Dictionary to store the number of samples for each user
             foreach (DataRow row in dt_user_fir.Rows)
             {
                 int userID = Convert.ToInt32(row["id"]);
@@ -274,34 +276,34 @@ namespace CRUD_Biometric
         // Select FIR based on ID and sample, set image and text
         private void AttSelectFir(int id, int sample)
         {
-            AuditModel.Audit audit = new AuditModel.Audit();
-            audit.id = id;
+            AuditModel.Audit selectAudit = new AuditModel.Audit();
+            selectAudit.id = id;
 
             int y = 0;
 
             for (int i = 0; i < dt_user_fir.Rows.Count; i++)
             {
-                if (Convert.ToInt32(dt_user_fir.Rows[i]["id"]) == audit.id)
+                if (Convert.ToInt32(dt_user_fir.Rows[i]["id"]) == selectAudit.id)
                 {
-                    DataTable dt_audit = sql.GetSpecificDataAudit(audit.id);
+                    DataTable dt_audit = sql.GetSpecificDataAudit(selectAudit.id);
 
                     foreach (DataRow row in dt_audit.Rows)
                     {
                         y++;
                         if (Convert.ToInt32(row["sample"]) == sample)
                         {
-                            audit.data = StringToByteArray(row["data"].ToString());
-                            audit.imageWidth = Convert.ToUInt32(row["imageWidth"]);
-                            audit.imageHeight = Convert.ToUInt32(row["imageHeight"]);
+                            selectAudit.data = StringToByteArray(row["data"].ToString());
+                            selectAudit.imageWidth = Convert.ToUInt32(row["imageWidth"]);
+                            selectAudit.imageHeight = Convert.ToUInt32(row["imageHeight"]);
                             currentSampleNumber = y;
                         }
                     }
 
-                    pb_selectedFir.Image = ConvertFIRToJpg(audit);
+                    pb_selectedFir.Image = ConvertFIRToJpg(selectAudit);
                     pb_selectedFir.Size = new Size(124, 146);
                     tx_selected.Location = new Point(235, 10);
 
-                    tb_userID.Text = audit.id.ToString();
+                    tb_userID.Text = selectAudit.id.ToString();
 
                     if (currentSampleNumber == 1)
                     {
@@ -367,7 +369,7 @@ namespace CRUD_Biometric
             if (r != NBioAPI.Error.NONE)
             {
                 ErrorMsg(r);
-                return null;
+                return Resources.error_500_page_empty_symbol_260nw_1711106146;
             }
 
             return Image.FromStream(new MemoryStream(outbuffer));
@@ -380,7 +382,7 @@ namespace CRUD_Biometric
             if (r != NBioAPI.Error.NONE)
             {
                 ErrorMsg(r);
-                return null;
+                return Resources.error_500_page_empty_symbol_260nw_1711106146;
             }
 
             return Image.FromStream(new MemoryStream(outbuffer));
@@ -405,29 +407,51 @@ namespace CRUD_Biometric
         // Handle the DoWork event of the background worker
         private void fingerCheckWorker_DoWork(object sender, DoWorkEventArgs e)
         {
+            m_NBioAPI.OpenDevice(deviceID[currentDeviceID]);
             while (cb_autoOn.Checked)
             {
-                m_NBioAPI.OpenDevice(deviceID[currentDeviceID]);
                 // Continuously check if a finger is placed on the device
                 m_NBioAPI.CheckFinger(out isFingerPlaced);
-                m_NBioAPI.CloseDevice(deviceID[currentDeviceID]);
 
                 // If a finger is placed on the device, enable the capture button
-                if (isFingerPlaced)
+                if (isFingerPlaced && i == 0)
                 {
-                    if (!tc_modify.Visible && tc_modify.SelectedTab == tp_sample)
+                    i++;
+                    if (this.InvokeRequired)
                     {
-                        bt_sampleReplace_Click(sender, e);
+                        this.Invoke(new Action(() =>
+                        {
+                            if (tc_modify.Visible && tc_modify.SelectedTab == tp_sample)
+                            {
+                                bt_sampleReplace_Click(sender, e);
+                            }
+                            else if (!tc_modify.Visible)
+                            {
+                                bt_capture_Click(sender, e);
+                            }
+                        }));
                     }
-                    else if (!tc_modify.Visible)
+                    else
                     {
-                        bt_capture_Click(sender, e);
+                        if (tc_modify.Visible && tc_modify.SelectedTab == tp_sample)
+                        {
+                            bt_sampleReplace_Click(sender, e);
+                        }
+                        else if (!tc_modify.Visible)
+                        {
+                            bt_capture_Click(sender, e);
+                        }
                     }
+                }
+                else if (!isFingerPlaced && i != 0)
+                {
+                    i = 0;
                 }
 
                 // Add a delay to avoid continuous checking and reduce CPU usage
                 Thread.Sleep(100);
             }
+            m_NBioAPI.CloseDevice(deviceID[currentDeviceID]);
         }
 
 
@@ -545,18 +569,18 @@ namespace CRUD_Biometric
                     if (i == 0)
                     {
                         currentDeviceID = i;
-                        if (bt_device.BackgroundImage == Resources.H_DX)
+                        if (deviceInfoEx[i].Name == "FDU01" || deviceInfoEx[i].Name == "FDU04" || deviceInfoEx[i].Name == "FDU06")
                         {
                             if (this.InvokeRequired)
                             {
                                 this.Invoke(new Action(() =>
                                 {
-                                    tb_deviceName.Text = "FDU01";
+                                    tb_deviceName.Text = "Hamster DX";
                                 }));
                             }
                             else
                             {
-                                tb_deviceName.Text = "FDU01";
+                                tb_deviceName.Text = "Hamster DX";
                             }
                         }
                         else
@@ -597,6 +621,8 @@ namespace CRUD_Biometric
         // Add a new event handler for each device button
         private void bt_device_Click(object sender, EventArgs e)
         {
+            cb_autoOn.Checked = false;
+
             Button clickedButton = (Button)sender;
             currentDeviceID = int.Parse(clickedButton.Name.Substring(8));
             string serialNumber = GetSerialNumber(deviceID[currentDeviceID]);
@@ -605,7 +631,7 @@ namespace CRUD_Biometric
             foreach (Button button in flp_devices.Controls)
             {
                 button.Enabled = true;
-                button.BackColor = Color.White;
+                button.BackColor = Color.Empty;
             }
 
             // Disable the pressed button
@@ -614,14 +640,16 @@ namespace CRUD_Biometric
 
             // Set the device name and serial number
             tb_serialN.Text = serialNumber;
-            if (clickedButton.BackgroundImage == Resources.H_DX)
+            if (deviceInfoEx[i].Name == "FDU01" || deviceInfoEx[i].Name == "FDU04" || deviceInfoEx[i].Name == "FDU06")
             {
-                tb_deviceName.Text = "FDU01";
+                tb_deviceName.Text = "Hamster DX";
             }
             else
             {
                 tb_deviceName.Text = "Hamster III";
             }
+
+            bt_capture.Focus();
         }
 
         // cb_autoOn value changed
@@ -664,20 +692,34 @@ namespace CRUD_Biometric
         {
             NBioAPI.Type.HFIR hNewFIR;
 
-            m_NBioAPI.OpenDevice(deviceID[currentDeviceID]);
-
             NBioAPI.Type.HFIR hAuditFIR = new NBioAPI.Type.HFIR();
 
             // Capture FIR
-            uint ret = m_NBioAPI.Capture(NBioAPI.Type.FIR_PURPOSE.VERIFY, out hNewFIR, NBioAPI.Type.TIMEOUT.DEFAULT, hAuditFIR, null);
-            if (ret != NBioAPI.Error.NONE)
+            if (cb_autoOn.Checked)
             {
-                ErrorMsg(ret);
+                NBioAPI.Type.WINDOW_OPTION windowOption = new NBioAPI.Type.WINDOW_OPTION();
+                windowOption.WindowStyle = NBioAPI.Type.WINDOW_STYLE.INVISIBLE;
+                // Capture FIR
+                uint ret = m_NBioAPI.Capture(NBioAPI.Type.FIR_PURPOSE.VERIFY, out hNewFIR, NBioAPI.Type.TIMEOUT.DEFAULT, hAuditFIR, windowOption);
+                if (ret != NBioAPI.Error.NONE)
+                {
+                    ErrorMsg(ret);
+                    return;
+                }
+            }
+            else
+            {
+                m_NBioAPI.OpenDevice(deviceID[currentDeviceID]);
+                uint ret = m_NBioAPI.Capture(NBioAPI.Type.FIR_PURPOSE.VERIFY, out hNewFIR, NBioAPI.Type.TIMEOUT.DEFAULT, hAuditFIR, null);
+                if (ret != NBioAPI.Error.NONE)
+                {
+                    ErrorMsg(ret);
+                    m_NBioAPI.CloseDevice(deviceID[currentDeviceID]);
+                    return;
+                }
                 m_NBioAPI.CloseDevice(deviceID[currentDeviceID]);
-                return;
             }
 
-            m_NBioAPI.CloseDevice(deviceID[currentDeviceID]);
 
             // Clear pb_actvaredFir
             pb_actvatedFir.Image = null;
@@ -837,9 +879,17 @@ namespace CRUD_Biometric
             MessageBox.Show("Please, put the same finger of the capture!", "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             // Cancel the background worker if it is running
-            if (fingerCheckWorker.IsBusy)
+            if (cb_autoOn.Checked)
             {
-                fingerCheckWorker.CancelAsync();
+                if (fingerCheckWorker.IsBusy)
+                {
+                    fingerCheckWorker.CancelAsync();
+
+                    if (m_NBioAPI.GetOpenedDeviceID() == deviceID[currentDeviceID])
+                    {
+                        m_NBioAPI.CloseDevice(deviceID[currentDeviceID]);
+                    }
+                }
             }
 
             m_NBioAPI.OpenDevice(deviceID[currentDeviceID]);
@@ -940,7 +990,6 @@ namespace CRUD_Biometric
                     sql.DeleteDataFirAudit(Convert.ToInt32(tb_userID.Text), Convert.ToInt32(tb_sample.Text));
                     sql.DeleteDataUser(Convert.ToInt32(tb_userID.Text));
                     UpdateDGUsers();
-                    return;
                 }
             }
             else if (DialogResult.Yes == MessageBox.Show("Do you want to delete the sample?", "Delete sample", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
@@ -1077,7 +1126,7 @@ namespace CRUD_Biometric
         // Modify user name or selected sample
         private void bt_modify_Click(object sender, EventArgs e)
         {
-            if (tc_modify.Visible == false)
+            if (!tc_modify.Visible)
             {
                 tx_selectedID.Text = dg_users.SelectedRows[0].Cells[1].Value + " : " + dg_users.SelectedRows[0].Cells[0].Value + string.Empty;
                 tx_selectedIDSample.Text = dg_users.SelectedRows[0].Cells[1].Value + string.Empty + " : " + dg_users.SelectedRows[0].Cells[0].Value + string.Empty + " - " + tb_sample.Text;
@@ -1176,21 +1225,32 @@ namespace CRUD_Biometric
         private void bt_sampleReplace_Click(object sender, EventArgs e)
         {
             NBioAPI.Type.HFIR hNewFIR;
-
-            // Capture FIR
-            m_NBioAPI.OpenDevice(deviceID[currentDeviceID]);
-
             NBioAPI.Type.HFIR hAuditFIR = new NBioAPI.Type.HFIR();
 
-            uint ret = m_NBioAPI.Capture(NBioAPI.Type.FIR_PURPOSE.VERIFY, out hNewFIR, NBioAPI.Type.TIMEOUT.DEFAULT, hAuditFIR, null);
-            if (ret != NBioAPI.Error.NONE)
+            // Capture FIR
+            if (cb_autoOn.Checked)
             {
-                ErrorMsg(ret);
-                m_NBioAPI.CloseDevice(deviceID[currentDeviceID]);
-                return;
+                NBioAPI.Type.WINDOW_OPTION windowOption = new NBioAPI.Type.WINDOW_OPTION();
+                windowOption.WindowStyle = NBioAPI.Type.WINDOW_STYLE.INVISIBLE;
+                uint ret = m_NBioAPI.Capture(NBioAPI.Type.FIR_PURPOSE.VERIFY, out hNewFIR, NBioAPI.Type.TIMEOUT.DEFAULT, hAuditFIR, windowOption);
+                if (ret != NBioAPI.Error.NONE)
+                {
+                    ErrorMsg(ret);
+                    return;
+                }
             }
-
-            m_NBioAPI.CloseDevice(deviceID[currentDeviceID]);
+            else
+            {
+                m_NBioAPI.OpenDevice(deviceID[currentDeviceID]);
+                uint ret = m_NBioAPI.Capture(NBioAPI.Type.FIR_PURPOSE.VERIFY, out hNewFIR, NBioAPI.Type.TIMEOUT.DEFAULT, hAuditFIR, null);
+                if (ret != NBioAPI.Error.NONE)
+                {
+                    ErrorMsg(ret);
+                    m_NBioAPI.CloseDevice(deviceID[currentDeviceID]);
+                    return;
+                }
+                m_NBioAPI.CloseDevice(deviceID[currentDeviceID]);
+            }
 
             m_NBioAPI.GetTextFIRFromHandle(hNewFIR, out NBioAPI.Type.FIR_TEXTENCODE newTextFIR, true);
 
