@@ -41,12 +41,10 @@ namespace CRUD_Biometric
 
         // Device information
         short[] deviceID;
+        // Get device information
         NBioAPI.Type.DEVICE_INFO_EX[] deviceInfoEx;
         int currentDeviceID;
         bool isFingerPlaced;
-
-        // verify finger check
-        int i;
 
         SQL sql;
 
@@ -72,7 +70,7 @@ namespace CRUD_Biometric
             }
             // Get version of NBioAPI
             m_NBioAPI.GetVersion(out NBioAPI.Type.VERSION version);
-            tx_NBioV.Text += version.Major + "." + version.Minor; 
+            tx_NBioV.Text += version.Major + "." + version.Minor;
 
             // Initialize User, FIR and Audit objects
             user = new UserModel.User();
@@ -84,6 +82,11 @@ namespace CRUD_Biometric
 
             // Get Device(s) connected and information
             SearchDevice();
+
+            // Set the trackbar_scroll 
+            tbar_brightness.Scroll += new EventHandler(this.TrackBar_Scroll);
+            tbar_contrast.Scroll += new EventHandler(this.TrackBar_Scroll);
+            tbar_gain.Scroll += new EventHandler(this.TrackBar_Scroll);
 
             // Update dg_users
             UpdateDGUsers();
@@ -408,6 +411,10 @@ namespace CRUD_Biometric
         private void fingerCheckWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             m_NBioAPI.OpenDevice(deviceID[currentDeviceID]);
+
+            // verify finger check
+            int i = 0;
+
             while (cb_autoOn.Checked)
             {
                 // Continuously check if a finger is placed on the device
@@ -453,7 +460,6 @@ namespace CRUD_Biometric
             }
             m_NBioAPI.CloseDevice(deviceID[currentDeviceID]);
         }
-
 
         // Search for the device
         private void SearchDevice()
@@ -568,64 +574,53 @@ namespace CRUD_Biometric
 
                     if (i == 0)
                     {
-                        currentDeviceID = i;
-                        if (deviceInfoEx[i].Name == "FDU01" || deviceInfoEx[i].Name == "FDU04" || deviceInfoEx[i].Name == "FDU06")
-                        {
-                            if (this.InvokeRequired)
-                            {
-                                this.Invoke(new Action(() =>
-                                {
-                                    tb_deviceName.Text = "Hamster DX";
-                                }));
-                            }
-                            else
-                            {
-                                tb_deviceName.Text = "Hamster DX";
-                            }
-                        }
-                        else
-                        {
-                            if (this.InvokeRequired)
-                            {
-                                this.Invoke(new Action(() =>
-                                {
-                                    tb_deviceName.Text = "Hamster III";
-                                }));
-                            }
-                            else
-                            {
-                                tb_deviceName.Text = "Hamster III";
-                            }
-                        }
-
                         if (this.InvokeRequired)
                         {
                             this.Invoke(new Action(() =>
                             {
-                                tb_serialN.Text = GetSerialNumber(deviceID[currentDeviceID]);
-                                bt_device.Enabled = false;
-                                bt_device.BackColor = Color.LightSkyBlue;
+                                bt_device_Click(bt_device, new EventArgs());
                             }));
                         }
                         else
                         {
-                            tb_serialN.Text = GetSerialNumber(deviceID[currentDeviceID]);
-                            bt_device.Enabled = false;
-                            bt_device.BackColor = Color.LightSkyBlue;
+                            bt_device_Click(bt_device, new EventArgs());
                         }
                     }
                 }
             }
         }
 
-        // Add a new event handler for each device button
+        // Add a new event handler for each device button and add buttons
         private void bt_device_Click(object sender, EventArgs e)
         {
+            // Uncheck the autoOn checkbox
             cb_autoOn.Checked = false;
 
+            // Get the device ID
             Button clickedButton = (Button)sender;
             currentDeviceID = int.Parse(clickedButton.Name.Substring(8));
+
+            // Set the device name and serial number
+            if (deviceInfoEx[currentDeviceID].Name == "FDU01" || deviceInfoEx[currentDeviceID].Name == "FDU04" || deviceInfoEx[currentDeviceID].Name == "FDU06")
+            {
+                tb_deviceName.Text = "Hamster DX";
+            }
+            else
+            {
+                tb_deviceName.Text = "Hamster III";
+            }
+
+            // Get the device ID
             string serialNumber = GetSerialNumber(deviceID[currentDeviceID]);
+            tb_serialN.Text = serialNumber;
+
+            // Open the device to get the device information
+            m_NBioAPI.OpenDevice(deviceID[currentDeviceID]);
+            m_NBioAPI.GetDeviceInfo(deviceID[currentDeviceID], out NBioAPI.Type.DEVICE_INFO_0 deviceInfo);
+            tbar_brightness.Value = (int)deviceInfo.Brightness;
+            tbar_contrast.Value = (int)deviceInfo.Contrast;
+            tbar_gain.Value = (int)deviceInfo.Gain;
+            m_NBioAPI.CloseDevice(deviceID[currentDeviceID]);
 
             // Disable all buttons in flp_devices
             foreach (Button button in flp_devices.Controls)
@@ -637,17 +632,6 @@ namespace CRUD_Biometric
             // Disable the pressed button
             clickedButton.Enabled = false;
             clickedButton.BackColor = Color.LightSkyBlue;
-
-            // Set the device name and serial number
-            tb_serialN.Text = serialNumber;
-            if (deviceInfoEx[i].Name == "FDU01" || deviceInfoEx[i].Name == "FDU04" || deviceInfoEx[i].Name == "FDU06")
-            {
-                tb_deviceName.Text = "Hamster DX";
-            }
-            else
-            {
-                tb_deviceName.Text = "Hamster III";
-            }
 
             bt_capture.Focus();
         }
@@ -681,6 +665,45 @@ namespace CRUD_Biometric
                 bt_capture.Enabled = true;
                 bt_sampleReplace.Enabled = true;
             }
+        }
+
+        // trackbar scroll value changed
+        private void TrackBar_Scroll(object sender, EventArgs e)
+        {
+            tx_infoStatus.Visible = true;
+
+            TrackBar tb = (TrackBar)sender;
+            if (tb.Name == "tbar_brightness")
+            {
+                tx_infoStatus.Location = new Point(35, 82);
+                tx_infoStatus.Text = "Brightness\n" + tbar_brightness.Value;
+            }
+            else if (tb.Name == "tbar_contrast")
+            {
+                tx_infoStatus.Location = new Point(46, 82);
+                tx_infoStatus.Text = "Contrast\n" + tbar_contrast.Value;
+            }
+            else if (tb.Name == "tbar_gain")
+            {
+                tx_infoStatus.Location = new Point(66, 82);
+                tx_infoStatus.Text = "Gain\n" + tbar_gain.Value;
+            }
+
+            // Wait for 1 second to invisble tx_infoStatus without blocking the application
+            Task.Delay(1500).ContinueWith(_ =>
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        tx_infoStatus.Visible = false;
+                    }));
+                }
+                else
+                {
+                    tx_infoStatus.Visible = false;
+                }
+            });
         }
 
         #endregion
