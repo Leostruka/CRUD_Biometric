@@ -89,6 +89,8 @@ namespace CRUD_Biometric
             tbar_gain.Scroll += new EventHandler(this.TrackBar_Scroll);
             // Set the trackbar_mouseup
             tbar_brightness.MouseUp += new MouseEventHandler(this.TrackBar_MouseUp);
+            tbar_contrast.MouseUp += new MouseEventHandler(this.TrackBar_MouseUp);
+            tbar_gain.MouseUp += new MouseEventHandler(this.TrackBar_MouseUp);
 
             // Update dg_users
             UpdateDGUsers();
@@ -697,6 +699,53 @@ namespace CRUD_Biometric
         {
             TrackBar tb = (TrackBar)sender;
 
+            Task.Delay(500).ContinueWith(_ =>
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        tx_infoStatus.ForeColor = Color.LimeGreen;
+                        m_NBioAPI.OpenDevice(deviceID[currentDeviceID]);
+                        m_NBioAPI.GetDeviceInfo(deviceID[currentDeviceID], out NBioAPI.Type.DEVICE_INFO_0 deviceInfo);
+                        if (tb.Name == "tbar_brightness")
+                        {
+                            deviceInfo.Brightness = (byte)tbar_brightness.Value;
+                        }
+                        else if (tb.Name == "tbar_contrast")
+                        {
+                            deviceInfo.Contrast = (byte)tbar_contrast.Value;
+                        }
+                        else if (tb.Name == "tbar_gain")
+                        {
+                            deviceInfo.Gain = (byte)tbar_gain.Value;
+                        }
+                        m_NBioAPI.SetDeviceInfo(deviceID[currentDeviceID], deviceInfo);
+                        m_NBioAPI.CloseDevice(deviceID[currentDeviceID]);
+                    }));
+                }
+                else
+                {
+                    tx_infoStatus.ForeColor = Color.LimeGreen;
+                    m_NBioAPI.OpenDevice(deviceID[currentDeviceID]);
+                    m_NBioAPI.GetDeviceInfo(deviceID[currentDeviceID], out NBioAPI.Type.DEVICE_INFO_0 deviceInfo);
+                    if (tb.Name == "tbar_brightness")
+                    {
+                        deviceInfo.Brightness = (byte)tbar_brightness.Value;
+                    }
+                    else if (tb.Name == "tbar_contrast")
+                    {
+                        deviceInfo.Contrast = (byte)tbar_contrast.Value;
+                    }
+                    else if (tb.Name == "tbar_gain")
+                    {
+                        deviceInfo.Gain = (byte)tbar_gain.Value;
+                    }
+                    m_NBioAPI.SetDeviceInfo(deviceID[currentDeviceID], deviceInfo);
+                    m_NBioAPI.CloseDevice(deviceID[currentDeviceID]);
+                }
+            });
+
             // Wait for 1 second to invisble tx_infoStatus without blocking the application
             Task.Delay(1000).ContinueWith(_ =>
             {
@@ -705,11 +754,13 @@ namespace CRUD_Biometric
                     this.Invoke(new Action(() =>
                     {
                         tx_infoStatus.Visible = false;
+                        tx_infoStatus.ForeColor = Color.Black;
                     }));
                 }
                 else
                 {
                     tx_infoStatus.Visible = false;
+                    tx_infoStatus.ForeColor = Color.Black;
                 }
             });
         }

@@ -196,7 +196,7 @@ namespace CRUD_Biometric
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle2.BackColor = SystemColors.Window;
             dataGridViewCellStyle2.Font = new Font("Montserrat", 8.999999F);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.ForeColor = Color.Black;
             dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
@@ -619,6 +619,7 @@ namespace CRUD_Biometric
             // 
             tx_infoStatus.AutoSize = true;
             tx_infoStatus.Font = new Font("Montserrat Medium", 13F, FontStyle.Bold);
+            tx_infoStatus.ForeColor = Color.Black;
             tx_infoStatus.Location = new Point(66, 82);
             tx_infoStatus.Name = "tx_infoStatus";
             tx_infoStatus.Size = new Size(0, 25);
@@ -653,6 +654,7 @@ namespace CRUD_Biometric
             Controls.Add(flp_devices);
             Controls.Add(tx_NBioV);
             Font = new Font("Montserrat", 8.999999F);
+            ForeColor = Color.Black;
             FormBorderStyle = FormBorderStyle.Fixed3D;
             MaximizeBox = false;
             Name = "CRUD";
