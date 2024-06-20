@@ -87,6 +87,8 @@ namespace CRUD_Biometric
             tbar_brightness.Scroll += new EventHandler(this.TrackBar_Scroll);
             tbar_contrast.Scroll += new EventHandler(this.TrackBar_Scroll);
             tbar_gain.Scroll += new EventHandler(this.TrackBar_Scroll);
+            // Set the trackbar_mouseup
+            tbar_brightness.MouseUp += new MouseEventHandler(this.TrackBar_MouseUp);
 
             // Update dg_users
             UpdateDGUsers();
@@ -688,9 +690,15 @@ namespace CRUD_Biometric
                 tx_infoStatus.Location = new Point(66, 82);
                 tx_infoStatus.Text = "Gain\n" + tbar_gain.Value;
             }
+        }
+
+        // trackbar mouseup value changed
+        private void TrackBar_MouseUp(object sender, MouseEventArgs e)
+        {
+            TrackBar tb = (TrackBar)sender;
 
             // Wait for 1 second to invisble tx_infoStatus without blocking the application
-            Task.Delay(1500).ContinueWith(_ =>
+            Task.Delay(1000).ContinueWith(_ =>
             {
                 if (this.InvokeRequired)
                 {
