@@ -79,12 +79,6 @@ namespace CRUD_Biometric
             flp_devices = new FlowLayoutPanel();
             tx_deviceName = new Label();
             pn_deviceInf = new Panel();
-            tbar_gain = new TrackBar();
-            tbar_contrast = new TrackBar();
-            tbar_brightness = new TrackBar();
-            tx_gain = new Label();
-            tx_contrast = new Label();
-            tx_brightness = new Label();
             cb_autoOn = new CheckBox();
             tx_autoOn = new Label();
             tb_serialN = new TextBox();
@@ -92,7 +86,6 @@ namespace CRUD_Biometric
             tb_deviceName = new TextBox();
             fingerCheckWorker = new BackgroundWorker();
             tx_NBioV = new Label();
-            tx_infoStatus = new Label();
             ((ISupportInitialize)pb_actvatedFir).BeginInit();
             ((ISupportInitialize)dg_users).BeginInit();
             ((ISupportInitialize)pb_selectedFir).BeginInit();
@@ -100,9 +93,6 @@ namespace CRUD_Biometric
             tp_user.SuspendLayout();
             tp_sample.SuspendLayout();
             pn_deviceInf.SuspendLayout();
-            ((ISupportInitialize)tbar_gain).BeginInit();
-            ((ISupportInitialize)tbar_contrast).BeginInit();
-            ((ISupportInitialize)tbar_brightness).BeginInit();
             SuspendLayout();
             // 
             // pb_actvatedFir
@@ -463,12 +453,6 @@ namespace CRUD_Biometric
             // pn_deviceInf
             // 
             pn_deviceInf.BackColor = Color.LightSkyBlue;
-            pn_deviceInf.Controls.Add(tbar_gain);
-            pn_deviceInf.Controls.Add(tbar_contrast);
-            pn_deviceInf.Controls.Add(tbar_brightness);
-            pn_deviceInf.Controls.Add(tx_gain);
-            pn_deviceInf.Controls.Add(tx_contrast);
-            pn_deviceInf.Controls.Add(tx_brightness);
             pn_deviceInf.Controls.Add(cb_autoOn);
             pn_deviceInf.Controls.Add(tx_autoOn);
             pn_deviceInf.Controls.Add(tb_serialN);
@@ -480,69 +464,6 @@ namespace CRUD_Biometric
             pn_deviceInf.Name = "pn_deviceInf";
             pn_deviceInf.Size = new Size(150, 160);
             pn_deviceInf.TabIndex = 19;
-            // 
-            // tbar_gain
-            // 
-            tbar_gain.AutoSize = false;
-            tbar_gain.Location = new Point(62, 87);
-            tbar_gain.Maximum = 100;
-            tbar_gain.Name = "tbar_gain";
-            tbar_gain.Size = new Size(78, 13);
-            tbar_gain.TabIndex = 23;
-            tbar_gain.TickStyle = TickStyle.None;
-            // 
-            // tbar_contrast
-            // 
-            tbar_contrast.AutoSize = false;
-            tbar_contrast.Location = new Point(62, 70);
-            tbar_contrast.Maximum = 100;
-            tbar_contrast.Name = "tbar_contrast";
-            tbar_contrast.Size = new Size(78, 13);
-            tbar_contrast.TabIndex = 22;
-            tbar_contrast.TickStyle = TickStyle.None;
-            // 
-            // tbar_brightness
-            // 
-            tbar_brightness.AutoSize = false;
-            tbar_brightness.Location = new Point(62, 53);
-            tbar_brightness.Maximum = 100;
-            tbar_brightness.Name = "tbar_brightness";
-            tbar_brightness.Size = new Size(78, 13);
-            tbar_brightness.TabIndex = 21;
-            tbar_brightness.TickStyle = TickStyle.None;
-            // 
-            // tx_gain
-            // 
-            tx_gain.AutoSize = true;
-            tx_gain.Font = new Font("Montserrat", 6.999999F);
-            tx_gain.Location = new Point(3, 86);
-            tx_gain.Margin = new Padding(3, 3, 3, 0);
-            tx_gain.Name = "tx_gain";
-            tx_gain.Size = new Size(31, 14);
-            tx_gain.TabIndex = 8;
-            tx_gain.Text = "Gain";
-            // 
-            // tx_contrast
-            // 
-            tx_contrast.AutoSize = true;
-            tx_contrast.Font = new Font("Montserrat", 6.999999F);
-            tx_contrast.Location = new Point(3, 69);
-            tx_contrast.Margin = new Padding(3, 3, 3, 0);
-            tx_contrast.Name = "tx_contrast";
-            tx_contrast.Size = new Size(50, 14);
-            tx_contrast.TabIndex = 7;
-            tx_contrast.Text = "Contrast";
-            // 
-            // tx_brightness
-            // 
-            tx_brightness.AutoSize = true;
-            tx_brightness.Font = new Font("Montserrat", 6.999999F);
-            tx_brightness.Location = new Point(3, 52);
-            tx_brightness.Margin = new Padding(3, 3, 3, 0);
-            tx_brightness.Name = "tx_brightness";
-            tx_brightness.Size = new Size(63, 14);
-            tx_brightness.TabIndex = 6;
-            tx_brightness.Text = "Brightness";
             // 
             // cb_autoOn
             // 
@@ -615,24 +536,11 @@ namespace CRUD_Biometric
             tx_NBioV.TabIndex = 20;
             tx_NBioV.Text = "NBioVersion - ";
             // 
-            // tx_infoStatus
-            // 
-            tx_infoStatus.AutoSize = true;
-            tx_infoStatus.Font = new Font("Montserrat Medium", 13F, FontStyle.Bold);
-            tx_infoStatus.ForeColor = Color.Black;
-            tx_infoStatus.Location = new Point(66, 82);
-            tx_infoStatus.Name = "tx_infoStatus";
-            tx_infoStatus.Size = new Size(0, 25);
-            tx_infoStatus.TabIndex = 21;
-            tx_infoStatus.TextAlign = ContentAlignment.MiddleCenter;
-            tx_infoStatus.Visible = false;
-            // 
             // CRUD
             // 
             AutoScaleDimensions = new SizeF(8F, 16F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(760, 446);
-            Controls.Add(tx_infoStatus);
             Controls.Add(bt_modify);
             Controls.Add(bt_nextSample);
             Controls.Add(bt_returnSample);
@@ -670,9 +578,6 @@ namespace CRUD_Biometric
             tp_sample.PerformLayout();
             pn_deviceInf.ResumeLayout(false);
             pn_deviceInf.PerformLayout();
-            ((ISupportInitialize)tbar_gain).EndInit();
-            ((ISupportInitialize)tbar_contrast).EndInit();
-            ((ISupportInitialize)tbar_brightness).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -714,12 +619,5 @@ namespace CRUD_Biometric
         private Label tx_autoOn;
         private BackgroundWorker fingerCheckWorker;
         private Label tx_NBioV;
-        private Label tx_brightness;
-        private Label tx_gain;
-        private Label tx_contrast;
-        private TrackBar tbar_brightness;
-        private TrackBar tbar_gain;
-        private TrackBar tbar_contrast;
-        private Label tx_infoStatus;
     }
 }
