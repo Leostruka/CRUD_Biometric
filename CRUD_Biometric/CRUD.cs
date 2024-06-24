@@ -83,15 +83,6 @@ namespace CRUD_Biometric
             // Get Device(s) connected and information
             SearchDevice();
 
-            // Set the trackbar_scroll 
-            tbar_brightness.Scroll += new EventHandler(this.TrackBar_Scroll);
-            tbar_contrast.Scroll += new EventHandler(this.TrackBar_Scroll);
-            tbar_gain.Scroll += new EventHandler(this.TrackBar_Scroll);
-            // Set the trackbar_mouseup
-            tbar_brightness.MouseUp += new MouseEventHandler(this.TrackBar_MouseUp);
-            tbar_contrast.MouseUp += new MouseEventHandler(this.TrackBar_MouseUp);
-            tbar_gain.MouseUp += new MouseEventHandler(this.TrackBar_MouseUp);
-
             // Update dg_users
             UpdateDGUsers();
 
@@ -618,14 +609,6 @@ namespace CRUD_Biometric
             string serialNumber = GetSerialNumber(deviceID[currentDeviceID]);
             tb_serialN.Text = serialNumber;
 
-            // Open the device to get the device information
-            m_NBioAPI.OpenDevice(deviceID[currentDeviceID]);
-            m_NBioAPI.GetDeviceInfo(deviceID[currentDeviceID], out NBioAPI.Type.DEVICE_INFO_0 deviceInfo);
-            tbar_brightness.Value = (int)deviceInfo.Brightness;
-            tbar_contrast.Value = (int)deviceInfo.Contrast;
-            tbar_gain.Value = (int)deviceInfo.Gain;
-            m_NBioAPI.CloseDevice(deviceID[currentDeviceID]);
-
             // Disable all buttons in flp_devices
             foreach (Button button in flp_devices.Controls)
             {
@@ -669,100 +652,6 @@ namespace CRUD_Biometric
                 bt_capture.Enabled = true;
                 bt_sampleReplace.Enabled = true;
             }
-        }
-
-        // trackbar scroll value changed
-        private void TrackBar_Scroll(object sender, EventArgs e)
-        {
-            tx_infoStatus.Visible = true;
-
-            TrackBar tb = (TrackBar)sender;
-            if (tb.Name == "tbar_brightness")
-            {
-                tx_infoStatus.Location = new Point(35, 82);
-                tx_infoStatus.Text = "Brightness\n" + tbar_brightness.Value;
-            }
-            else if (tb.Name == "tbar_contrast")
-            {
-                tx_infoStatus.Location = new Point(46, 82);
-                tx_infoStatus.Text = "Contrast\n" + tbar_contrast.Value;
-            }
-            else if (tb.Name == "tbar_gain")
-            {
-                tx_infoStatus.Location = new Point(66, 82);
-                tx_infoStatus.Text = "Gain\n" + tbar_gain.Value;
-            }
-        }
-
-        // trackbar mouseup value changed
-        private void TrackBar_MouseUp(object sender, MouseEventArgs e)
-        {
-            TrackBar tb = (TrackBar)sender;
-
-            Task.Delay(500).ContinueWith(_ =>
-            {
-                if (this.InvokeRequired)
-                {
-                    this.Invoke(new Action(() =>
-                    {
-                        tx_infoStatus.ForeColor = Color.LimeGreen;
-                        m_NBioAPI.OpenDevice(deviceID[currentDeviceID]);
-                        m_NBioAPI.GetDeviceInfo(deviceID[currentDeviceID], out NBioAPI.Type.DEVICE_INFO_0 deviceInfo);
-                        if (tb.Name == "tbar_brightness")
-                        {
-                            deviceInfo.Brightness = (byte)tbar_brightness.Value;
-                        }
-                        else if (tb.Name == "tbar_contrast")
-                        {
-                            deviceInfo.Contrast = (byte)tbar_contrast.Value;
-                        }
-                        else if (tb.Name == "tbar_gain")
-                        {
-                            deviceInfo.Gain = (byte)tbar_gain.Value;
-                        }
-                        m_NBioAPI.SetDeviceInfo(deviceID[currentDeviceID], deviceInfo);
-                        m_NBioAPI.CloseDevice(deviceID[currentDeviceID]);
-                    }));
-                }
-                else
-                {
-                    tx_infoStatus.ForeColor = Color.LimeGreen;
-                    m_NBioAPI.OpenDevice(deviceID[currentDeviceID]);
-                    m_NBioAPI.GetDeviceInfo(deviceID[currentDeviceID], out NBioAPI.Type.DEVICE_INFO_0 deviceInfo);
-                    if (tb.Name == "tbar_brightness")
-                    {
-                        deviceInfo.Brightness = (byte)tbar_brightness.Value;
-                    }
-                    else if (tb.Name == "tbar_contrast")
-                    {
-                        deviceInfo.Contrast = (byte)tbar_contrast.Value;
-                    }
-                    else if (tb.Name == "tbar_gain")
-                    {
-                        deviceInfo.Gain = (byte)tbar_gain.Value;
-                    }
-                    m_NBioAPI.SetDeviceInfo(deviceID[currentDeviceID], deviceInfo);
-                    m_NBioAPI.CloseDevice(deviceID[currentDeviceID]);
-                }
-            });
-
-            // Wait for 1 second to invisble tx_infoStatus without blocking the application
-            Task.Delay(1000).ContinueWith(_ =>
-            {
-                if (this.InvokeRequired)
-                {
-                    this.Invoke(new Action(() =>
-                    {
-                        tx_infoStatus.Visible = false;
-                        tx_infoStatus.ForeColor = Color.Black;
-                    }));
-                }
-                else
-                {
-                    tx_infoStatus.Visible = false;
-                    tx_infoStatus.ForeColor = Color.Black;
-                }
-            });
         }
 
         #endregion
