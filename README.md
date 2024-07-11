@@ -30,18 +30,20 @@ This project is a CRUD (Create, Read, Update, Delete) biometric system that inte
 ### Steps
 
 1. **Clone the repository:**
-```git clone https://github.com/Leostruka/Nitgen_BiometricCRUD.git cd crud-biometric-system```
+```Bash
+git clone https://github.com/Leostruka/Nitgen_BiometricCRUD.git cd crud-biometric-system
+```
 
-2. **Open the project in Visual Studio:**
+3. **Open the project in Visual Studio:**
    - Open `CRUD_Biometric.sln` in Visual Studio.
 
-3. **Configure the MySQL connection:**
+4. **Configure the MySQL connection:**
    - Update the connection string in `DataAccess/Connection.cs` with your MySQL server details.
 
-4. **Install MySQL Connector:**
+5. **Install MySQL Connector:**
    - Install the MySQL Connector for .NET from NuGet Package Manager.
 
-5. **Build the project:**
+6. **Build the project:**
    - Build the solution in Visual Studio to restore all dependencies and compile the project.
 
 ## Usage
