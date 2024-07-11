@@ -1,0 +1,77 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Finger\\Desktop\\Project\\Biometric_CRUD\\CRUD_Biometric\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{3DD80033-E506-4E1A-A00E-34F35274CC5E}|CRUD_Biometric.csproj|c:\\users\\finger\\desktop\\project\\biometric_crud\\crud_biometric\\crud.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DD80033-E506-4E1A-A00E-34F35274CC5E}|CRUD_Biometric.csproj|solutionrelative:crud.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DD80033-E506-4E1A-A00E-34F35274CC5E}|CRUD_Biometric.csproj|C:\\Users\\Finger\\Desktop\\Project\\Biometric_CRUD\\CRUD_Biometric\\crud.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{3DD80033-E506-4E1A-A00E-34F35274CC5E}|CRUD_Biometric.csproj|solutionrelative:crud.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DD80033-E506-4E1A-A00E-34F35274CC5E}|CRUD_Biometric.csproj|c:\\users\\finger\\desktop\\project\\biometric_crud\\crud_biometric\\crud.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DD80033-E506-4E1A-A00E-34F35274CC5E}|CRUD_Biometric.csproj|solutionrelative:crud.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CRUD.Designer.cs",
+              "DocumentMoniker": "C:\\Users\\Finger\\Desktop\\Project\\Biometric_CRUD\\CRUD_Biometric\\CRUD.Designer.cs",
+              "RelativeDocumentMoniker": "CRUD.Designer.cs",
+              "ToolTip": "C:\\Users\\Finger\\Desktop\\Project\\Biometric_CRUD\\CRUD_Biometric\\CRUD.Designer.cs",
+              "RelativeToolTip": "CRUD.Designer.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACAAAAARAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-02T18:02:51.642Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CRUD.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\Finger\\Desktop\\Project\\Biometric_CRUD\\CRUD_Biometric\\CRUD.cs",
+              "RelativeDocumentMoniker": "CRUD.cs",
+              "ToolTip": "C:\\Users\\Finger\\Desktop\\Project\\Biometric_CRUD\\CRUD_Biometric\\CRUD.cs [Design]",
+              "RelativeToolTip": "CRUD.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-11T18:03:34.973Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CRUD.cs",
+              "DocumentMoniker": "C:\\Users\\Finger\\Desktop\\Project\\Biometric_CRUD\\CRUD_Biometric\\CRUD.cs",
+              "RelativeDocumentMoniker": "CRUD.cs",
+              "ToolTip": "C:\\Users\\Finger\\Desktop\\Project\\Biometric_CRUD\\CRUD_Biometric\\CRUD.cs",
+              "RelativeToolTip": "CRUD.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAFAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-06T17:43:57.734Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
