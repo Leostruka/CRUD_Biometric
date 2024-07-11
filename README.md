@@ -119,7 +119,7 @@ git clone https://github.com/Leostruka/Nitgen_BiometricCRUD.git cd crud-biometri
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/Leostruka/CRUD_Biometric?tab=MIT-1-ov-file) file for details.
 
 ## Contributing
 
