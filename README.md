@@ -127,4 +127,4 @@ Contributions are welcome! Please open an issue or submit a pull request for any
 
 ## Contact
 
-For any questions or inquiries, please contact [your-email@example.com](mailto:your-email@example.c
+For any questions or inquiries, please contact [leandro.sakae@hotmail.com](mailto:leandro.sakae@hotmail.com)
