@@ -14,6 +14,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = CRUD_Biometric
-build_property.ProjectDir = C:\Users\Finger\Desktop\Project\Biometric_CRUD\CRUD_Biometric\
+build_property.ProjectDir = D:\Envio\Project\CRUD_Biometric\CRUD_Biometric\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 

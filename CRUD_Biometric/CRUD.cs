@@ -354,10 +354,10 @@ namespace CRUD_Biometric
         }
 
         // Convert FIR to JPG image based on hFIR handle and set audit data
-        private Image ConvertFIRToJpg(NBioAPI.Type.HFIR hFIR)
+        private Image ConvertFIRToJpg(NBioAPI.Type.HFIR hAuditFIR)
         {
             NBioAPI.Export.EXPORT_AUDIT_DATA exportAuditData;
-            m_Export.NBioBSPToImage(hFIR, out exportAuditData);
+            m_Export.NBioBSPToImage(hAuditFIR, out exportAuditData);
 
             audit.data = exportAuditData.AuditData[0].Image[0].Data;
             audit.imageHeight = exportAuditData.ImageHeight;
@@ -384,6 +384,28 @@ namespace CRUD_Biometric
             }
 
             return Image.FromStream(new MemoryStream(outbuffer));
+        }
+
+        // Convert Verify Fir to Enroll Fir
+        public NBioAPI.Type.HFIR ConvertToEnroll(NBioAPI.Type.HFIR verifyFIR)
+        {
+            NBioAPI.Type.HFIR processedFIR;
+            uint result = m_NBioAPI.Process(verifyFIR, out processedFIR);
+
+            if (result != 0)
+            {
+                throw new Exception($"Failed to process fingerprint. Error code: {result}");
+            }
+
+            NBioAPI.Type.HFIR enrollFIR;
+            result = m_NBioAPI.CreateTemplate(processedFIR, (NBioAPI.Type.HFIR)null, out enrollFIR, (NBioAPI.Type.FIR_PAYLOAD)null);
+
+            if (result != 0)
+            {
+                throw new Exception($"Failed to create enroll template. Error code: {result}");
+            }
+
+            return enrollFIR;
         }
 
         #endregion
@@ -733,6 +755,9 @@ namespace CRUD_Biometric
 
             m_IndexSearch.IdentifyData(hActivatedFIR, NBioAPI.Type.FIR_SECURITY_LEVEL.NORMAL, out NBioAPI.IndexSearch.FP_INFO fpInfo, cbInfo);
 
+            // Convert the FIR to enroll template
+            NBioAPI.Type.HFIR enrollFIR = ConvertToEnroll(hActivatedFIR);
+
             // Check if the finger already exists
             if (fpInfo.ID != 0)
             {
@@ -755,7 +780,7 @@ namespace CRUD_Biometric
 
                 if (DialogResult.Yes == MessageBox.Show("This finger belongs to the " + nome + "\nUser ID: " + (int)fpInfo.ID + "\nSample: " + fpInfo.SampleNumber + "\nRegistry anyway?", "Existing Finger!", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
                 {
-                    m_NBioAPI.GetTextFIRFromHandle(hActivatedFIR, out NBioAPI.Type.FIR_TEXTENCODE newTextFIR, true);
+                    m_NBioAPI.GetTextFIRFromHandle(enrollFIR, out NBioAPI.Type.FIR_TEXTENCODE newTextFIR, true);
                     fir.id = (int)fpInfo.ID;
                     fir.hash = newTextFIR.TextFIR;
                     fir.sample = 1;
@@ -803,7 +828,7 @@ namespace CRUD_Biometric
                     {
                         if (DialogResult.Yes == MessageBox.Show("The user ID: " + (int)userID + " already exists!\nName: " + row["name"] + "\nRegistry anyway?", "Existing User!", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
                         {
-                            m_NBioAPI.GetTextFIRFromHandle(hActivatedFIR, out NBioAPI.Type.FIR_TEXTENCODE newTextFIR, true);
+                            m_NBioAPI.GetTextFIRFromHandle(enrollFIR, out NBioAPI.Type.FIR_TEXTENCODE newTextFIR, true);
                             fir.id = (int)userID;
                             fir.hash = newTextFIR.TextFIR;
                             fir.sample = 1;
@@ -873,9 +898,12 @@ namespace CRUD_Biometric
             }
             m_NBioAPI.CloseDevice(deviceID[currentDeviceID]);
 
+            // Convert the FIR to enroll template
+            NBioAPI.Type.HFIR enrollCapturedFIR = ConvertToEnroll(hCapturedFIR);
+
             // Get FIR2 and compare with activated FIR
-            m_NBioAPI.GetTextFIRFromHandle(hActivatedFIR, out NBioAPI.Type.FIR_TEXTENCODE textFIR, true);
-            m_NBioAPI.GetTextFIRFromHandle(hCapturedFIR, out NBioAPI.Type.FIR_TEXTENCODE textFIR2, true);
+            m_NBioAPI.GetTextFIRFromHandle(enrollFIR, out NBioAPI.Type.FIR_TEXTENCODE textFIR, true);
+            m_NBioAPI.GetTextFIRFromHandle(enrollCapturedFIR, out NBioAPI.Type.FIR_TEXTENCODE textFIR2, true);
             m_NBioAPI.VerifyMatch(textFIR, textFIR2, out bool result, null);
 
             // Check if FIRs match
@@ -1223,7 +1251,10 @@ namespace CRUD_Biometric
                 m_NBioAPI.CloseDevice(deviceID[currentDeviceID]);
             }
 
-            m_NBioAPI.GetTextFIRFromHandle(hNewFIR, out NBioAPI.Type.FIR_TEXTENCODE newTextFIR, true);
+            // Convert the FIR to enroll template
+            NBioAPI.Type.HFIR enrollNewFIR = ConvertToEnroll(hNewFIR);
+
+            m_NBioAPI.GetTextFIRFromHandle(enrollNewFIR, out NBioAPI.Type.FIR_TEXTENCODE newTextFIR, true);
 
             replaseFir.id = user.id;
             replaseFir.hash = newTextFIR.TextFIR;

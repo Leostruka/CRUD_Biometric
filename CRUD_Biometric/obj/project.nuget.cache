@@ -1,13 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "6O8FBllHHjE=",
+  "dgSpecHash": "x829+9JVcQ8=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Finger\\Desktop\\Project\\Biometric_CRUD\\CRUD_Biometric\\CRUD_Biometric.csproj",
+  "projectFilePath": "D:\\Envio\\Project\\CRUD_Biometric\\CRUD_Biometric\\CRUD_Biometric.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Finger\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\7.0.1\\microsoft.extensions.logging.abstractions.7.0.1.nupkg.sha512",
-    "C:\\Users\\Finger\\.nuget\\packages\\mysqlconnector\\2.3.7\\mysqlconnector.2.3.7.nupkg.sha512",
-    "C:\\Users\\Finger\\.nuget\\packages\\system.codedom\\8.0.0\\system.codedom.8.0.0.nupkg.sha512",
-    "C:\\Users\\Finger\\.nuget\\packages\\system.management\\8.0.0\\system.management.8.0.0.nupkg.sha512"
+    "C:\\Users\\Fingertech\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\7.0.1\\microsoft.extensions.logging.abstractions.7.0.1.nupkg.sha512",
+    "C:\\Users\\Fingertech\\.nuget\\packages\\mysqlconnector\\2.3.7\\mysqlconnector.2.3.7.nupkg.sha512",
+    "C:\\Users\\Fingertech\\.nuget\\packages\\system.codedom\\8.0.0\\system.codedom.8.0.0.nupkg.sha512",
+    "C:\\Users\\Fingertech\\.nuget\\packages\\system.management\\8.0.0\\system.management.8.0.0.nupkg.sha512"
   ],
   "logs": []
 }
