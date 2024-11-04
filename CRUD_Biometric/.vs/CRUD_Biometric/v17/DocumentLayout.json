@@ -22,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -53,10 +53,6 @@
               "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            },
-            {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "CRUD.cs",
@@ -64,7 +60,7 @@
               "RelativeDocumentMoniker": "CRUD.cs",
               "ToolTip": "D:\\Envio\\Project\\CRUD_Biometric\\CRUD_Biometric\\CRUD.cs",
               "RelativeToolTip": "CRUD.cs",
-              "ViewState": "AgIAAHQDAAAAAAAAAAAAAH4DAAAeAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAKYCAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-08-07T11:46:04.015Z",
               "EditorCaption": ""
@@ -79,8 +75,7 @@
               "RelativeToolTip": "CRUD.Designer.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAACAAAAARAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-02T18:02:51.642Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-02T18:02:51.642Z"
             },
             {
               "$type": "Document",
@@ -91,8 +86,7 @@
               "ToolTip": "D:\\Envio\\Project\\CRUD_Biometric\\CRUD_Biometric\\CRUD.cs [Design]",
               "RelativeToolTip": "CRUD.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-11T18:03:34.973Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2024-06-11T18:03:34.973Z"
             }
           ]
         },
