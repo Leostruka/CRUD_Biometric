@@ -72,3 +72,17 @@ D:\Envio\Project\CRUD_Biometric\CRUD_Biometric\bin\Debug\net8.0-windows\NITGEN.S
 D:\Envio\Project\CRUD_Biometric\CRUD_Biometric\obj\Debug\net8.0-windows\CRUD_Bio.BEBD9929.Up2Date
 D:\Envio\Project\CRUD_Biometric\CRUD_Biometric\obj\Debug\net8.0-windows\CRUD_Biometric.genruntimeconfig.cache
 D:\Envio\Project\CRUD_Biometric\CRUD_Biometric\obj\Debug\net8.0-windows\ref\CRUD_Biometric.dll
+D:\Envio\Project\CRUD_Biometric\CRUD_Biometric\bin\Debug\net8.0-windows\EntityFramework.SqlServer.dll
+D:\Envio\Project\CRUD_Biometric\CRUD_Biometric\bin\Debug\net8.0-windows\EntityFramework.dll
+D:\Envio\Project\CRUD_Biometric\CRUD_Biometric\bin\Debug\net8.0-windows\System.Data.SQLite.dll
+D:\Envio\Project\CRUD_Biometric\CRUD_Biometric\bin\Debug\net8.0-windows\System.Data.SqlClient.dll
+D:\Envio\Project\CRUD_Biometric\CRUD_Biometric\bin\Debug\net8.0-windows\System.Data.SQLite.EF6.dll
+D:\Envio\Project\CRUD_Biometric\CRUD_Biometric\bin\Debug\net8.0-windows\runtimes\win-arm64\native\sni.dll
+D:\Envio\Project\CRUD_Biometric\CRUD_Biometric\bin\Debug\net8.0-windows\runtimes\win-x64\native\sni.dll
+D:\Envio\Project\CRUD_Biometric\CRUD_Biometric\bin\Debug\net8.0-windows\runtimes\win-x86\native\sni.dll
+D:\Envio\Project\CRUD_Biometric\CRUD_Biometric\bin\Debug\net8.0-windows\runtimes\linux-x64\native\SQLite.Interop.dll
+D:\Envio\Project\CRUD_Biometric\CRUD_Biometric\bin\Debug\net8.0-windows\runtimes\osx-x64\native\SQLite.Interop.dll
+D:\Envio\Project\CRUD_Biometric\CRUD_Biometric\bin\Debug\net8.0-windows\runtimes\win-x64\native\SQLite.Interop.dll
+D:\Envio\Project\CRUD_Biometric\CRUD_Biometric\bin\Debug\net8.0-windows\runtimes\win-x86\native\SQLite.Interop.dll
+D:\Envio\Project\CRUD_Biometric\CRUD_Biometric\bin\Debug\net8.0-windows\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+D:\Envio\Project\CRUD_Biometric\CRUD_Biometric\bin\Debug\net8.0-windows\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll

@@ -47,6 +47,7 @@ namespace CRUD_Biometric
         bool isFingerPlaced;
 
         SQL sql;
+        private Label lb_dbStatus;
 
         #endregion
 
@@ -55,6 +56,14 @@ namespace CRUD_Biometric
         public CRUD()
         {
             InitializeComponent();
+
+            // Add database status label
+            lb_dbStatus = new Label();
+            lb_dbStatus.AutoSize = true;
+            lb_dbStatus.Location = new Point(tx_NBioV.Right + 10, tx_NBioV.Top);
+            lb_dbStatus.Text = "DB: Checking...";
+            lb_dbStatus.Font = new Font("Montserrat", 8, FontStyle.Regular);
+            this.Controls.Add(lb_dbStatus);
 
             // Initialize NBioAPI
             m_NBioAPI = new NBioAPI();
@@ -179,6 +188,19 @@ namespace CRUD_Biometric
             // Set SQL and get data
             sql = new SQL();
             dt_user_fir = sql.GetDataUserFir();
+            
+            // Update database status label
+            Connection connection = new Connection();
+            if (connection.CheckInternetConnection())
+            {
+                lb_dbStatus.Text = "DB: MySQL (Online)";
+                lb_dbStatus.ForeColor = Color.DarkGreen;
+            }
+            else
+            {
+                lb_dbStatus.Text = "DB: SQLite (Offline)";
+                lb_dbStatus.ForeColor = Color.DarkOrange;
+            }
 
             // Clear existing data in dg_users
             dg_users.Rows.Clear();

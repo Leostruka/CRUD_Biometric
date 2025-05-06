@@ -9,6 +9,18 @@
     {
       "AbsoluteMoniker": "D:0:0:{3DD80033-E506-4E1A-A00E-34F35274CC5E}|CRUD_Biometric.csproj|D:\\Envio\\Project\\CRUD_Biometric\\CRUD_Biometric\\crud.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{3DD80033-E506-4E1A-A00E-34F35274CC5E}|CRUD_Biometric.csproj|solutionrelative:crud.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DD80033-E506-4E1A-A00E-34F35274CC5E}|CRUD_Biometric.csproj|d:\\envio\\project\\crud_biometric\\crud_biometric\\dataaccess\\sqlite.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DD80033-E506-4E1A-A00E-34F35274CC5E}|CRUD_Biometric.csproj|solutionrelative:dataaccess\\sqlite.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DD80033-E506-4E1A-A00E-34F35274CC5E}|CRUD_Biometric.csproj|d:\\envio\\project\\crud_biometric\\crud_biometric\\dataaccess\\sql.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DD80033-E506-4E1A-A00E-34F35274CC5E}|CRUD_Biometric.csproj|solutionrelative:dataaccess\\sql.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DD80033-E506-4E1A-A00E-34F35274CC5E}|CRUD_Biometric.csproj|d:\\envio\\project\\crud_biometric\\crud_biometric\\dataaccess\\connection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DD80033-E506-4E1A-A00E-34F35274CC5E}|CRUD_Biometric.csproj|solutionrelative:dataaccess\\connection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,7 +30,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 9,
           "Children": [
             {
               "$type": "Bookmark",
@@ -50,15 +62,54 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "SQLite.cs",
+              "DocumentMoniker": "D:\\Envio\\Project\\CRUD_Biometric\\CRUD_Biometric\\DataAccess\\SQLite.cs",
+              "RelativeDocumentMoniker": "DataAccess\\SQLite.cs",
+              "ToolTip": "D:\\Envio\\Project\\CRUD_Biometric\\CRUD_Biometric\\DataAccess\\SQLite.cs",
+              "RelativeToolTip": "DataAccess\\SQLite.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAAAC4AAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-05T19:40:43.317Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "SQL.cs",
+              "DocumentMoniker": "D:\\Envio\\Project\\CRUD_Biometric\\CRUD_Biometric\\DataAccess\\SQL.cs",
+              "RelativeDocumentMoniker": "DataAccess\\SQL.cs",
+              "ToolTip": "D:\\Envio\\Project\\CRUD_Biometric\\CRUD_Biometric\\DataAccess\\SQL.cs",
+              "RelativeToolTip": "DataAccess\\SQL.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADUAAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-30T14:22:55.208Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
               "Title": "CRUD.cs",
               "DocumentMoniker": "D:\\Envio\\Project\\CRUD_Biometric\\CRUD_Biometric\\CRUD.cs",
               "RelativeDocumentMoniker": "CRUD.cs",
               "ToolTip": "D:\\Envio\\Project\\CRUD_Biometric\\CRUD_Biometric\\CRUD.cs",
               "RelativeToolTip": "CRUD.cs",
-              "ViewState": "AgIAAJ0EAAAAAAAAAAAxwMkEAAAaAAAAAAAAAA==",
+              "ViewState": "AgIAAJEBAAAAAAAAAAAMwKIBAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-01-29T19:05:08.05Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Connection.cs",
+              "DocumentMoniker": "D:\\Envio\\Project\\CRUD_Biometric\\CRUD_Biometric\\DataAccess\\Connection.cs",
+              "RelativeDocumentMoniker": "DataAccess\\Connection.cs",
+              "ToolTip": "D:\\Envio\\Project\\CRUD_Biometric\\CRUD_Biometric\\DataAccess\\Connection.cs",
+              "RelativeToolTip": "DataAccess\\Connection.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAgwDQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-30T14:20:42.77Z",
               "EditorCaption": ""
             },
             {
@@ -70,7 +121,8 @@
               "ToolTip": "D:\\Envio\\Project\\CRUD_Biometric\\CRUD_Biometric\\CRUD.cs [Design]",
               "RelativeToolTip": "CRUD.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-29T19:03:55.434Z"
+              "WhenOpened": "2025-01-29T19:03:55.434Z",
+              "EditorCaption": " [Design]"
             }
           ]
         },

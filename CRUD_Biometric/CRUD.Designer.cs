@@ -111,7 +111,7 @@ namespace CRUD_Biometric
             tx_actual.Font = new Font("Montserrat", 8.999999F);
             tx_actual.Location = new Point(37, 19);
             tx_actual.Name = "tx_actual";
-            tx_actual.Size = new Size(81, 16);
+            tx_actual.Size = new Size(82, 18);
             tx_actual.TabIndex = 1;
             tx_actual.Text = "ActivatedFir";
             // 
@@ -135,7 +135,7 @@ namespace CRUD_Biometric
             tx_ID.Font = new Font("Montserrat", 8.999999F);
             tx_ID.Location = new Point(222, 196);
             tx_ID.Name = "tx_ID";
-            tx_ID.Size = new Size(51, 18);
+            tx_ID.Size = new Size(51, 20);
             tx_ID.TabIndex = 3;
             tx_ID.Text = "UserID";
             // 
@@ -217,7 +217,7 @@ namespace CRUD_Biometric
             tx_selected.Font = new Font("Montserrat", 8.999999F);
             tx_selected.Location = new Point(281, 19);
             tx_selected.Name = "tx_selected";
-            tx_selected.Size = new Size(74, 16);
+            tx_selected.Size = new Size(75, 18);
             tx_selected.TabIndex = 8;
             tx_selected.Text = "SelectedFir";
             // 
@@ -252,7 +252,7 @@ namespace CRUD_Biometric
             tx_sample.Font = new Font("Montserrat", 8.999999F);
             tx_sample.Location = new Point(222, 227);
             tx_sample.Name = "tx_sample";
-            tx_sample.Size = new Size(68, 18);
+            tx_sample.Size = new Size(69, 20);
             tx_sample.TabIndex = 10;
             tx_sample.Text = "SampleID";
             // 
@@ -312,7 +312,7 @@ namespace CRUD_Biometric
             tx_sampleCount.AutoSize = true;
             tx_sampleCount.Location = new Point(274, 250);
             tx_sampleCount.Name = "tx_sampleCount";
-            tx_sampleCount.Size = new Size(0, 19);
+            tx_sampleCount.Size = new Size(0, 21);
             tx_sampleCount.TabIndex = 15;
             tx_sampleCount.UseCompatibleTextRendering = true;
             // 
@@ -337,10 +337,10 @@ namespace CRUD_Biometric
             tp_user.Controls.Add(bt_saveAlterUser);
             tp_user.Controls.Add(tb_alterName);
             tp_user.Font = new Font("Nirmala UI", 9F);
-            tp_user.Location = new Point(4, 28);
+            tp_user.Location = new Point(4, 30);
             tp_user.Name = "tp_user";
             tp_user.Padding = new Padding(3);
-            tp_user.Size = new Size(220, 129);
+            tp_user.Size = new Size(220, 127);
             tp_user.TabIndex = 0;
             tp_user.Text = "User";
             tp_user.UseVisualStyleBackColor = true;
@@ -352,7 +352,7 @@ namespace CRUD_Biometric
             tx_selectedID.Font = new Font("Montserrat", 8.999999F);
             tx_selectedID.Location = new Point(68, 16);
             tx_selectedID.Name = "tx_selectedID";
-            tx_selectedID.Size = new Size(86, 16);
+            tx_selectedID.Size = new Size(87, 18);
             tx_selectedID.TabIndex = 6;
             tx_selectedID.Text = "Selected ID - ";
             tx_selectedID.TextAlign = ContentAlignment.MiddleCenter;
@@ -386,10 +386,10 @@ namespace CRUD_Biometric
             tp_sample.Controls.Add(bt_sampleReplace);
             tp_sample.Controls.Add(tx_selectedIDSample);
             tp_sample.Controls.Add(bt_saveAlterSample);
-            tp_sample.Location = new Point(4, 28);
+            tp_sample.Location = new Point(4, 30);
             tp_sample.Name = "tp_sample";
             tp_sample.Padding = new Padding(3);
-            tp_sample.Size = new Size(220, 129);
+            tp_sample.Size = new Size(220, 127);
             tp_sample.TabIndex = 1;
             tp_sample.Text = "Sample";
             tp_sample.UseVisualStyleBackColor = true;
@@ -416,7 +416,7 @@ namespace CRUD_Biometric
             tx_selectedIDSample.Font = new Font("Montserrat", 8.999999F);
             tx_selectedIDSample.Location = new Point(68, 16);
             tx_selectedIDSample.Name = "tx_selectedIDSample";
-            tx_selectedIDSample.Size = new Size(86, 16);
+            tx_selectedIDSample.Size = new Size(87, 18);
             tx_selectedIDSample.TabIndex = 8;
             tx_selectedIDSample.Text = "Selected ID - ";
             tx_selectedIDSample.TextAlign = ContentAlignment.MiddleCenter;
@@ -446,7 +446,7 @@ namespace CRUD_Biometric
             tx_deviceName.Font = new Font("Montserrat", 6.999999F);
             tx_deviceName.Location = new Point(3, 3);
             tx_deviceName.Name = "tx_deviceName";
-            tx_deviceName.Size = new Size(43, 14);
+            tx_deviceName.Size = new Size(43, 16);
             tx_deviceName.TabIndex = 0;
             tx_deviceName.Text = "Device:";
             // 
@@ -488,7 +488,7 @@ namespace CRUD_Biometric
             tx_autoOn.Font = new Font("Montserrat", 6.999999F);
             tx_autoOn.Location = new Point(3, 35);
             tx_autoOn.Name = "tx_autoOn";
-            tx_autoOn.Size = new Size(49, 14);
+            tx_autoOn.Size = new Size(49, 16);
             tx_autoOn.TabIndex = 4;
             tx_autoOn.Text = "Auto On";
             // 
@@ -510,7 +510,7 @@ namespace CRUD_Biometric
             tx_serialNumber.Font = new Font("Montserrat", 6.999999F);
             tx_serialNumber.Location = new Point(3, 20);
             tx_serialNumber.Name = "tx_serialNumber";
-            tx_serialNumber.Size = new Size(23, 14);
+            tx_serialNumber.Size = new Size(23, 16);
             tx_serialNumber.TabIndex = 2;
             tx_serialNumber.Text = "SN:";
             // 
@@ -530,15 +530,15 @@ namespace CRUD_Biometric
             // 
             tx_NBioV.AutoSize = true;
             tx_NBioV.Font = new Font("Montserrat", 6.999999F);
-            tx_NBioV.Location = new Point(664, 432);
+            tx_NBioV.Location = new Point(12, 432);
             tx_NBioV.Name = "tx_NBioV";
-            tx_NBioV.Size = new Size(79, 14);
+            tx_NBioV.Size = new Size(79, 16);
             tx_NBioV.TabIndex = 20;
             tx_NBioV.Text = "NBioVersion - ";
             // 
             // CRUD
             // 
-            AutoScaleDimensions = new SizeF(8F, 16F);
+            AutoScaleDimensions = new SizeF(8F, 18F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(760, 446);
             Controls.Add(bt_modify);
