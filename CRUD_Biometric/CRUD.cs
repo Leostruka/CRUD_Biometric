@@ -191,7 +191,7 @@ namespace CRUD_Biometric
             
             // Update database status label
             Connection connection = new Connection();
-            if (connection.CheckInternetConnection())
+            if (connection.IsUsingMySQL())
             {
                 lb_dbStatus.Text = "DB: MySQL (Online)";
                 lb_dbStatus.ForeColor = Color.DarkGreen;

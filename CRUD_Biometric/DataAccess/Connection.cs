@@ -15,7 +15,7 @@ namespace CRUD_Biometric.DataAccess
         readonly string mysqlConnection = "SERVER=localhost; DATABASE=crud_users_db; UID=root; PASSWORD=";
         public MySqlConnection mysqlCon = null;
         public SQLiteConnection sqliteCon = null;
-        private bool useMySQL = true;
+        private bool useMySQL;
         private readonly SQLite sqliteHelper = new SQLite();
 
         public bool CheckInternetConnection()
@@ -38,8 +38,6 @@ namespace CRUD_Biometric.DataAccess
         {
             try
             {
-                useMySQL = CheckInternetConnection();
-
                 if (useMySQL)
                 {
                     mysqlCon = new MySqlConnection(mysqlConnection);
