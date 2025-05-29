@@ -530,7 +530,7 @@ namespace CRUD_Biometric
             // 
             tx_NBioV.AutoSize = true;
             tx_NBioV.Font = new Font("Montserrat", 6.999999F);
-            tx_NBioV.Location = new Point(12, 432);
+            tx_NBioV.Location = new Point(660, 432);
             tx_NBioV.Name = "tx_NBioV";
             tx_NBioV.Size = new Size(79, 16);
             tx_NBioV.TabIndex = 20;

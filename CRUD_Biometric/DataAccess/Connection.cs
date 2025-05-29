@@ -17,6 +17,7 @@ namespace CRUD_Biometric.DataAccess
         public SQLiteConnection sqliteCon = null;
         private bool useMySQL;
         private readonly SQLite sqliteHelper = new SQLite();
+        private int first = 0;
 
         public bool CheckInternetConnection()
         {
@@ -38,6 +39,13 @@ namespace CRUD_Biometric.DataAccess
         {
             try
             {
+                // Check if internet connection is available
+                if (first == 0)
+                {
+                    first++;
+                    useMySQL = CheckInternetConnection();
+                }
+
                 if (useMySQL)
                 {
                     mysqlCon = new MySqlConnection(mysqlConnection);
@@ -52,7 +60,7 @@ namespace CRUD_Biometric.DataAccess
             catch (Exception ex)
             {
                 MessageBox.Show("Connection Error: " + ex.Message);
-                
+
                 // If MySQL connection fails, try SQLite as fallback
                 if (useMySQL)
                 {
@@ -93,7 +101,7 @@ namespace CRUD_Biometric.DataAccess
         {
             return useMySQL;
         }
-        
+
         public IDbConnection GetActiveConnection()
         {
             if (useMySQL)
