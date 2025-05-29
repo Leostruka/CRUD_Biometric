@@ -707,7 +707,7 @@ namespace CRUD_Biometric
                 NBioAPI.Type.WINDOW_OPTION windowOption = new NBioAPI.Type.WINDOW_OPTION();
                 windowOption.WindowStyle = NBioAPI.Type.WINDOW_STYLE.INVISIBLE;
                 // Capture FIR
-                uint ret = m_NBioAPI.Capture(NBioAPI.Type.FIR_PURPOSE.VERIFY, out hNewFIR, NBioAPI.Type.TIMEOUT.DEFAULT, hAuditFIR, windowOption);
+                uint ret = m_NBioAPI.Capture(NBioAPI.Type.FIR_PURPOSE.AUDIT, out hNewFIR, NBioAPI.Type.TIMEOUT.DEFAULT, hAuditFIR, windowOption);
                 if (ret != NBioAPI.Error.NONE)
                 {
                     ErrorMsg(ret);
@@ -717,7 +717,7 @@ namespace CRUD_Biometric
             else
             {
                 m_NBioAPI.OpenDevice(deviceID[currentDeviceID]);
-                uint ret = m_NBioAPI.Capture(NBioAPI.Type.FIR_PURPOSE.VERIFY, out hNewFIR, NBioAPI.Type.TIMEOUT.DEFAULT, hAuditFIR, null);
+                uint ret = m_NBioAPI.Capture(NBioAPI.Type.FIR_PURPOSE.AUDIT, out hNewFIR, NBioAPI.Type.TIMEOUT.DEFAULT, hAuditFIR, null);
                 if (ret != NBioAPI.Error.NONE)
                 {
                     ErrorMsg(ret);
@@ -903,7 +903,7 @@ namespace CRUD_Biometric
             }
 
             m_NBioAPI.OpenDevice(deviceID[currentDeviceID]);
-            uint ret = m_NBioAPI.Capture(NBioAPI.Type.FIR_PURPOSE.VERIFY, out hCapturedFIR, NBioAPI.Type.TIMEOUT.DEFAULT, hAuditFIR, null);
+            uint ret = m_NBioAPI.Capture(NBioAPI.Type.FIR_PURPOSE.AUDIT, out hCapturedFIR, NBioAPI.Type.TIMEOUT.DEFAULT, hAuditFIR, null);
             if (ret != NBioAPI.Error.NONE)
             {
                 ErrorMsg(ret);
@@ -1245,7 +1245,7 @@ namespace CRUD_Biometric
             {
                 NBioAPI.Type.WINDOW_OPTION windowOption = new NBioAPI.Type.WINDOW_OPTION();
                 windowOption.WindowStyle = NBioAPI.Type.WINDOW_STYLE.INVISIBLE;
-                uint ret = m_NBioAPI.Capture(NBioAPI.Type.FIR_PURPOSE.VERIFY, out hNewFIR, NBioAPI.Type.TIMEOUT.DEFAULT, hAuditFIR, windowOption);
+                uint ret = m_NBioAPI.Capture(NBioAPI.Type.FIR_PURPOSE.AUDIT, out hNewFIR, NBioAPI.Type.TIMEOUT.DEFAULT, hAuditFIR, windowOption);
                 if (ret != NBioAPI.Error.NONE)
                 {
                     ErrorMsg(ret);
@@ -1255,7 +1255,7 @@ namespace CRUD_Biometric
             else
             {
                 m_NBioAPI.OpenDevice(deviceID[currentDeviceID]);
-                uint ret = m_NBioAPI.Capture(NBioAPI.Type.FIR_PURPOSE.VERIFY, out hNewFIR, NBioAPI.Type.TIMEOUT.DEFAULT, hAuditFIR, null);
+                uint ret = m_NBioAPI.Capture(NBioAPI.Type.FIR_PURPOSE.AUDIT, out hNewFIR, NBioAPI.Type.TIMEOUT.DEFAULT, hAuditFIR, null);
                 if (ret != NBioAPI.Error.NONE)
                 {
                     ErrorMsg(ret);
@@ -1312,7 +1312,8 @@ namespace CRUD_Biometric
                 tb_userID.Enabled = true;
                 bt_modify.Text = "Modify";
 
-                bt_capture.Enabled = true;
+                if (!cb_autoOn.Checked)
+                    bt_capture.Enabled = true;
                 if (hActivatedFIR != null)
                     bt_register.Enabled = true;
                 if (dg_users.SelectedRows.Count > 0)
