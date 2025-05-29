@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CRUD_Biometric")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9e18ba9205be774ea22df6093e9eafacb8e80203")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+115730b76231b224d12fcb18e922e0df6d5e750b")]
 [assembly: System.Reflection.AssemblyProductAttribute("CRUD_Biometric")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CRUD_Biometric")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

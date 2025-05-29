@@ -411,16 +411,8 @@ namespace CRUD_Biometric
         // Convert Verify Fir to Enroll Fir
         public NBioAPI.Type.HFIR ConvertToEnroll(NBioAPI.Type.HFIR verifyFIR)
         {
-            NBioAPI.Type.HFIR processedFIR;
-            uint result = m_NBioAPI.Process(verifyFIR, out processedFIR);
-
-            if (result != 0)
-            {
-                throw new Exception($"Failed to process fingerprint. Error code: {result}");
-            }
-
             NBioAPI.Type.HFIR enrollFIR;
-            result = m_NBioAPI.CreateTemplate(processedFIR, (NBioAPI.Type.HFIR)null, out enrollFIR, (NBioAPI.Type.FIR_PAYLOAD)null);
+            uint result = m_NBioAPI.CreateTemplate(verifyFIR, verifyFIR, out enrollFIR, null);
 
             if (result != 0)
             {
