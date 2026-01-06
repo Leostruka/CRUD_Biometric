@@ -717,7 +717,9 @@ namespace CRUD_Biometric
             else
             {
                 m_NBioAPI.OpenDevice(deviceID[currentDeviceID]);
-                uint ret = m_NBioAPI.Capture(NBioAPI.Type.FIR_PURPOSE.VERIFY, out hNewFIR, NBioAPI.Type.TIMEOUT.DEFAULT, hAuditFIR, null);
+                NBioAPI.Type.WINDOW_OPTION windowOption = new NBioAPI.Type.WINDOW_OPTION();
+                windowOption.ParentWnd = Handle;
+                uint ret = m_NBioAPI.Capture(NBioAPI.Type.FIR_PURPOSE.VERIFY, out hNewFIR, NBioAPI.Type.TIMEOUT.DEFAULT, hAuditFIR, windowOption);
                 if (ret != NBioAPI.Error.NONE)
                 {
                     ErrorMsg(ret);
